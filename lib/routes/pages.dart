@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+import 'package:temperature_map/app/pages/dashboard/view.dart';
 import 'package:temperature_map/app/pages/home/view.dart';
 import 'package:temperature_map/app/pages/map/view.dart';
 part './routes.dart';
@@ -14,6 +15,10 @@ class AppPages {
     GetPage(
       name: Routes.map,
       page: () => const MapPage(),
+    ),
+    GetPage(
+      name: Routes.dashboard,
+      page: () => const DashboardPage(),
     )
   ];
 }

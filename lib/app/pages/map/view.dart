@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:temperature_map/core/app_constants.dart';
+import 'package:temperature_map/routes/pages.dart';
 
 import 'controller.dart';
 
@@ -13,8 +14,22 @@ class MapPage extends GetView<MapPageController> {
   @override
   Widget build(BuildContext context) {
     Get.put(MapPageController());
+    final route = controller.route;
     return Scaffold(
-      body: MapPagePolyline(),
+      body: Stack(
+        children: [
+          const MapPagePolyline(),
+          ElevatedButton(
+            onPressed: () {
+              Get.toNamed(
+                Routes.dashboard,
+                arguments: route,
+              );
+            },
+            child: Text('Dashboard'),
+          ),
+        ],
+      ),
       // Container(
       //   padding: EdgeInsets.zero,
       //   child: Row(
