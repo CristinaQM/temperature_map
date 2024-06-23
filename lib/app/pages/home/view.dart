@@ -55,53 +55,104 @@ class HomePage extends StatelessWidget {
               ),
               Container(
                 width: double.infinity,
+                height: 700,
                 decoration: const BoxDecoration(
-                  color: Colors.white,
+                  color: Color.fromARGB(255, 255, 255, 255),
                 ),
-                padding: const EdgeInsets.symmetric(horizontal: 40),
-                child: const Padding(
-                  padding: EdgeInsets.all(8.0),
+                child: Padding(
+                  padding: const EdgeInsets.only(bottom: 10.0, top: 60),
                   child: Column(
                     children: [
-                      Row(
+                      Stack(
                         children: [
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                'Problemática',
-                                style: TextStyle(
-                                  fontSize: 30,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                              const SizedBox(height: 20),
-                              Text(
-                                'Problemática',
-                                style: TextStyle(
-                                  fontSize: 15,
-                                ),
-                              ),
-                            ],
+                          Row(
+                              children: [
+                                const Expanded(
+                                  child: Padding(
+                                    padding: EdgeInsets.only(left: 15.0),
+                                    child: SizedBox(
+                                    height: 80,
+                                    
+                                    child: Align(
+                                        alignment: Alignment.topCenter,
+                                        child: Text(
+                                          "Problemática",
+                                          style: TextStyle(fontSize: 40),
+                                        )),
+                                  ),
+                                )),
+                                Expanded(
+                                  child: Padding(
+                                    padding: const EdgeInsets.only(left: 15.0, right: 35.0),
+                                    child: Container(
+                                    height: 500,
+                                    width: 100,
+                                    decoration: const BoxDecoration(
+                                      image: DecorationImage(
+                                        image: AssetImage(
+                                            'images/home_banner.jpg'),
+                                        fit: BoxFit.cover,
+                                      ),
+                                    ),
+                                  ),
+                                ))
+                              ],
                           ),
-                        ],
-                      ),
-                      const SizedBox(height: 50),
-                      Row(
-                        children: [
-                          Text(
-                            'Objetivos',
-                            style: TextStyle(
-                              fontSize: 30,
-                              fontWeight: FontWeight.bold,
+                          
+                          Positioned(
+                            top: 280,
+                            child: Container(
+                              height: 180,
+                              width: 600,
+                              color: Colors.blue,
+                              child: const Padding(
+                                padding: EdgeInsets.only(
+                                    top: 35.0, left: 140.0, right: 40),
+                                child: Text(
+                                  "Las grandes ciudades tienen poca vegetación ocasionando un aumento de las temperaturas según el clima y el entorno que los rodea. Conocer las diferencias de temperaturas de una ciudad ayuda a conocer en qué lugar se debería forestar para ayudar a tener un ambiente saludable.",
+                                  textAlign: TextAlign.justify,
+                                  style: TextStyle(fontWeight: FontWeight.bold),
+                                ),
+                              ),
                             ),
-                          ),
+                          )
                         ],
-                      ),
+                      )
                     ],
                   ),
                 ),
               ),
+              Container(
+                width: double.infinity,
+                decoration: const BoxDecoration(
+                  color: Color.fromARGB(255, 117, 27, 27),
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Row(
+                    children: [
+                      Expanded(
+                        child: Container(
+                          color: Colors.amber,
+                          height: 100,
+                        ),
+                      ),
+                      Expanded(
+                        child: Container(
+                          color: const Color.fromARGB(255, 104, 94, 63),
+                          height: 100,
+                        ),
+                      ),
+                      Expanded(
+                        child: Container(
+                          color: const Color.fromARGB(255, 31, 14, 36),
+                          height: 100,
+                        ),
+                      )
+                    ],
+                  ),
+                ),
+              )
             ],
           ),
         ),
