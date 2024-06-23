@@ -16,7 +16,7 @@ class MyMenuBar extends StatelessWidget {
         vertical: 8,
       ),
       decoration: BoxDecoration(
-        color: const Color(0xff0A342A).withOpacity(0.4),
+        color: const Color.fromARGB(255, 255, 255, 255).withOpacity(0.0),
       ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.end,
@@ -61,6 +61,7 @@ class _TitleBarButton extends StatelessWidget {
           width: 140,
           padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
           decoration: BoxDecoration(
+            color: const Color.fromARGB(255, 219, 205, 205).withOpacity(0.4),
             border: Border.all(
               color: Colors.white,
               width: 2,
