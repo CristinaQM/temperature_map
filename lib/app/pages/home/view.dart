@@ -16,11 +16,11 @@ class HomePage extends StatelessWidget {
                 children: [
                   Container(
                     width: double.infinity,
-                    height: 730,
+                    height: 1000,
                     decoration: const BoxDecoration(
                       image: DecorationImage(
-                        image: AssetImage('images/home_banner.jpg'),
-                        fit: BoxFit.cover,
+                        image: AssetImage('images/img3.jpg'),
+                        fit: BoxFit.fill,
                       ),
                     ),
                     padding: const EdgeInsets.all(50),
@@ -55,7 +55,7 @@ class HomePage extends StatelessWidget {
               ),
               Container(
                 width: double.infinity,
-                height: 700,
+                height: 835,
                 decoration: const BoxDecoration(
                   color: Color.fromARGB(255, 255, 255, 255),
                 ),
@@ -69,9 +69,9 @@ class HomePage extends StatelessWidget {
                               children: [
                                 const Expanded(
                                   child: Padding(
-                                    padding: EdgeInsets.only(left: 15.0),
+                                    padding: EdgeInsets.only(left: 15.0, top: 65.0),
                                     child: SizedBox(
-                                    height: 80,
+                                    height: 50,
                                     
                                     child: Align(
                                         alignment: Alignment.topCenter,
@@ -85,12 +85,12 @@ class HomePage extends StatelessWidget {
                                   child: Padding(
                                     padding: const EdgeInsets.only(left: 15.0, right: 35.0),
                                     child: Container(
-                                    height: 500,
+                                    height: 700,
                                     width: 100,
                                     decoration: const BoxDecoration(
                                       image: DecorationImage(
                                         image: AssetImage(
-                                            'images/home_banner.jpg'),
+                                            'images/img1_pro.jpg'),
                                         fit: BoxFit.cover,
                                       ),
                                     ),
@@ -100,18 +100,18 @@ class HomePage extends StatelessWidget {
                           ),
                           
                           Positioned(
-                            top: 280,
+                            top: 450,
                             child: Container(
-                              height: 180,
-                              width: 600,
+                              height: 190,
+                              width: 1200,
                               color: Colors.blue,
                               child: const Padding(
                                 padding: EdgeInsets.only(
-                                    top: 35.0, left: 140.0, right: 40),
+                                    top: 35.0, left: 370.0, right: 40),
                                 child: Text(
                                   "Las grandes ciudades tienen poca vegetación ocasionando un aumento de las temperaturas según el clima y el entorno que los rodea. Conocer las diferencias de temperaturas de una ciudad ayuda a conocer en qué lugar se debería forestar para ayudar a tener un ambiente saludable.",
                                   textAlign: TextAlign.justify,
-                                  style: TextStyle(fontWeight: FontWeight.bold),
+                                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
                                 ),
                               ),
                             ),
@@ -124,35 +124,76 @@ class HomePage extends StatelessWidget {
               ),
               Container(
                 width: double.infinity,
+                height: 835,
                 decoration: const BoxDecoration(
-                  color: Color.fromARGB(255, 117, 27, 27),
+                  color: Color.fromARGB(255, 255, 255, 255),
                 ),
                 child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Row(
+                  padding: const EdgeInsets.only(bottom: 10.0, top: 60),
+                  child: Column(
                     children: [
-                      Expanded(
-                        child: Container(
-                          color: Colors.amber,
-                          height: 100,
-                        ),
-                      ),
-                      Expanded(
-                        child: Container(
-                          color: const Color.fromARGB(255, 104, 94, 63),
-                          height: 100,
-                        ),
-                      ),
-                      Expanded(
-                        child: Container(
-                          color: const Color.fromARGB(255, 31, 14, 36),
-                          height: 100,
-                        ),
+                      Stack(
+                        children: [
+                          Row(
+                              children: [
+                                Expanded(
+                                  child: Padding(
+                                    padding: const EdgeInsets.only(left: 15.0, right: 35.0),
+                                    child: Container(
+                                    height: 700,
+                                    width: 100,
+                                    decoration: const BoxDecoration(
+                                      image: DecorationImage(
+                                        image: AssetImage(
+                                            'images/img1_pro.jpg'),
+                                        fit: BoxFit.cover,
+                                      ),
+                                    ),
+                                  ),
+                                )),
+                                const Expanded(
+                                  child: Padding(
+                                    padding: EdgeInsets.only(left: 40.0, top: 65.0),
+                                    child: SizedBox(
+                                    height: 50,
+                                    
+                                    child: Align(
+                                        alignment: Alignment.topCenter,
+                                        child: Text(
+                                          "Propuesta",
+                                          style: TextStyle(fontSize: 40),
+                                        )),
+                                  ),
+                                )),
+                                
+                              ],
+                          ),
+                          
+                          Positioned(
+                            top: 450,
+                            left: 700,
+                            
+                            child: Container(
+                              height: 190,
+                              width: 1220,
+                              color: Colors.blue,
+                              child: const Padding(
+                                padding: EdgeInsets.only(
+                                    top: 22.0, left: 40.0, right: 370.0),
+                                child: Text(
+                                  "El proyecto se centrará en la creación de un sistema de monitoreo ambiental que utilice dispositivos IoTpara recopilar datos en tiempo real sobre la temperatura y la humedad en una ubicación específica dentro de Guayaquil. El sistema constará de tres componentes principales: Dispositivo de Monitoreo IoT, Plataforma en la Nube, Portal Web de Visualización de Datos",
+                                  textAlign: TextAlign.justify,
+                                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+                                ),
+                              ),
+                            ),
+                          )
+                        ],
                       )
                     ],
                   ),
                 ),
-              )
+              ),
             ],
           ),
         ),
