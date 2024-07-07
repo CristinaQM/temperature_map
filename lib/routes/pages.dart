@@ -9,15 +9,15 @@ class AppPages {
 
   static final pages = [
     GetPage(
-      name: Routes.home,
+      name: '/',
       page: () => const HomePage(),
     ),
     GetPage(
-      name: Routes.map,
+      name: '/map/:dataKey',
       page: () => const MapPage(),
     ),
     GetPage(
-      name: Routes.dashboard,
+      name: '/dashboard',
       page: () => const DashboardPage(),
     )
   ];

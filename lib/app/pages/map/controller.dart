@@ -1,12 +1,12 @@
 import 'package:get/get.dart';
 
 class MapPageController extends GetxController {
-  late MapEntry route;
+  late Map<String, dynamic> route;
   final List<dynamic> pointList = [];
   @override
   void onInit() {
     route = Get.arguments;
-    pointList.addAll(route.value);
+    pointList.addAll(route['dataList']);
     super.onInit();
   }
 }

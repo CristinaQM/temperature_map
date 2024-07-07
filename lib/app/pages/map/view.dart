@@ -36,7 +36,7 @@ class MapPage extends GetView<MapPageController> {
             child: Column(
               children: [
                 Text(
-                  'Map View \n${controller.route.key}',
+                  'Map View \nRuta${controller.route['id']}',
                   textAlign: TextAlign.center,
                 ),
                 ElevatedButton(

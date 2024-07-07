@@ -3,12 +3,12 @@ import 'package:get/get.dart';
 
 class RutasController extends GetxController {
   final _loading = true.obs;
-  final _rutas = <String, dynamic>{}.obs;
+  final _rutas = <Map<String, dynamic>>[].obs;
 
   final urlSrc = 'sensorDataNuevoMariaIsabel';
 
   bool get loading => _loading.value;
-  Map<String, dynamic> get rutas => {..._rutas};
+  List<Map<String, dynamic>> get rutas => [..._rutas];
 
   final database = FirebaseDatabase.instance;
 
@@ -26,13 +26,20 @@ class RutasController extends GetxController {
       int counter = 1;
 
       for (var ruta in map.entries) {
+        final Map<String, dynamic> routeMap = {};
+
+        routeMap['id'] = counter;
+        routeMap['dataKey'] = ruta.key;
+
+        //Points List
         final List<dynamic> list = ruta.value;
         list.removeWhere((item) => item == null);
         for (var i = 0; i < list.length; i++) {
           list[i].putIfAbsent('id', () => i);
         }
-        _rutas['Ruta $counter'] = list;
+        routeMap['dataList'] = list;
 
+        _rutas.add(routeMap);
         counter++;
       }
     }

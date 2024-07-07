@@ -4,7 +4,6 @@ import 'package:get/get.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:temperature_map/core/app_constants.dart';
-import 'package:temperature_map/routes/pages.dart';
 
 import 'controller.dart';
 
@@ -36,7 +35,7 @@ class RutasDialog extends GetView<RutasController> {
                     ),
                     const Divider(),
                     Column(
-                      children: controller.rutas.entries.map(
+                      children: controller.rutas.map(
                         (r) {
                           return RouteWidget(
                             route: r,
@@ -53,7 +52,7 @@ class RutasDialog extends GetView<RutasController> {
 }
 
 class RouteWidget extends StatelessWidget {
-  final MapEntry route;
+  final Map<String, dynamic> route;
   const RouteWidget({
     required this.route,
     super.key,
@@ -61,15 +60,12 @@ class RouteWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final List<dynamic> pointsList = route.value;
+    final List<dynamic> pointsList = route['dataList'];
     return MouseRegion(
       cursor: SystemMouseCursors.click,
       child: GestureDetector(
         onTap: () {
-          Get.toNamed(
-            Routes.map,
-            arguments: route,
-          );
+          goToMap(route);
         },
         child: Container(
           padding: const EdgeInsets.symmetric(
@@ -90,7 +86,7 @@ class RouteWidget extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    route.key,
+                    'Ruta ${route['id']}',
                     style: const TextStyle(
                       fontSize: 20,
                       fontWeight: FontWeight.bold,
@@ -111,10 +107,7 @@ class RouteWidget extends StatelessWidget {
                   initMap: pointsList.first,
                   finalMap: pointsList.last,
                   onTap: () {
-                    Get.toNamed(
-                      Routes.map,
-                      arguments: route,
-                    );
+                    goToMap(route);
                   },
                 ),
               ),
@@ -124,6 +117,13 @@ class RouteWidget extends StatelessWidget {
       ),
     );
   }
+}
+
+void goToMap(Map<String, dynamic> route) {
+  Get.toNamed(
+    '/map/${route['dataKey']}',
+    arguments: route,
+  );
 }
 
 class PolylineMarker extends StatefulWidget {
