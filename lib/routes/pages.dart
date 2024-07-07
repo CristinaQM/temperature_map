@@ -9,7 +9,7 @@ class AppPages {
 
   static final pages = [
     GetPage(
-      name: '/',
+      name: Routes.home,
       page: () => const HomePage(),
     ),
     GetPage(

@@ -17,40 +17,49 @@ class MapPage extends GetView<MapPageController> {
     Get.put(MapPageController());
     final route = controller.route;
     return Scaffold(
-      body: Stack(
-        children: [
-          const MapPagePolyline(),
-          Container(
-            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
-            decoration: const BoxDecoration(
-              color: Colors.white,
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.grey,
-                  offset: Offset(1.0, 0.0),
-                  blurRadius: 6.0,
+      body: Obx(
+        () => (controller.loading)
+            ? const Center(
+                child: SizedBox.square(
+                  dimension: 48,
+                  child: CircularProgressIndicator(),
                 ),
-              ],
-            ),
-            child: Column(
-              children: [
-                Text(
-                  'Map View \nRuta${route['id']}',
-                  textAlign: TextAlign.center,
-                ),
-                ElevatedButton(
-                  onPressed: () {
-                    Get.toNamed(
-                      '/dashboard/${route['dataKey']}',
-                      arguments: route,
-                    );
-                  },
-                  child: Text('Dashboard'),
-                ),
-              ],
-            ),
-          ),
-        ],
+              )
+            : Stack(
+                children: [
+                  if (controller.pointList.isNotEmpty) const MapPagePolyline() else Text('No Data to Display'),
+                  Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
+                    decoration: const BoxDecoration(
+                      color: Colors.white,
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.grey,
+                          offset: Offset(1.0, 0.0),
+                          blurRadius: 6.0,
+                        ),
+                      ],
+                    ),
+                    child: Column(
+                      children: [
+                        Text(
+                          'Map View \nRuta${route['id']}',
+                          textAlign: TextAlign.center,
+                        ),
+                        ElevatedButton(
+                          onPressed: () {
+                            Get.toNamed(
+                              '/dashboard/${route['dataKey']}',
+                              arguments: route,
+                            );
+                          },
+                          child: Text('Dashboard'),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
       ),
     );
   }

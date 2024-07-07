@@ -44,18 +44,6 @@ class RutasController extends GetxController {
       }
     }
 
-    //TODO: Para agregarlo en el mapa en tiempo real
-    // final reference = database.ref('sensorDataNuevoMariaIsabel');
-    // reference.onValue.listen(
-    //   (DatabaseEvent event) {
-    //     _rutas.clear();
-    //     final snapshot = event.snapshot.value;
-    //     print(snapshot);
-    //   },
-    // );
-
-    // reference.onValue.listen(onData)
-
     _loading.value = false;
   }
 
