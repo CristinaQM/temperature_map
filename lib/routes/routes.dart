@@ -4,5 +4,6 @@ class Routes {
   Routes._();
 
   static const home = '/home';
-  static const history = '/history';
+  static const map = '/map';
+  static const dashboard = '/dashboard';
 }
