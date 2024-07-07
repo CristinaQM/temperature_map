@@ -9,7 +9,9 @@ import 'package:temperature_map/routes/pages.dart';
 import 'controller.dart';
 
 class MapPage extends GetView<MapPageController> {
-  const MapPage({super.key});
+  const MapPage({
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -19,30 +21,38 @@ class MapPage extends GetView<MapPageController> {
       body: Stack(
         children: [
           const MapPagePolyline(),
-          ElevatedButton(
-            onPressed: () {
-              Get.toNamed(
-                Routes.dashboard,
-                arguments: route,
-              );
-            },
-            child: Text('Dashboard'),
+          Container(
+            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
+            decoration: const BoxDecoration(
+              color: Colors.white,
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.grey,
+                  offset: Offset(1.0, 0.0),
+                  blurRadius: 6.0,
+                ),
+              ],
+            ),
+            child: Column(
+              children: [
+                Text(
+                  'Map View \n${controller.route.key}',
+                  textAlign: TextAlign.center,
+                ),
+                ElevatedButton(
+                  onPressed: () {
+                    Get.toNamed(
+                      Routes.dashboard,
+                      arguments: route,
+                    );
+                  },
+                  child: Text('Dashboard'),
+                ),
+              ],
+            ),
           ),
         ],
       ),
-      // Container(
-      //   padding: EdgeInsets.zero,
-      //   child: Row(
-      //     children: [
-      //       Column(
-      //         children: [
-      //           Text('Map View ${controller.route.key}'),
-      //         ],
-      //       ),
-      //       MapPagePolyline(),
-      //     ],
-      //   ),
-      // ),
     );
   }
 }
