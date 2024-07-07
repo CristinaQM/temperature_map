@@ -11,7 +11,7 @@ class DashboardPage extends GetView<DashboardPageController> {
     Get.put(DashboardPageController());
     return Scaffold(
       body: Center(
-        child: Text('${controller.route.key}'),
+        child: Text('Ruta: ${controller.route['id']}'),
       ),
     );
   }

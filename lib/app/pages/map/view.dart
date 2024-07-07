@@ -4,7 +4,6 @@ import 'package:get/get.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:temperature_map/core/app_constants.dart';
-import 'package:temperature_map/routes/pages.dart';
 
 import 'controller.dart';
 
@@ -36,13 +35,13 @@ class MapPage extends GetView<MapPageController> {
             child: Column(
               children: [
                 Text(
-                  'Map View \nRuta${controller.route['id']}',
+                  'Map View \nRuta${route['id']}',
                   textAlign: TextAlign.center,
                 ),
                 ElevatedButton(
                   onPressed: () {
                     Get.toNamed(
-                      Routes.dashboard,
+                      '/dashboard/${route['dataKey']}',
                       arguments: route,
                     );
                   },

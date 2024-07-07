@@ -17,7 +17,7 @@ class AppPages {
       page: () => const MapPage(),
     ),
     GetPage(
-      name: '/dashboard',
+      name: '/dashboard/:dataKey',
       page: () => const DashboardPage(),
     )
   ];

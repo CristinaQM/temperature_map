@@ -1,7 +1,7 @@
 import 'package:get/get.dart';
 
 class DashboardPageController extends GetxController {
-  late MapEntry route;
+  late Map<String, dynamic> route;
 
   @override
   void onInit() {
