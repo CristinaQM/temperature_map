@@ -16,7 +16,7 @@ class MyMenuBar extends StatelessWidget {
         vertical: 8,
       ),
       decoration: BoxDecoration(
-        color: const Color.fromARGB(255, 255, 255, 255).withOpacity(0.0),
+        color: const Color(0xFF0C476F).withOpacity(0.35),
       ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.end,
@@ -24,8 +24,8 @@ class MyMenuBar extends StatelessWidget {
           _TitleBarButton(
             label: 'Ver Mapas',
             onTap: () {
-              // print('Ver Mapas función');
-              Get.dialog(RutasDialog());
+              //'Ver Mapas función';
+              Get.dialog(const RutasDialog());
             },
           ),
           const SizedBox(
