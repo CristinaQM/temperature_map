@@ -130,8 +130,7 @@ class MapPage extends GetView<MapPageController> {
                     ElevatedButton(
                       onPressed: () {
                         Get.toNamed(
-                          '/dashboard/${route['dataKey']}',
-                          arguments: route,
+                          '/dashboard/${route['id']}${route['dataKey']}',
                         );
                       },
                       child: Text('Dashboard'),
