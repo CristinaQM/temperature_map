@@ -65,6 +65,7 @@ class DashboardPageController extends GetxController {
           for (var i = 0; i < pointList.length; i++) {
             pointList[i].putIfAbsent('id', () => i);
           }
+         
 
           _loading.value = false;
         },
@@ -73,7 +74,9 @@ class DashboardPageController extends GetxController {
       _loading.value = false;
       _hasError.value = true;
     }
+
   }
+
 
   @override
   void onInit() async {

@@ -133,7 +133,7 @@ class MapPage extends GetView<MapPageController> {
                           '/dashboard/${route['id']}${route['dataKey']}',
                         );
                       },
-                      child: Text('Dashboard'),
+                      child: const Text('Dashboard'),
                     ),
                   ],
                 ),

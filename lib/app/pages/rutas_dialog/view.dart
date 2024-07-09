@@ -93,8 +93,8 @@ class RouteWidget extends StatelessWidget {
                     ),
                   ),
                   const SizedBox(height: 10),
-                  Text('Punto Inicial'),
-                  Text('Punto Final'),
+                  const Text('Punto Inicial'),
+                  const Text('Punto Final'),
                 ],
               ),
               Container(
