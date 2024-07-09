@@ -44,7 +44,7 @@ class MapPageController extends GetxController {
           pointList.removeWhere((item) => item == null);
 
           for (var i = 0; i < pointList.length; i++) {
-            pointList[i].putIfAbsent('id', () => i);
+            pointList[i].putIfAbsent('id', () => i + 1);
           }
 
           _loading.value = false;
