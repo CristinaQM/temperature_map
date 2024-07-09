@@ -69,43 +69,7 @@ class MapViewBar extends StatelessWidget {
                         ? medioColor
                         : bajoColor;
 
-                return Container(
-                  padding: const EdgeInsets.symmetric(
-                    vertical: 8,
-                    horizontal: 20,
-                  ),
-                  margin: const EdgeInsets.only(bottom: 10),
-                  decoration: BoxDecoration(
-                    color: const Color(0xFFD6EFEF).withOpacity(0.5),
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                  child: Row(
-                    children: [
-                      CircleAvatar(
-                        backgroundColor: color,
-                        radius: 15,
-                        child: Text(
-                          '${point['id']}',
-                          style: const TextStyle(
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                      ),
-                      const SizedBox(width: 30),
-                      _PointParamTag(
-                        label: '${point['temperatura']}',
-                        icon: MdiIcons.thermometer,
-                        color: const Color(0xFFFF9F31),
-                      ),
-                      const SizedBox(width: 40),
-                      _PointParamTag(
-                        label: '${point['humedad']}',
-                        icon: MdiIcons.waterPercent,
-                        color: const Color(0xFF3180FF),
-                      ),
-                    ],
-                  ),
-                );
+                return DataPointTile(point: point, color: color);
               },
             ),
           ),
@@ -119,6 +83,76 @@ class MapViewBar extends StatelessWidget {
             child: const Text('Dashboard'),
           ),
         ],
+      ),
+    );
+  }
+}
+
+class DataPointTile extends StatelessWidget {
+  final dynamic point;
+  const DataPointTile({
+    super.key,
+    required this.point,
+    required this.color,
+  });
+
+  final Color color;
+
+  @override
+  Widget build(BuildContext context) {
+    final controller = Get.find<MapPageController>();
+
+    return MouseRegion(
+      cursor: SystemMouseCursors.click,
+      child: GestureDetector(
+        onTap: () {
+          if (controller.selectedPointID == point['id']) {
+            controller.selectedPointID = 0;
+          } else {
+            controller.selectedPointID = point['id'];
+          }
+        },
+        child: Obx(
+          () => Container(
+            padding: const EdgeInsets.symmetric(
+              vertical: 8,
+              horizontal: 20,
+            ),
+            margin: const EdgeInsets.only(bottom: 10),
+            decoration: BoxDecoration(
+              color: Color(
+                (controller.selectedPointID == point['id']) ? 0xff766ED1 : 0xFFD6EFEF,
+              ).withOpacity(0.5),
+              borderRadius: BorderRadius.circular(10),
+            ),
+            child: Row(
+              children: [
+                CircleAvatar(
+                  backgroundColor: color,
+                  radius: 15,
+                  child: Text(
+                    '${point['id']}',
+                    style: const TextStyle(
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
+                const SizedBox(width: 30),
+                _PointParamTag(
+                  label: '${point['temperatura']}°C',
+                  icon: MdiIcons.thermometer,
+                  color: const Color(0xFFFF9F31),
+                ),
+                const SizedBox(width: 40),
+                _PointParamTag(
+                  label: '${point['humedad']}',
+                  icon: MdiIcons.waterPercent,
+                  color: const Color(0xFF3180FF),
+                ),
+              ],
+            ),
+          ),
+        ),
       ),
     );
   }

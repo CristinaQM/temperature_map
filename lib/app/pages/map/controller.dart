@@ -8,6 +8,14 @@ class MapPageController extends GetxController {
   //Location Points
   final pointList = <dynamic>[].obs;
 
+  final _selectedPointID = 0.obs;
+
+  int get selectedPointID => _selectedPointID.value;
+
+  set selectedPointID(int id) {
+    _selectedPointID.value = id;
+  }
+
   final database = FirebaseDatabase.instance;
 
   final urlSrc = 'sensorDataNuevoMariaIsabel';

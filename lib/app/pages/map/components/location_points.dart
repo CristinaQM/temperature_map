@@ -79,6 +79,8 @@ class _DataPointWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final controller = Get.find<MapPageController>();
+
     final id = dataPoint['id'];
     final temp = dataPoint['temperatura'];
 
@@ -102,22 +104,36 @@ class _DataPointWidget extends StatelessWidget {
             ? medioStrokeColor
             : bajoStrokeColor;
 
-    return Container(
-      decoration: BoxDecoration(
-        color: markerColor,
-        borderRadius: BorderRadius.circular(100),
-        border: Border.all(
-          color: borderColor,
-          width: 2,
-        ),
-      ),
-      child: Center(
-        child: Text(
-          '$id',
-          style: const TextStyle(
-            fontWeight: FontWeight.bold,
-            color: Colors.white,
-            fontSize: 15,
+    return Obx(
+      () => MouseRegion(
+        cursor: SystemMouseCursors.click,
+        child: GestureDetector(
+          onTap: () {
+            if (controller.selectedPointID == dataPoint['id']) {
+              controller.selectedPointID = 0;
+            } else {
+              controller.selectedPointID = dataPoint['id'];
+            }
+          },
+          child: Container(
+            decoration: BoxDecoration(
+              color: markerColor,
+              borderRadius: BorderRadius.circular(100),
+              border: Border.all(
+                color: (controller.selectedPointID == id) ? const Color(0xff766ED1) : borderColor,
+                width: (controller.selectedPointID == id) ? 4 : 2,
+              ),
+            ),
+            child: Center(
+              child: Text(
+                '$id',
+                style: const TextStyle(
+                  fontWeight: FontWeight.bold,
+                  color: Colors.white,
+                  fontSize: 15,
+                ),
+              ),
+            ),
           ),
         ),
       ),
