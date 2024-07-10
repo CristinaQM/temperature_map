@@ -2,7 +2,9 @@ import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 
 class _LineChart extends StatelessWidget {
-  const _LineChart({required this.isShowingMainData});
+  final List<double> humepoint;
+  final List<double> temppoint;
+  const _LineChart({required this.isShowingMainData, required this.humepoint, required this.temppoint});
 
   final bool isShowingMainData;
 
@@ -158,7 +160,19 @@ class _LineChart extends StatelessWidget {
         ),
       );
 
-  LineChartBarData get lineChartBarData1_1 => LineChartBarData(
+  LineChartBarData get lineChartBarData1_1 {
+    List<LineChartBarData> barData = [];
+    for (int i = 0; i< humepoint.length; i++ ) {
+      dynamic hume = humepoint[i];
+      dynamic temp = temppoint[i];
+      
+
+      LineChartBarData(
+        
+      )
+      
+    }
+    Lineb
         isCurved: true,
         color: Colors.amber,
         barWidth: 8,
@@ -173,14 +187,17 @@ class _LineChart extends StatelessWidget {
           FlSpot(10, 2),
           
         ],
-      );
+    return barData;
+  }
 
   
 
 }
 
 class LineChartSample1 extends StatefulWidget {
-  const LineChartSample1({super.key});
+  final List<double> humepoint;
+  final List<double> temppoint;
+  const LineChartSample1({super.key, required this.humepoint, required this.temppoint});
 
   @override
   State<StatefulWidget> createState() => LineChartSample1State();
