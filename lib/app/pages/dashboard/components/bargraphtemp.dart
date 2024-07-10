@@ -21,7 +21,7 @@ class _BarChartState extends State<_BarChart> {
         barGroups: barGroups,
         gridData: const FlGridData(show: false),
         alignment: BarChartAlignment.spaceAround,
-        maxY: 75,
+        maxY: 50,
       ),
     );
   }
@@ -101,31 +101,33 @@ class _BarChartState extends State<_BarChart> {
     List<BarChartGroupData> barData = [];
     int i = 0;
     for (var item in widget.tappedPoints) {
-      barData.add(BarChartGroupData(x: i++, 
-      barRods: [
-        BarChartRodData(
-          toY: item.toDouble(),
-          gradient: _barsGradient,
+      barData.add(
+        BarChartGroupData(x: i++, 
+          barRods: [
+            BarChartRodData(
+              toY: item.toDouble(),
+              gradient: _barsGradient,
+            )
+          ],
+          showingTooltipIndicators: [0],
         )
-      ],
-      showingTooltipIndicators: [0],
-      ));
+      );
     }
     return barData;
   }
 }
 
-class BarChartSample3 extends StatefulWidget {
+class BarChartSample3Temp extends StatefulWidget {
   final String namegraph;
   final List<double> tappedPoints;
-  const BarChartSample3(
+  const BarChartSample3Temp(
       {super.key, required this.namegraph, required this.tappedPoints});
 
   @override
   State<StatefulWidget> createState() => BarChartSample3State();
 }
 
-class BarChartSample3State extends State<BarChartSample3> {
+class BarChartSample3State extends State<BarChartSample3Temp> {
   @override
   Widget build(BuildContext context) {
     return AspectRatio(

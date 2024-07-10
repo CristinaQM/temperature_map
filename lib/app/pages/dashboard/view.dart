@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:temperature_map/app/pages/dashboard/components/bargraph.dart';
+import 'package:temperature_map/app/pages/dashboard/components/bargraphtemp.dart';
 
 import 'package:temperature_map/app/pages/dashboard/components/linegraph.dart';
 import 'package:temperature_map/app/pages/dashboard/components/scattergraph.dart';
@@ -122,8 +123,8 @@ class DashboardPage extends GetView<DashboardPageController> {
                         IconButton(
                           onPressed: () {},
                           tooltip: "Descargar Datos",
-                          icon: const Icon(Icons.download_sharp),
-                          iconSize: 50.0,
+                          icon: Image.asset('images/excelicon.png',fit: BoxFit.fill,height: 60, width: 60,),
+                          iconSize: 60.0,
                         ),
                       ],
                     ),
@@ -135,7 +136,7 @@ class DashboardPage extends GetView<DashboardPageController> {
                             child: Container(
                                 height: 500.0,
                                 decoration: const BoxDecoration(color: Colors.lightBlueAccent, borderRadius: BorderRadius.all(Radius.circular(5.0))),
-                                child: const LineChartSample1()),
+                                child: const Dashboardtemphum()),
                           ),
                           const SizedBox(
                             width: 20,
@@ -158,7 +159,7 @@ class DashboardPage extends GetView<DashboardPageController> {
                             child: Container(
                               height: 500.0,
                               decoration: const BoxDecoration(color: Colors.lightBlueAccent, borderRadius: BorderRadius.all(Radius.circular(5.0))),
-                              child: const Dashboardgraphlinear(namegraphdash: "Temperatura"),
+                              child: const DashboardgraphlinearTemp(namegraphdash: "Temperatura (C°)"),
                             ),
                           ),
                           const SizedBox(
@@ -168,7 +169,7 @@ class DashboardPage extends GetView<DashboardPageController> {
                             child: Container(
                               height: 500.0,
                               decoration: const BoxDecoration(color: Colors.lightBlueAccent, borderRadius: BorderRadius.all(Radius.circular(5.0))),
-                              child: const Dashboardgraphlinear(namegraphdash: "Humedad"),
+                              child: const Dashboardgraphlinear(namegraphdash: "Humedad (%)"),
                             ),
                           ),
                         ],
@@ -204,9 +205,66 @@ class _DashboardgraphlinearState extends State<Dashboardgraphlinear> {
       final point = dataPoint['humedad'];
       tappedPoint.add(point);
     }
+
+  
     return BarChartSample3(
       namegraph: widget.namegraphdash,
       tappedPoints: tappedPoint,
     );
+  }
+}
+
+class DashboardgraphlinearTemp extends StatefulWidget {
+  final String namegraphdash;
+  const DashboardgraphlinearTemp({super.key, required this.namegraphdash});
+
+  @override
+  State<DashboardgraphlinearTemp> createState() => _DashboardgraphlinearTempState();
+}
+
+class _DashboardgraphlinearTempState extends State<DashboardgraphlinearTemp> {
+  final controller = Get.find<DashboardPageController>();
+
+  @override
+  Widget build(BuildContext context) {
+    final List<double> tempPoint = [];
+
+    for (var dataPoint in controller.pointList) {
+      final point = dataPoint['temperatura'];
+      tempPoint.add(point);
+    }
+
+    return BarChartSample3Temp(
+      namegraph: widget.namegraphdash,
+      tappedPoints: tempPoint,
+    );
+  }
+}
+
+class Dashboardtemphum extends StatefulWidget {
+  const Dashboardtemphum({super.key});
+
+  @override
+  State<Dashboardtemphum> createState() => _DashboardtemphumState();
+}
+
+class _DashboardtemphumState extends State<Dashboardtemphum> {
+  final controller = Get.find<DashboardPageController>();
+  @override
+  Widget build(BuildContext context) {
+    final List<double> tempPoint = [];
+
+    for (var dataPoint in controller.pointList) {
+      final point = dataPoint['temperatura'];
+      tempPoint.add(point);
+    }
+
+    final List<double> tappedPoint = [];
+
+    for (var dataPoint in controller.pointList) {
+      final point = dataPoint['humedad'];
+      tappedPoint.add(point);
+    }
+    return LineChartSample1(humepoint: tappedPoint, temppoint: tempPoint,);
   }
 }
