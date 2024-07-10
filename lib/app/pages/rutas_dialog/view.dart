@@ -121,9 +121,8 @@ class RouteWidget extends StatelessWidget {
 
 //Función para cambiar a vista ruta y no repetir código
 void goToMap(Map<String, dynamic> route) {
-  Get.toNamed(
+  Get.offAndToNamed(
     '/map/${route['id']}${route['dataKey']}',
-    arguments: route,
   );
 }
 
@@ -184,10 +183,10 @@ class _PolylineMarkerState extends State<PolylineMarker> {
       ),
       children: [
         TileLayer(
-          urlTemplate: AppConstants.urlTemplate,
-          fallbackUrl: AppConstants.urlTemplate,
+          urlTemplate: urlTemplate,
+          fallbackUrl: urlTemplate,
           additionalOptions: const {
-            'id': AppConstants.mapBoxStyleOutdoors,
+            'id': mapBoxStyleOutdoors,
           },
         ),
         MarkerLayer(markers: markers),
