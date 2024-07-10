@@ -61,7 +61,7 @@ class _MapPagePolylineState extends State<MapPagePolyline> {
                   )
                   .toList(),
               color: Colors.black,
-              strokeWidth: 3,
+              strokeWidth: 10,
             ),
           ],
         ),

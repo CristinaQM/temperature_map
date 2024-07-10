@@ -17,6 +17,7 @@ class MapPageController extends GetxController {
   }
 
   final database = FirebaseDatabase.instance;
+  late DatabaseReference reference;
 
   final urlSrc = 'sensorDataNuevoMariaIsabel';
 
@@ -42,7 +43,7 @@ class MapPageController extends GetxController {
       route['dataKey'] = dataKey;
 
       //Firebase Data
-      final reference = FirebaseDatabase.instance.ref('$urlSrc/$dataKey');
+      reference = FirebaseDatabase.instance.ref('$urlSrc/$dataKey');
       reference.onValue.listen(
         (DatabaseEvent event) async {
           final snapshot = event.snapshot.value;
