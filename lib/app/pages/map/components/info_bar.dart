@@ -77,7 +77,7 @@ class MapViewBar extends StatelessWidget {
           ElevatedButton(
             onPressed: () {
               Get.toNamed(
-                '/dashboard/${route['id']}${route['dataKey']}',
+                '/dashboard/${route['dataKey']}${route['id']}',
               );
             },
             child: const Text('Dashboard'),

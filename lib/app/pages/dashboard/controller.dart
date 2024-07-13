@@ -36,8 +36,9 @@ class DashboardPageController extends GetxController {
       final parameter = Get.parameters['dataKey']!;
 
       //Parameters
-      String dataKey = parameter.substring(1);
-      int id = int.parse(parameter.substring(0, 1));
+      String dataKey = parameter.substring(0, 10);
+      String strID = parameter.substring(10);
+      int id = int.parse(strID);
 
       //Guardamos la data en el Map de ruta
       route['id'] = id;
@@ -65,7 +66,6 @@ class DashboardPageController extends GetxController {
           for (var i = 0; i < pointList.length; i++) {
             pointList[i].putIfAbsent('id', () => i);
           }
-         
 
           _loading.value = false;
         },
@@ -74,9 +74,7 @@ class DashboardPageController extends GetxController {
       _loading.value = false;
       _hasError.value = true;
     }
-
   }
-
 
   @override
   void onInit() async {

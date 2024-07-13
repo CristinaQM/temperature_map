@@ -122,7 +122,7 @@ class RouteWidget extends StatelessWidget {
 //Función para cambiar a vista ruta y no repetir código
 void goToMap(Map<String, dynamic> route) {
   Get.offAndToNamed(
-    '/map/${route['id']}${route['dataKey']}',
+    '/map/${route['dataKey']}${route['id']}',
   );
 }
 

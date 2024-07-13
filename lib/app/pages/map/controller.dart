@@ -35,8 +35,9 @@ class MapPageController extends GetxController {
       final parameter = Get.parameters['dataKey']!;
 
       //Parameters
-      String dataKey = parameter.substring(1);
-      int id = int.parse(parameter.substring(0, 1));
+      String dataKey = parameter.substring(0, 10);
+      String strID = parameter.substring(10);
+      int id = int.parse(strID);
 
       //Map Values
       route['id'] = id;

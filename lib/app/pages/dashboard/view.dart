@@ -4,10 +4,9 @@ import 'package:get/get.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:temperature_map/app/pages/dashboard/components/bargraph.dart';
 import 'package:temperature_map/app/pages/dashboard/components/bargraphtemp.dart';
-
 import 'package:temperature_map/app/pages/dashboard/components/linegraph.dart';
 import 'package:temperature_map/app/pages/dashboard/components/scattergraph.dart';
-import 'package:temperature_map/app/widgets/my_menubar.dart';
+import 'package:temperature_map/app/widgets/empty_error_views.dart';
 import 'controller.dart';
 
 class DashboardPage extends GetView<DashboardPageController> {
@@ -29,87 +28,18 @@ class DashboardPage extends GetView<DashboardPageController> {
                 ),
               );
             } else if (controller.pointList.isEmpty) {
-              return Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: Column(
-                  children: [
-                    const MyMenuBar(),
-                    Expanded(
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Icon(
-                            MdiIcons.giftOpen,
-                            size: 120,
-                            color: const Color(0xff30A0A4),
-                          ),
-                          const SizedBox(height: 30),
-                          Container(
-                            padding: const EdgeInsets.symmetric(
-                              horizontal: 10,
-                              vertical: 5,
-                            ),
-                            decoration: BoxDecoration(
-                              color: Colors.grey.withOpacity(0.35),
-                              borderRadius: BorderRadius.circular(10),
-                            ),
-                            child: const Text(
-                              'No existe información para mostrar',
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                fontSize: 30,
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
+              return const Padding(
+                padding: EdgeInsets.all(16.0),
+                child: EmptyView(),
               );
             } else if (controller.hasError) {
-              return Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: Column(
-                  children: [
-                    const MyMenuBar(),
-                    Expanded(
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Icon(
-                            MdiIcons.alertCircle,
-                            size: 120,
-                            color: const Color(0xffE96544),
-                          ),
-                          const SizedBox(height: 30),
-                          Container(
-                            padding: const EdgeInsets.symmetric(
-                              horizontal: 10,
-                              vertical: 5,
-                            ),
-                            decoration: BoxDecoration(
-                              color: Colors.grey.withOpacity(0.35),
-                              borderRadius: BorderRadius.circular(10),
-                            ),
-                            child: const Text(
-                              'Ocurrió un Error al cargar la Información',
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                fontSize: 30,
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
+              return const Padding(
+                padding: EdgeInsets.all(16.0),
+                child: ErrorView(),
               );
             }
             return Padding(
-              padding:
-                  const EdgeInsets.symmetric(horizontal: 15.0, vertical: 15.0),
+              padding: const EdgeInsets.symmetric(horizontal: 15.0, vertical: 15.0),
               child: SingleChildScrollView(
                 child: Column(
                   children: [
@@ -117,9 +47,18 @@ class DashboardPage extends GetView<DashboardPageController> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         IconButton(
-                          onPressed: () {},
+                          onPressed: () {
+                            final parameter = Get.parameters['dataKey']!;
+
+                            String dataKey = parameter.substring(0, 10);
+                            String strID = parameter.substring(10);
+
+                            Get.offAndToNamed(
+                              '/map/$dataKey$strID',
+                            );
+                          },
                           tooltip: "Retroceder",
-                          icon: const Icon(Icons.keyboard_arrow_left_outlined),
+                          icon: Icon(MdiIcons.arrowLeft),
                           iconSize: 50.0,
                         ),
                         IconButton(
@@ -133,8 +72,7 @@ class DashboardPage extends GetView<DashboardPageController> {
                             // Agregar encabezados
                             //sheet.appendRow([rowHeader[0],rowHeader[0] ]);
 
-                            final controller =
-                                Get.find<DashboardPageController>();
+                            final controller = Get.find<DashboardPageController>();
                             print(controller);
                             for (var dataPoint in controller.pointList) {
                               final pointAlt = dataPoint['altitud'];
@@ -143,13 +81,7 @@ class DashboardPage extends GetView<DashboardPageController> {
                               final pointLong = dataPoint['longitud'];
                               final pointTem = dataPoint['temperatura'];
                               print(pointAlt);
-                              sheet.appendRow([
-                                IntCellValue(pointAlt),
-                                IntCellValue(pointHum),
-                                IntCellValue(pointLat),
-                                IntCellValue(pointLong),
-                                IntCellValue(pointTem)
-                              ]);
+                              sheet.appendRow([IntCellValue(pointAlt), IntCellValue(pointHum), IntCellValue(pointLat), IntCellValue(pointLong), IntCellValue(pointTem)]);
                               // sheet.appendRow(pointHum);
                               // sheet.appendRow(pointLat);
                               // sheet.appendRow(pointLong);
@@ -170,17 +102,13 @@ class DashboardPage extends GetView<DashboardPageController> {
                       ],
                     ),
                     Padding(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 20.0, vertical: 20.0),
+                      padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 20.0),
                       child: Row(
                         children: [
                           Expanded(
                             child: Container(
                                 height: 500.0,
-                                decoration: const BoxDecoration(
-                                    color: Colors.lightBlueAccent,
-                                    borderRadius:
-                                        BorderRadius.all(Radius.circular(5.0))),
+                                decoration: const BoxDecoration(color: Colors.lightBlueAccent, borderRadius: BorderRadius.all(Radius.circular(5.0))),
                                 child: const Dashboardtemphum()),
                           ),
                           const SizedBox(
@@ -189,10 +117,7 @@ class DashboardPage extends GetView<DashboardPageController> {
                           Expanded(
                             child: Container(
                               height: 500.0,
-                              decoration: const BoxDecoration(
-                                  color: Colors.lightBlueAccent,
-                                  borderRadius:
-                                      BorderRadius.all(Radius.circular(5.0))),
+                              decoration: const BoxDecoration(color: Colors.lightBlueAccent, borderRadius: BorderRadius.all(Radius.circular(5.0))),
                               child: const ScatterChartSample2(),
                             ),
                           ),
@@ -200,19 +125,14 @@ class DashboardPage extends GetView<DashboardPageController> {
                       ),
                     ),
                     Padding(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 20.0, vertical: 20.0),
+                      padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 20.0),
                       child: Row(
                         children: [
                           Expanded(
                             child: Container(
                               height: 500.0,
-                              decoration: const BoxDecoration(
-                                  color: Colors.lightBlueAccent,
-                                  borderRadius:
-                                      BorderRadius.all(Radius.circular(5.0))),
-                              child: const DashboardgraphlinearTemp(
-                                  namegraphdash: "Temperatura (C°)"),
+                              decoration: const BoxDecoration(color: Colors.lightBlueAccent, borderRadius: BorderRadius.all(Radius.circular(5.0))),
+                              child: const DashboardgraphlinearTemp(namegraphdash: "Temperatura (C°)"),
                             ),
                           ),
                           const SizedBox(
@@ -221,12 +141,8 @@ class DashboardPage extends GetView<DashboardPageController> {
                           Expanded(
                             child: Container(
                               height: 500.0,
-                              decoration: const BoxDecoration(
-                                  color: Colors.lightBlueAccent,
-                                  borderRadius:
-                                      BorderRadius.all(Radius.circular(5.0))),
-                              child: const Dashboardgraphlinear(
-                                  namegraphdash: "Humedad (%)"),
+                              decoration: const BoxDecoration(color: Colors.lightBlueAccent, borderRadius: BorderRadius.all(Radius.circular(5.0))),
+                              child: const Dashboardgraphlinear(namegraphdash: "Humedad (%)"),
                             ),
                           ),
                         ],
@@ -269,13 +185,7 @@ void generateCSV() {
     final pointLong = dataPoint['longitud'];
     final pointTem = dataPoint['temperatura'];
     print(pointAlt);
-    sheet.appendRow([
-      IntCellValue(pointAlt),
-      IntCellValue(pointHum),
-      IntCellValue(pointLat),
-      IntCellValue(pointLong),
-      IntCellValue(pointTem)
-    ]);
+    sheet.appendRow([IntCellValue(pointAlt), IntCellValue(pointHum), IntCellValue(pointLat), IntCellValue(pointLong), IntCellValue(pointTem)]);
     // sheet.appendRow(pointHum);
     // sheet.appendRow(pointLat);
     // sheet.appendRow(pointLong);
@@ -317,8 +227,7 @@ class DashboardgraphlinearTemp extends StatefulWidget {
   const DashboardgraphlinearTemp({super.key, required this.namegraphdash});
 
   @override
-  State<DashboardgraphlinearTemp> createState() =>
-      _DashboardgraphlinearTempState();
+  State<DashboardgraphlinearTemp> createState() => _DashboardgraphlinearTempState();
 }
 
 class _DashboardgraphlinearTempState extends State<DashboardgraphlinearTemp> {
