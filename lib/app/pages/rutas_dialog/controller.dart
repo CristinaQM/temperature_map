@@ -2,18 +2,28 @@ import 'package:firebase_database/firebase_database.dart';
 import 'package:get/get.dart';
 
 class RutasController extends GetxController {
+  //Obs
   final _loading = true.obs;
   final _rutas = <Map<String, dynamic>>[].obs;
-
-  final urlSrc = 'sensorDataNuevoMariaIsabel';
 
   bool get loading => _loading.value;
   List<Map<String, dynamic>> get rutas => [..._rutas];
 
+  bool multiSelect = false;
+  RxList<String> rutasSelectKeyList = <String>[].obs;
+
+  //Database
+  final urlSrc = 'sensorDataNuevoMariaIsabel';
   final database = FirebaseDatabase.instance;
 
+  ///Obtener las rutas desde la base de datos en Firebase
   void fetchRecords() async {
     _loading.value = true;
+
+    final parameter = Get.parameters['dataKey'];
+    if (Get.currentRoute != '/home' && parameter != null) {
+      multiSelect = true;
+    }
 
     final ref = FirebaseDatabase.instance.ref();
     final snapshot = await ref.get();
@@ -39,7 +49,6 @@ class RutasController extends GetxController {
         }
         routeMap['dataList'] = list;
 
-        final parameter = Get.parameters['dataKey'];
         if (Get.currentRoute != '/home' && parameter != null) {
           final datakey = parameter.substring(0, 10);
           if (datakey != routeMap['dataKey']) {

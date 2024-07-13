@@ -14,16 +14,17 @@ class RutasDialog extends GetView<RutasController> {
   Widget build(BuildContext context) {
     Get.put(RutasController());
     return AlertDialog(
-      content: Obx(
-        () => (controller.loading)
-            ? const Center(
-                child: SizedBox.square(
-                  dimension: 48,
-                  child: CircularProgressIndicator(),
-                ),
-              )
-            : SingleChildScrollView(
-                child: Column(
+      content: SizedBox(
+        height: 550,
+        child: Obx(
+          () => (controller.loading)
+              ? const Center(
+                  child: SizedBox.square(
+                    dimension: 48,
+                    child: CircularProgressIndicator(),
+                  ),
+                )
+              : Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     const Text(
@@ -34,18 +35,48 @@ class RutasDialog extends GetView<RutasController> {
                       ),
                     ),
                     const Divider(),
-                    Column(
-                      children: controller.rutas.map(
-                        (r) {
-                          return RouteWidget(
-                            route: r,
-                          );
-                        },
-                      ).toList(),
+                    Expanded(
+                      child: SingleChildScrollView(
+                        child: Column(
+                          children: controller.rutas.map(
+                            (r) {
+                              return RouteWidget(
+                                route: r,
+                              );
+                            },
+                          ).toList(),
+                        ),
+                      ),
                     ),
+                    if (controller.multiSelect)
+                      Container(
+                        margin: const EdgeInsets.only(top: 10),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            ElevatedButton(
+                              onPressed: () {
+                                Get.back();
+                              },
+                              child: const Text('Cancelar'),
+                            ),
+                            const SizedBox(width: 10),
+                            Obx(
+                              () => ElevatedButton(
+                                onPressed: (controller.rutasSelectKeyList.isEmpty)
+                                    ? null
+                                    : () {
+                                        print(controller.rutasSelectKeyList);
+                                      },
+                                child: const Text('Confirmar'),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
                   ],
                 ),
-              ),
+        ),
       ),
     );
   }
@@ -61,57 +92,62 @@ class RouteWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final List<dynamic> pointsList = route['dataList'];
+    final controller = Get.find<RutasController>();
     return MouseRegion(
       cursor: SystemMouseCursors.click,
       child: GestureDetector(
         onTap: () {
-          goToMap(route);
+          onRouteTap(route);
         },
-        child: Container(
-          padding: const EdgeInsets.symmetric(
-            horizontal: 8,
-            vertical: 10,
-          ),
-          decoration: const BoxDecoration(
-            color: Color(0xFFFCE7A2),
-            borderRadius: BorderRadius.all(
-              Radius.circular(10),
+        child: Obx(
+          () => Container(
+            padding: const EdgeInsets.symmetric(
+              horizontal: 8,
+              vertical: 10,
             ),
-          ),
-          margin: const EdgeInsets.symmetric(vertical: 10),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    'Ruta ${route['id']}',
-                    style: const TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
+            decoration: BoxDecoration(
+              color: Color(
+                (controller.rutasSelectKeyList.contains(route['dataKey'])) ? 0xff766ED1 : 0xFFFCE7A2,
+              ),
+              borderRadius: const BorderRadius.all(
+                Radius.circular(10),
+              ),
+            ),
+            margin: const EdgeInsets.symmetric(vertical: 10),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'Ruta ${route['id']}',
+                      style: const TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
+                    const SizedBox(height: 10),
+                    const Text('Punto Inicial'),
+                    const Text('Punto Final'),
+                  ],
+                ),
+                Container(
+                  height: 200,
+                  width: 250,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(10),
                   ),
-                  const SizedBox(height: 10),
-                  const Text('Punto Inicial'),
-                  const Text('Punto Final'),
-                ],
-              ),
-              Container(
-                height: 200,
-                width: 250,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(10),
+                  child: PolylineMarker(
+                    initMap: pointsList.first,
+                    finalMap: pointsList.last,
+                    onTap: () {
+                      onRouteTap(route);
+                    },
+                  ),
                 ),
-                child: PolylineMarker(
-                  initMap: pointsList.first,
-                  finalMap: pointsList.last,
-                  onTap: () {
-                    goToMap(route);
-                  },
-                ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),
@@ -119,11 +155,31 @@ class RouteWidget extends StatelessWidget {
   }
 }
 
-//Función para cambiar a vista ruta y no repetir código
-void goToMap(Map<String, dynamic> route) {
+///Función llamada al hacer click sobre alguna ruta
+void onRouteTap(Map<String, dynamic> route) {
+  //URL Parameter
   final parameter = Get.parameters['dataKey'];
+
   if (Get.currentRoute != '/home' && parameter != null) {
-    print(parameter);
+    final controller = Get.find<RutasController>();
+    final dataKey = route['dataKey'];
+
+    if (controller.rutasSelectKeyList.contains(dataKey)) {
+      controller.rutasSelectKeyList.remove(dataKey);
+    } else {
+      controller.rutasSelectKeyList.add(dataKey);
+    }
+  } else {
+    goToMap(route);
+  }
+}
+
+///Función para cambiar a vista ruta
+void goToMap(Map<String, dynamic> route) {
+  //URL Parameter
+  final parameter = Get.parameters['dataKey'];
+
+  if (Get.currentRoute != '/home' && parameter != null) {
   } else {
     Get.offAndToNamed(
       '/map/${route['dataKey']}${route['id']}',
