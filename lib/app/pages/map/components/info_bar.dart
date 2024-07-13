@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:temperature_map/app/pages/map/controller.dart';
+import 'package:temperature_map/app/pages/rutas_dialog/view.dart';
 import 'package:temperature_map/core/app_constants.dart';
 import 'package:temperature_map/routes/pages.dart';
 
@@ -63,15 +64,22 @@ class MapViewBar extends StatelessWidget {
                 final point = controller.pointList[idx];
                 final temp = point['temperatura'];
 
-                final color = (temp >= 32.6)
+                final color = (temp >= altaTemperatura)
                     ? altoColor
-                    : (temp > 32.4)
+                    : (temp > maxTempAmbiente)
                         ? medioColor
                         : bajoColor;
 
                 return DataPointTile(point: point, color: color);
               },
             ),
+          ),
+          const SizedBox(height: 10),
+          ElevatedButton(
+            onPressed: () {
+              Get.dialog(const RutasDialog());
+            },
+            child: const Text('Comparar Rutas'),
           ),
           const SizedBox(height: 10),
           ElevatedButton(

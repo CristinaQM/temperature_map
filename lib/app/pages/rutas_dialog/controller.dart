@@ -39,7 +39,16 @@ class RutasController extends GetxController {
         }
         routeMap['dataList'] = list;
 
-        _rutas.add(routeMap);
+        final parameter = Get.parameters['dataKey'];
+        if (Get.currentRoute != '/home' && parameter != null) {
+          final datakey = parameter.substring(0, 10);
+          if (datakey != routeMap['dataKey']) {
+            _rutas.add(routeMap);
+          }
+        } else {
+          _rutas.add(routeMap);
+        }
+
         counter++;
       }
     }

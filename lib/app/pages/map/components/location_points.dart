@@ -84,23 +84,15 @@ class _DataPointWidget extends StatelessWidget {
     final id = dataPoint['id'];
     final temp = dataPoint['temperatura'];
 
-    //TODO: Descomentar esto luego
-
-    // final markerColor = (temp > 31)
-    //     ? altoColor
-    //     : (temp > 27)
-    //         ? medioColor
-    //         : bajoColor;
-
-    final markerColor = (temp >= 32.6)
+    final markerColor = (temp >= altaTemperatura)
         ? altoColor
-        : (temp > 32.4)
+        : (temp > maxTempAmbiente)
             ? medioColor
             : bajoColor;
 
-    final borderColor = (temp >= 32.6)
+    final borderColor = (temp >= altaTemperatura)
         ? altoStrokeColor
-        : (temp > 32.4)
+        : (temp > maxTempAmbiente)
             ? medioStrokeColor
             : bajoStrokeColor;
 

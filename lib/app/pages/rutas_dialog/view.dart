@@ -121,9 +121,14 @@ class RouteWidget extends StatelessWidget {
 
 //Función para cambiar a vista ruta y no repetir código
 void goToMap(Map<String, dynamic> route) {
-  Get.offAndToNamed(
-    '/map/${route['dataKey']}${route['id']}',
-  );
+  final parameter = Get.parameters['dataKey'];
+  if (Get.currentRoute != '/home' && parameter != null) {
+    print(parameter);
+  } else {
+    Get.offAndToNamed(
+      '/map/${route['dataKey']}${route['id']}',
+    );
+  }
 }
 
 class PolylineMarker extends StatefulWidget {

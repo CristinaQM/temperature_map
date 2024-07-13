@@ -9,6 +9,9 @@ const String mapBoxStyleOutdoors = 'mapbox/outdoors-v12';
 const String mapBoxStyleLight = 'mapbox/light-v11';
 const String mapBoxStyleDark = 'mapbox/dark-v11';
 
+const double altaTemperatura = 31;
+const double maxTempAmbiente = 27;
+
 const Color altoColor = Color(0xFFFC5B4F);
 const Color medioColor = Color(0xFFFFD24A);
 const Color bajoColor = Color(0xFF41F388);
