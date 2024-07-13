@@ -160,39 +160,23 @@ class DashboardPage extends GetView<DashboardPageController> {
 }
 
 void generateCSV() {
-  // final List<String> rowHeader = [
-  //   "altitud",
-  //   "humedad",
-  //   "latitude",
-  //   "longitud",
-  //   "temperatura"
-  // ];
-  // Crear un nuevo libro Excel
   final excel = Excel.createExcel();
 
-  // Crear una hoja en el libro
-  final sheet = excel['Sheet1'];
-
-  // Agregar encabezados
-  //sheet.appendRow([rowHeader[0],rowHeader[0] ]);
+  Sheet sheet = excel['Sheet1'];
+  CellStyle cellStyle = CellStyle(fontFamily :getFontFamily(FontFamily.Calibri));
+  cellStyle.underline = Underline.Single;
+  sheet.appendRow([const TextCellValue('humedad'),const TextCellValue('temperatura'),const TextCellValue('latitude'),const TextCellValue('longitude'),const TextCellValue('altitude')]);
 
   final controller = Get.find<DashboardPageController>();
-  print(controller);
   for (var dataPoint in controller.pointList) {
-    final pointAlt = dataPoint['altitud'];
-    final pointHum = dataPoint['humedad'];
-    final pointLat = dataPoint['latitude'];
-    final pointLong = dataPoint['longitud'];
-    final pointTem = dataPoint['temperatura'];
-    print(pointAlt);
-    sheet.appendRow([IntCellValue(pointAlt), IntCellValue(pointHum), IntCellValue(pointLat), IntCellValue(pointLong), IntCellValue(pointTem)]);
-    // sheet.appendRow(pointHum);
-    // sheet.appendRow(pointLat);
-    // sheet.appendRow(pointLong);
-    // sheet.appendRow(pointTem);
-    // sheet.appendRow(datacsv);
+      final point = dataPoint['humedad'];
+      final temp = dataPoint['temperatura'];
+      final lat = dataPoint['latitude'];
+      final long = dataPoint['longitude'];
+      final alt = dataPoint['altitude'];
+      sheet.appendRow([IntCellValue(point),DoubleCellValue(temp), DoubleCellValue(lat), DoubleCellValue(long), DoubleCellValue(alt)]);
   }
-  excel.save(fileName: 'excel.xlsx');
+  excel.save(fileName: 'data.xlsx');
 }
 
 class Dashboardgraphlinear extends StatefulWidget {
