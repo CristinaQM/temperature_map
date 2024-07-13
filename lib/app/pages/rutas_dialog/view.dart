@@ -63,10 +63,11 @@ class RutasDialog extends GetView<RutasController> {
                             const SizedBox(width: 10),
                             Obx(
                               () => ElevatedButton(
-                                onPressed: (controller.rutasSelectKeyList.isEmpty)
+                                onPressed: (controller.selectKeyList.isEmpty)
                                     ? null
                                     : () {
-                                        print(controller.rutasSelectKeyList);
+                                        //MultiSelect MapView
+                                        goToMap();
                                       },
                                 child: const Text('Confirmar'),
                               ),
@@ -107,7 +108,13 @@ class RouteWidget extends StatelessWidget {
             ),
             decoration: BoxDecoration(
               color: Color(
-                (controller.rutasSelectKeyList.contains(route['dataKey'])) ? 0xff766ED1 : 0xFFFCE7A2,
+                (controller.selectKeyList
+                        .map(
+                          (myRoute) => myRoute['dataKey'],
+                        )
+                        .contains(route['dataKey']))
+                    ? 0xff766ED1
+                    : 0xFFFCE7A2,
               ),
               borderRadius: const BorderRadius.all(
                 Radius.circular(10),
@@ -164,25 +171,48 @@ void onRouteTap(Map<String, dynamic> route) {
     final controller = Get.find<RutasController>();
     final dataKey = route['dataKey'];
 
-    if (controller.rutasSelectKeyList.contains(dataKey)) {
-      controller.rutasSelectKeyList.remove(dataKey);
+    if (controller.selectKeyList
+        .map(
+          (myRoute) => myRoute['dataKey'],
+        )
+        .toList()
+        .contains(dataKey)) {
+      controller.selectKeyList.removeWhere((myRoute) => myRoute['dataKey'] == dataKey);
     } else {
-      controller.rutasSelectKeyList.add(dataKey);
+      controller.selectKeyList.add(route);
     }
   } else {
-    goToMap(route);
+    goToMap(route: route);
   }
 }
 
 ///Función para cambiar a vista ruta
-void goToMap(Map<String, dynamic> route) {
+void goToMap({Map<String, dynamic>? route}) {
   //URL Parameter
   final parameter = Get.parameters['dataKey'];
 
   if (Get.currentRoute != '/home' && parameter != null) {
-  } else {
+    final controller = Get.find<RutasController>();
+
+    //Nueva URL con todos los mapas seleccionados
+    String newParam = '${parameter}_';
+    final myLength = controller.selectKeyList.length;
+
+    for (var i = 0; i < myLength; i++) {
+      final myRoute = controller.selectKeyList[i];
+      newParam += '${myRoute['dataKey']}${myRoute['id']}';
+
+      if (i < myLength - 1) {
+        newParam += '_';
+      }
+    }
     Get.offAndToNamed(
-      '/map/${route['dataKey']}${route['id']}',
+      '/map_comparison/$newParam',
+    );
+  } else {
+    //Vista de una única ruta
+    Get.offAndToNamed(
+      '/map/${route!['dataKey']}${route['id']}',
     );
   }
 }

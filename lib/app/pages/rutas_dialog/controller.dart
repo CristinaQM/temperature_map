@@ -10,7 +10,7 @@ class RutasController extends GetxController {
   List<Map<String, dynamic>> get rutas => [..._rutas];
 
   bool multiSelect = false;
-  RxList<String> rutasSelectKeyList = <String>[].obs;
+  RxList<Map<String, dynamic>> selectKeyList = <Map<String, dynamic>>[].obs;
 
   //Database
   final urlSrc = 'sensorDataNuevoMariaIsabel';
