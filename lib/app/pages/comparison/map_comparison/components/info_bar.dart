@@ -7,8 +7,8 @@ import 'package:temperature_map/app/widgets/info_bar_global_widgets.dart';
 import 'package:temperature_map/core/app_constants.dart';
 import 'package:temperature_map/routes/pages.dart';
 
-class MapViewBar extends StatelessWidget {
-  const MapViewBar({
+class MapComparisonBar extends StatelessWidget {
+  const MapComparisonBar({
     super.key,
   });
 
@@ -71,7 +71,10 @@ class MapViewBar extends StatelessWidget {
                         ? medioColor
                         : bajoColor;
 
-                return DataPointTile(point: point, color: color);
+                return DataPointTile(
+                  point: point,
+                  color: color,
+                );
               },
             ),
           ),

@@ -9,6 +9,9 @@ class MapComparisonController extends GetxController {
   bool get loading => _loading.value;
   List<Map<String, dynamic>> get rutas => [..._rutas];
 
+  final _hasError = false.obs;
+  bool get hasError => _hasError.value;
+
   late String myParam;
 
   //Database
