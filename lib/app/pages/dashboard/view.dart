@@ -63,32 +63,7 @@ class DashboardPage extends GetView<DashboardPageController> {
                         ),
                         IconButton(
                           onPressed: () {
-                            //generateCSV();
-                            final excel = Excel.createExcel();
-
-                            // Crear una hoja en el libro
-                            final sheet = excel['Sheet1'];
-
-                            // Agregar encabezados
-                            //sheet.appendRow([rowHeader[0],rowHeader[0] ]);
-
-                            final controller = Get.find<DashboardPageController>();
-                            print(controller);
-                            for (var dataPoint in controller.pointList) {
-                              final pointAlt = dataPoint['altitud'];
-                              final pointHum = dataPoint['humedad'];
-                              final pointLat = dataPoint['latitude'];
-                              final pointLong = dataPoint['longitud'];
-                              final pointTem = dataPoint['temperatura'];
-                              print(pointAlt);
-                              sheet.appendRow([IntCellValue(pointAlt), IntCellValue(pointHum), IntCellValue(pointLat), IntCellValue(pointLong), IntCellValue(pointTem)]);
-                              // sheet.appendRow(pointHum);
-                              // sheet.appendRow(pointLat);
-                              // sheet.appendRow(pointLong);
-                              // sheet.appendRow(pointTem);
-                              // sheet.appendRow(datacsv);
-                            }
-                            excel.save(fileName: 'excel.xlsx');
+                            generateCSV();
                           },
                           tooltip: "Descargar Datos",
                           icon: Image.asset(
