@@ -163,7 +163,7 @@ void generateCSV() {
   final excel = Excel.createExcel();
 
   Sheet sheet = excel['Sheet1'];
-  CellStyle cellStyle = CellStyle(fontFamily :getFontFamily(FontFamily.Calibri));
+  CellStyle cellStyle = CellStyle(fontFamily :getFontFamily(FontFamily.Al_Nile));
   cellStyle.underline = Underline.Single;
   sheet.appendRow([const TextCellValue('humedad'),const TextCellValue('temperatura'),const TextCellValue('latitude'),const TextCellValue('longitude'),const TextCellValue('altitude')]);
 
@@ -176,7 +176,7 @@ void generateCSV() {
       final alt = dataPoint['altitude'];
       sheet.appendRow([IntCellValue(point),DoubleCellValue(temp), DoubleCellValue(lat), DoubleCellValue(long), DoubleCellValue(alt)]);
   }
-  excel.save(fileName: 'data.xlsx');
+  excel.save(fileName: 'dataProyectIotTelematic.xlsx');
 }
 
 class Dashboardgraphlinear extends StatefulWidget {
