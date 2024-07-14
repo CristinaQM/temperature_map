@@ -36,7 +36,7 @@ class MapComparisonPage extends GetView<MapComparisonController> {
           return const Stack(
             children: [
               MapComparisonPolyline(),
-              // MapComparisonBar(),
+              MapComparisonBar(),
             ],
           );
         },
