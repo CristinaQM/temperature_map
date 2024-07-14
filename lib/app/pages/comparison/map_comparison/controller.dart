@@ -1,5 +1,6 @@
 import 'package:firebase_database/firebase_database.dart';
 import 'package:get/get.dart';
+import 'package:temperature_map/core/app_constants.dart';
 
 class MapComparisonController extends GetxController {
   //Obs
@@ -15,7 +16,6 @@ class MapComparisonController extends GetxController {
   late String myParam;
 
   //Database
-  final urlSrc = 'sensorDataNuevoMariaIsabel';
   final database = FirebaseDatabase.instance;
 
   void fetchRecords() async {

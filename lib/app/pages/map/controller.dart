@@ -1,5 +1,6 @@
 import 'package:firebase_database/firebase_database.dart';
 import 'package:get/get.dart';
+import 'package:temperature_map/core/app_constants.dart';
 
 class MapPageController extends GetxController {
   //Data
@@ -18,8 +19,6 @@ class MapPageController extends GetxController {
 
   final database = FirebaseDatabase.instance;
   late DatabaseReference reference;
-
-  final urlSrc = 'sensorDataNuevoMariaIsabel';
 
   //Bools
   final _loading = true.obs;

@@ -1,5 +1,6 @@
 import 'package:firebase_database/firebase_database.dart';
 import 'package:get/get.dart';
+import 'package:temperature_map/core/app_constants.dart';
 
 class DashboardPageController extends GetxController {
   //Data de la ruta seleccionada
@@ -14,7 +15,7 @@ class DashboardPageController extends GetxController {
 
   //Url de la base de datos, guardada en variable
   //por si se cambia en un futuro se cambia solo la variable
-  final urlSrc = 'sensorDataNuevoMariaIsabel';
+  //Cambiado a constante
 
   //Observables
   //Son variables que, por medio del widget OBx, cambiarán la vista

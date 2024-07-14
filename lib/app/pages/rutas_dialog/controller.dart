@@ -1,5 +1,6 @@
 import 'package:firebase_database/firebase_database.dart';
 import 'package:get/get.dart';
+import 'package:temperature_map/core/app_constants.dart';
 
 class RutasController extends GetxController {
   //Obs
@@ -13,7 +14,6 @@ class RutasController extends GetxController {
   RxList<Map<String, dynamic>> selectKeyList = <Map<String, dynamic>>[].obs;
 
   //Database
-  final urlSrc = 'sensorDataNuevoMariaIsabel';
   final database = FirebaseDatabase.instance;
 
   ///Obtener las rutas desde la base de datos en Firebase
