@@ -93,7 +93,7 @@ class DashboardPage extends GetView<DashboardPageController> {
                             child: Container(
                               height: 500.0,
                               decoration: const BoxDecoration(color: Colors.lightBlueAccent, borderRadius: BorderRadius.all(Radius.circular(5.0))),
-                              child: const ScatterChartSample2(),
+                              child: const DashboardgraphlinearTemp(namegraphdash: "Temperatura (C°)"),
                             ),
                           ),
                         ],
@@ -103,13 +103,6 @@ class DashboardPage extends GetView<DashboardPageController> {
                       padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 20.0),
                       child: Row(
                         children: [
-                          Expanded(
-                            child: Container(
-                              height: 500.0,
-                              decoration: const BoxDecoration(color: Colors.lightBlueAccent, borderRadius: BorderRadius.all(Radius.circular(5.0))),
-                              child: const DashboardgraphlinearTemp(namegraphdash: "Temperatura (C°)"),
-                            ),
-                          ),
                           const SizedBox(
                             width: 20,
                           ),
