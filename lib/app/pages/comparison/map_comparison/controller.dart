@@ -15,6 +15,8 @@ class MapComparisonController extends GetxController {
 
   late String myParam;
 
+  Map<String, dynamic>? rutaActual;
+
   //Database
   final database = FirebaseDatabase.instance;
 
