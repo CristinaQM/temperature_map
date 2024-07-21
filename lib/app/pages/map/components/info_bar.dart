@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
@@ -134,29 +136,43 @@ class DataPointTile extends StatelessWidget {
               ).withOpacity(0.5),
               borderRadius: BorderRadius.circular(10),
             ),
-            child: Row(
+            child: Column(
               children: [
-                CircleAvatar(
-                  backgroundColor: color,
-                  radius: 15,
-                  child: Text(
-                    '${point['id']}',
-                    style: const TextStyle(
-                      fontWeight: FontWeight.bold,
+                Row(
+                  children: [
+                    CircleAvatar(
+                      backgroundColor: color,
+                      radius: 15,
+                      child: Text(
+                        '${point['id']}',
+                        style: const TextStyle(
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
                     ),
-                  ),
+                    const SizedBox(width: 30),
+                    PointParamTag(
+                      label: '${point['temperatura']}°C',
+                      icon: MdiIcons.thermometer,
+                      color: const Color(0xFFFF9F31),
+                    ),
+                    const SizedBox(width: 40),
+                    PointParamTag(
+                      label: '${point['humedad']}',
+                      icon: MdiIcons.waterPercent,
+                      color: const Color(0xFF3180FF),
+                    ),
+                  ],
                 ),
-                const SizedBox(width: 30),
-                PointParamTag(
-                  label: '${point['temperatura']}°C',
-                  icon: MdiIcons.thermometer,
-                  color: const Color(0xFFFF9F31),
-                ),
-                const SizedBox(width: 40),
-                PointParamTag(
-                  label: '${point['humedad']}',
-                  icon: MdiIcons.waterPercent,
-                  color: const Color(0xFF3180FF),
+                AnimatedContainer(
+                  height: (controller.selectedPointID == point['id']) ? 50 : 0,
+                  duration: const Duration(milliseconds: 500),
+                  curve: Curves.fastOutSlowIn,
+                  child: (controller.selectedPointID == point['id'])
+                      ? MyPointInfo(
+                          point: point,
+                        )
+                      : const SizedBox.shrink(),
                 ),
               ],
             ),
@@ -164,5 +180,48 @@ class DataPointTile extends StatelessWidget {
         ),
       ),
     );
+  }
+}
+
+class MyPointInfo extends StatefulWidget {
+  final dynamic point;
+  const MyPointInfo({
+    super.key,
+    required this.point,
+  });
+
+  @override
+  State<MyPointInfo> createState() => _MyPointInfoState();
+}
+
+class _MyPointInfoState extends State<MyPointInfo> {
+  bool loading = true;
+  @override
+  void initState() {
+    super.initState();
+    if (!mounted) return;
+    Timer(const Duration(milliseconds: 300), () {
+      loading = false;
+      setState(() {});
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return (loading)
+        ? const SizedBox.shrink()
+        : Container(
+            padding: const EdgeInsets.symmetric(vertical: 10),
+            child: Column(
+              children: [
+                PointParamTag(
+                  label: '${widget.point['timestamp']}',
+                  icon: MdiIcons.calendarClock,
+                  color: const Color(0xffF02B53),
+                  width: 10,
+                ),
+              ],
+            ),
+          );
   }
 }

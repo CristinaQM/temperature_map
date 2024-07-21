@@ -25,7 +25,7 @@ class MapContainer extends StatelessWidget {
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(10),
       ),
-      child: PolylineMarker(
+      child: _PolylineMarker(
         initMap: pointsList.first,
         finalMap: pointsList.last,
         onTap: () {
@@ -36,23 +36,22 @@ class MapContainer extends StatelessWidget {
   }
 }
 
-class PolylineMarker extends StatefulWidget {
+class _PolylineMarker extends StatefulWidget {
   final dynamic initMap;
   final dynamic finalMap;
   final void Function() onTap;
 
-  const PolylineMarker({
+  const _PolylineMarker({
     required this.initMap,
     required this.finalMap,
     required this.onTap,
-    super.key,
   });
 
   @override
-  State<PolylineMarker> createState() => _PolylineMarkerState();
+  State<_PolylineMarker> createState() => _PolylineMarkerState();
 }
 
-class _PolylineMarkerState extends State<PolylineMarker> {
+class _PolylineMarkerState extends State<_PolylineMarker> {
   @override
   Widget build(BuildContext context) {
     final initPoint = LatLng(

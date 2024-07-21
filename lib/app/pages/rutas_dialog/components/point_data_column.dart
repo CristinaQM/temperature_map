@@ -20,13 +20,13 @@ class MyPointDataColumn extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          PuntoTagWidget(
+          _PuntoTagWidget(
             label: 'Pt. Inicial',
             point: pointsList.first,
             color: color,
           ),
           const SizedBox(height: 10),
-          PuntoTagWidget(
+          _PuntoTagWidget(
             label: 'Pt. Final',
             point: pointsList.last,
             color: color,
@@ -37,15 +37,14 @@ class MyPointDataColumn extends StatelessWidget {
   }
 }
 
-class PuntoTagWidget extends StatelessWidget {
+class _PuntoTagWidget extends StatelessWidget {
   final String label;
   final dynamic point;
   final Color color;
-  const PuntoTagWidget({
+  const _PuntoTagWidget({
     required this.label,
     required this.point,
     required this.color,
-    super.key,
   });
 
   @override

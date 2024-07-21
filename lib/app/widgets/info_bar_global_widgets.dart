@@ -4,11 +4,13 @@ class PointParamTag extends StatelessWidget {
   final String label;
   final IconData icon;
   final Color color;
+  final double? width;
   const PointParamTag({
     super.key,
     required this.label,
     required this.icon,
     required this.color,
+    this.width,
   });
 
   @override
@@ -20,6 +22,7 @@ class PointParamTag extends StatelessWidget {
           icon,
           color: color,
         ),
+        SizedBox(width: width ?? 0),
         Text(label),
       ],
     );
