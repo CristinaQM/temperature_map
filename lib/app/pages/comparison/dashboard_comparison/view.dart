@@ -2,11 +2,10 @@ import 'package:excel/excel.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:temperature_map/app/data/models/datapoint.dart';
-import 'package:temperature_map/app/pages/comparison/dashboard_comparison/componentes/temprutas.dart';
+// import 'package:temperature_map/app/pages/comparison/dashboard_comparison/componentes/temprutas.dart';
 import 'package:temperature_map/app/widgets/empty_error_views.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:temperature_map/app/pages/comparison/dashboard_comparison/controller.dart';
-
 
 class DashboardComparisonPage extends GetView<DashboardComparisonController> {
   const DashboardComparisonPage({super.key});
@@ -36,84 +35,84 @@ class DashboardComparisonPage extends GetView<DashboardComparisonController> {
             );
           }
           return Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 15.0, vertical: 15.0),
-              child: SingleChildScrollView(
-                child: Column(
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        IconButton(
-                          onPressed: () {
-                            final parameter = Get.parameters['dataKey']!;
+            padding: const EdgeInsets.symmetric(horizontal: 15.0, vertical: 15.0),
+            child: SingleChildScrollView(
+              child: Column(
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      IconButton(
+                        onPressed: () {
+                          final parameter = Get.parameters['dataKey']!;
 
-                            String dataKey = parameter.substring(0, 10);
-                            String strID = parameter.substring(10);
+                          String dataKey = parameter.substring(0, 10);
+                          String strID = parameter.substring(10);
 
-                            Get.offAndToNamed(
-                              '/map/$dataKey$strID',
-                            );
-                          },
-                          tooltip: "Retroceder",
-                          icon: Icon(MdiIcons.arrowLeft),
-                          iconSize: 50.0,
+                          Get.offAndToNamed(
+                            '/map/$dataKey$strID',
+                          );
+                        },
+                        tooltip: "Retroceder",
+                        icon: Icon(MdiIcons.arrowLeft),
+                        iconSize: 50.0,
+                      ),
+                      IconButton(
+                        onPressed: () {
+                          generateCSV();
+                        },
+                        tooltip: "Descargar Datos",
+                        icon: Image.asset(
+                          'images/excelicon.png',
+                          fit: BoxFit.fill,
+                          height: 60,
+                          width: 60,
                         ),
-                        IconButton(
-                          onPressed: () {
-                            generateCSV();
-                          },
-                          tooltip: "Descargar Datos",
-                          icon: Image.asset(
-                            'images/excelicon.png',
-                            fit: BoxFit.fill,
-                            height: 60,
-                            width: 60,
+                        iconSize: 60.0,
+                      ),
+                    ],
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 20.0),
+                    child: Row(
+                      children: [
+                        Expanded(
+                          child: Container(
+                              height: 500.0,
+                              decoration: const BoxDecoration(color: Colors.lightBlueAccent, borderRadius: BorderRadius.all(Radius.circular(5.0))),
+                              child: const Text("c")),
+                        ),
+                        const SizedBox(
+                          width: 20,
+                        ),
+                        Expanded(
+                          child: Container(
+                            height: 500.0,
+                            decoration: const BoxDecoration(color: Colors.lightBlueAccent, borderRadius: BorderRadius.all(Radius.circular(5.0))),
+                            child: TempHumeGraph(),
                           ),
-                          iconSize: 60.0,
                         ),
                       ],
                     ),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 20.0),
-                      child: Row(
-                        children: [
-                          Expanded(
-                            child: Container(
-                                height: 500.0,
-                                decoration: const BoxDecoration(color: Colors.lightBlueAccent, borderRadius: BorderRadius.all(Radius.circular(5.0))),
-                                child: const Text("c")),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 20.0),
+                    child: Row(
+                      children: [
+                        Expanded(
+                          child: Container(
+                            height: 500.0,
+                            decoration: const BoxDecoration(color: Colors.lightBlueAccent, borderRadius: BorderRadius.all(Radius.circular(5.0))),
+                            child: const Text("c"),
                           ),
-                          const SizedBox(
-                            width: 20,
-                          ),
-                          Expanded(
-                            child: Container(
-                              height: 500.0,
-                              decoration: const BoxDecoration(color: Colors.lightBlueAccent, borderRadius: BorderRadius.all(Radius.circular(5.0))),
-                              child: TempHumeGraph(),
-                            ),
-                          ),
-                        ],
-                      ),
+                        ),
+                      ],
                     ),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 20.0),
-                      child: Row(
-                        children: [
-                          Expanded(
-                            child: Container(
-                              height: 500.0,
-                              decoration: const BoxDecoration(color: Colors.lightBlueAccent, borderRadius: BorderRadius.all(Radius.circular(5.0))),
-                              child: const Text("c"),
-                            ),
-                          ),
-                        ],
-                      ),
-                    )
-                  ],
-                ),
+                  )
+                ],
               ),
-            );
+            ),
+          );
         },
       ),
     );
@@ -124,18 +123,19 @@ void generateCSV() {
   final excel = Excel.createExcel();
 
   Sheet sheet = excel['Sheet1'];
-  CellStyle cellStyle = CellStyle(fontFamily :getFontFamily(FontFamily.Al_Nile));
+  CellStyle cellStyle = CellStyle(fontFamily: getFontFamily(FontFamily.Al_Nile));
   cellStyle.underline = Underline.Single;
-  sheet.appendRow([const TextCellValue('humedad'),const TextCellValue('temperatura'),const TextCellValue('latitude'),const TextCellValue('longitude'),const TextCellValue('altitude')]);
+  sheet.appendRow(
+      [const TextCellValue('humedad'), const TextCellValue('temperatura'), const TextCellValue('latitude'), const TextCellValue('longitude'), const TextCellValue('altitude')]);
 
   final controller = Get.find<DashboardComparisonController>();
   for (var dataPoint in controller.rutas) {
-      //final point = dataPoint['humedad'];
-      //final temp = dataPoint['temperatura'];
-      //final lat = dataPoint['latitude'];
-      //final long = dataPoint['longitude'];
-      //final alt = dataPoint['altitude'];
-      //sheet.appendRow([IntCellValue(point),DoubleCellValue(temp), DoubleCellValue(lat), DoubleCellValue(long), DoubleCellValue(alt)]);
+    //final point = dataPoint['humedad'];
+    //final temp = dataPoint['temperatura'];
+    //final lat = dataPoint['latitude'];
+    //final long = dataPoint['longitude'];
+    //final alt = dataPoint['altitude'];
+    //sheet.appendRow([IntCellValue(point),DoubleCellValue(temp), DoubleCellValue(lat), DoubleCellValue(long), DoubleCellValue(alt)]);
   }
   excel.save(fileName: 'dataProyectIotTelematic.xlsx');
 }
@@ -153,7 +153,7 @@ class TempHumeGraph extends StatelessWidget {
     String temp = "temp";
     for (var ruta in rutasList) {
       //print(ruta);
-      rutas.add({rutid: ruta["id"],temp: templist});
+      rutas.add({rutid: ruta["id"], temp: templist});
       for (var dataPoint in ruta['dataList']) {
         templist.add(dataPoint["temperatura"]);
         print(dataPoint);
@@ -165,7 +165,8 @@ class TempHumeGraph extends StatelessWidget {
       //rutas.add({rutid: ruta["id"],temp: templist});
     }
     print(rutas);
-    return BarChartSample2(rutastemp: rutas,);
+    // return BarChartSample2(rutastemp: rutas,);
+    return SizedBox.shrink();
   }
 }
 // class _DashboardtemphumState extends State<Dashboardtemphum> {

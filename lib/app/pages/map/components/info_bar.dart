@@ -165,7 +165,7 @@ class DataPointTile extends StatelessWidget {
                   ],
                 ),
                 AnimatedContainer(
-                  height: (controller.selectedPointID == point['id']) ? 50 : 0,
+                  height: (controller.selectedPointID == point['id']) ? 130 : 0,
                   duration: const Duration(milliseconds: 500),
                   curve: Curves.fastOutSlowIn,
                   child: (controller.selectedPointID == point['id'])
@@ -200,7 +200,7 @@ class _MyPointInfoState extends State<MyPointInfo> {
   void initState() {
     super.initState();
 
-    Timer(const Duration(milliseconds: 300), () {
+    Timer(const Duration(milliseconds: 400), () {
       if (!mounted) return;
       loading = false;
       setState(() {});
@@ -214,11 +214,29 @@ class _MyPointInfoState extends State<MyPointInfo> {
         : Container(
             padding: const EdgeInsets.symmetric(vertical: 10),
             child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
+                Divider(
+                  color: Colors.black.withOpacity(0.5),
+                ),
                 PointParamTag(
                   label: '${widget.point['timestamp']}',
                   icon: MdiIcons.calendarClock,
                   color: const Color(0xffF02B53),
+                  width: 10,
+                ),
+                const SizedBox(height: 8),
+                PointParamTag(
+                  label: '(${widget.point['latitude']}, ${widget.point['longitude']})',
+                  icon: MdiIcons.mapMarker,
+                  color: const Color(0xffF9DB81),
+                  width: 10,
+                ),
+                const SizedBox(height: 8),
+                PointParamTag(
+                  label: '${widget.point['altitude']}',
+                  icon: MdiIcons.imageFilterHdr,
+                  color: const Color(0xff7179DB),
                   width: 10,
                 ),
               ],
