@@ -47,6 +47,8 @@ class RutasController extends GetxController {
         list.removeWhere((item) => item['timestamp'] == null);
         for (var i = 0; i < list.length; i++) {
           list[i].putIfAbsent('id', () => i);
+          final dateTime = DateTime.parse(list[i]['timestamp']);
+          list[i]['timestamp'] = dateTime;
         }
         routeMap['dataList'] = list;
 
