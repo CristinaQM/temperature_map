@@ -199,8 +199,9 @@ class _MyPointInfoState extends State<MyPointInfo> {
   @override
   void initState() {
     super.initState();
-    if (!mounted) return;
+
     Timer(const Duration(milliseconds: 300), () {
+      if (!mounted) return;
       loading = false;
       setState(() {});
     });
