@@ -5,7 +5,6 @@ import 'package:material_design_icons_flutter/material_design_icons_flutter.dart
 import 'package:temperature_map/app/pages/dashboard/components/bargraph.dart';
 import 'package:temperature_map/app/pages/dashboard/components/bargraphtemp.dart';
 import 'package:temperature_map/app/pages/dashboard/components/linegraph.dart';
-import 'package:temperature_map/app/pages/dashboard/components/scattergraph.dart';
 import 'package:temperature_map/app/widgets/empty_error_views.dart';
 import 'controller.dart';
 
@@ -103,9 +102,6 @@ class DashboardPage extends GetView<DashboardPageController> {
                       padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 20.0),
                       child: Row(
                         children: [
-                          const SizedBox(
-                            width: 20,
-                          ),
                           Expanded(
                             child: Container(
                               height: 500.0,
