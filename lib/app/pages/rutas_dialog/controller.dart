@@ -44,6 +44,7 @@ class RutasController extends GetxController {
         //Points List
         final List<dynamic> list = ruta.value;
         list.removeWhere((item) => item == null);
+        list.removeWhere((item) => item['timestamp'] == null);
         for (var i = 0; i < list.length; i++) {
           list[i].putIfAbsent('id', () => i);
         }
@@ -69,5 +70,57 @@ class RutasController extends GetxController {
   void onReady() {
     super.onReady();
     fetchRecords();
+  }
+
+  ///Función para cambiar a vista ruta
+  void goToMap({Map<String, dynamic>? route}) {
+    //URL Parameter
+    final parameter = Get.parameters['dataKey'];
+
+    if (Get.currentRoute != '/home' && parameter != null) {
+      //Nueva URL con todos los mapas seleccionados
+      String newParam = '${parameter}_';
+      final myLength = selectKeyList.length;
+
+      for (var i = 0; i < myLength; i++) {
+        final myRoute = selectKeyList[i];
+        newParam += '${myRoute['dataKey']}${myRoute['id']}';
+
+        if (i < myLength - 1) {
+          newParam += '_';
+        }
+      }
+      Get.offAndToNamed(
+        '/map_comparison/$newParam',
+      );
+    } else {
+      //Vista de una única ruta
+      Get.offAndToNamed(
+        '/map/${route!['dataKey']}${route['id']}',
+      );
+    }
+  }
+
+  ///Función llamada al hacer click sobre alguna ruta
+  void onRouteTap(Map<String, dynamic> route) {
+    //URL Parameter
+    final parameter = Get.parameters['dataKey'];
+
+    if (Get.currentRoute != '/home' && parameter != null) {
+      final dataKey = route['dataKey'];
+
+      if (selectKeyList
+          .map(
+            (myRoute) => myRoute['dataKey'],
+          )
+          .toList()
+          .contains(dataKey)) {
+        selectKeyList.removeWhere((myRoute) => myRoute['dataKey'] == dataKey);
+      } else {
+        selectKeyList.add(route);
+      }
+    } else {
+      goToMap(route: route);
+    }
   }
 }

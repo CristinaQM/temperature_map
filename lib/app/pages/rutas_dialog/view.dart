@@ -67,7 +67,7 @@ class RutasDialog extends GetView<RutasController> {
                                     ? null
                                     : () {
                                         //MultiSelect MapView
-                                        goToMap();
+                                        controller.goToMap();
                                       },
                                 child: const Text('Confirmar'),
                               ),
@@ -98,7 +98,7 @@ class RouteWidget extends StatelessWidget {
       cursor: SystemMouseCursors.click,
       child: GestureDetector(
         onTap: () {
-          onRouteTap(route);
+          controller.onRouteTap(route);
         },
         child: Obx(
           () => Container(
@@ -149,7 +149,7 @@ class RouteWidget extends StatelessWidget {
                     initMap: pointsList.first,
                     finalMap: pointsList.last,
                     onTap: () {
-                      onRouteTap(route);
+                      controller.onRouteTap(route);
                     },
                   ),
                 ),
@@ -158,61 +158,6 @@ class RouteWidget extends StatelessWidget {
           ),
         ),
       ),
-    );
-  }
-}
-
-///Función llamada al hacer click sobre alguna ruta
-void onRouteTap(Map<String, dynamic> route) {
-  //URL Parameter
-  final parameter = Get.parameters['dataKey'];
-
-  if (Get.currentRoute != '/home' && parameter != null) {
-    final controller = Get.find<RutasController>();
-    final dataKey = route['dataKey'];
-
-    if (controller.selectKeyList
-        .map(
-          (myRoute) => myRoute['dataKey'],
-        )
-        .toList()
-        .contains(dataKey)) {
-      controller.selectKeyList.removeWhere((myRoute) => myRoute['dataKey'] == dataKey);
-    } else {
-      controller.selectKeyList.add(route);
-    }
-  } else {
-    goToMap(route: route);
-  }
-}
-
-///Función para cambiar a vista ruta
-void goToMap({Map<String, dynamic>? route}) {
-  //URL Parameter
-  final parameter = Get.parameters['dataKey'];
-
-  if (Get.currentRoute != '/home' && parameter != null) {
-    final controller = Get.find<RutasController>();
-
-    //Nueva URL con todos los mapas seleccionados
-    String newParam = '${parameter}_';
-    final myLength = controller.selectKeyList.length;
-
-    for (var i = 0; i < myLength; i++) {
-      final myRoute = controller.selectKeyList[i];
-      newParam += '${myRoute['dataKey']}${myRoute['id']}';
-
-      if (i < myLength - 1) {
-        newParam += '_';
-      }
-    }
-    Get.offAndToNamed(
-      '/map_comparison/$newParam',
-    );
-  } else {
-    //Vista de una única ruta
-    Get.offAndToNamed(
-      '/map/${route!['dataKey']}${route['id']}',
     );
   }
 }
