@@ -21,7 +21,7 @@ class _MapComparisonPolylineState extends State<MapComparisonPolyline> {
 
   @override
   void initState() {
-    controller.rutaActual = controller.rutas.first;
+    controller.rutaActual.value = controller.rutas.first;
     super.initState();
   }
 
@@ -93,24 +93,29 @@ class _MapComparisonPolylineState extends State<MapComparisonPolyline> {
               color: Colors.white.withOpacity(0.75),
               borderRadius: BorderRadius.circular(10),
             ),
-            child: Text.rich(
-              TextSpan(
-                text: 'Centro en Ruta ${controller.rutaActual!['id']}\n',
-                style: const TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 18,
-                ),
-                children: [
+            child: Obx(
+              () {
+                final rutaActual = controller.rutaActual;
+                return Text.rich(
                   TextSpan(
-                    text: '${controller.rutaActual!['dataList'].first['timestamp']}\n${controller.rutaActual!['dataList'].last['timestamp']}',
+                    text: 'Centro en Ruta ${rutaActual['id']}\n',
                     style: const TextStyle(
-                      fontWeight: FontWeight.normal,
-                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 18,
                     ),
-                  )
-                ],
-              ),
-              textAlign: TextAlign.right,
+                    children: [
+                      TextSpan(
+                        text: '${rutaActual['dataList'].first['timestamp']}\n${rutaActual['dataList'].last['timestamp']}',
+                        style: const TextStyle(
+                          fontWeight: FontWeight.normal,
+                          fontSize: 16,
+                        ),
+                      )
+                    ],
+                  ),
+                  textAlign: TextAlign.right,
+                );
+              },
             ),
           ),
         ),
@@ -130,7 +135,6 @@ class _MapComparisonPolylineState extends State<MapComparisonPolyline> {
             ),
             onPressed: () {
               controller.newCenter();
-              setState(() {});
             },
             child: Container(
               padding: const EdgeInsets.symmetric(vertical: 10),

@@ -17,12 +17,12 @@ class MapComparisonController extends GetxController {
   late String myParam;
 
   //Map
-  Map<String, dynamic>? rutaActual;
+  RxMap<String, dynamic> rutaActual = <String, dynamic>{}.obs;
 
   MapController mapController = MapController();
 
   void newCenter() {
-    final currentPointID = rutaActual!['id'];
+    final currentPointID = rutaActual['id'];
     final currentPointIdx = rutas.indexOf(
       rutas.firstWhere(
         (ruta) => ruta['id'] == currentPointID,
@@ -36,10 +36,10 @@ class MapComparisonController extends GetxController {
       newPointIdx = 0;
     }
 
-    rutaActual = rutas[newPointIdx];
+    rutaActual.value = rutas[newPointIdx];
 
     mapController.move(
-      rutaActual!['dataList'].first['latlng'],
+      rutaActual['dataList'].first['latlng'],
       18,
     );
   }
