@@ -44,7 +44,10 @@ class _MapComparisonPolylineState extends State<MapComparisonPolyline> {
               .map<Marker>(
                 (dataPoint) => Marker(
                   point: dataPoint['latlng'],
-                  child: _DataPointWidget(dataPoint: dataPoint),
+                  child: _DataPointWidget(
+                    dataPoint: dataPoint,
+                    ruta: ruta,
+                  ),
                 ),
               )
               .toList(),
@@ -186,13 +189,17 @@ class _MapComparisonPolylineState extends State<MapComparisonPolyline> {
 }
 
 class _DataPointWidget extends StatelessWidget {
+  final dynamic ruta;
   final dynamic dataPoint;
   const _DataPointWidget({
     required this.dataPoint,
+    required this.ruta,
   });
 
   @override
   Widget build(BuildContext context) {
+    final controller = Get.find<MapComparisonController>();
+
     final id = dataPoint['id'];
     final temp = dataPoint['temperatura'];
 
@@ -208,22 +215,39 @@ class _DataPointWidget extends StatelessWidget {
             ? medioStrokeColor
             : bajoStrokeColor;
 
-    return Container(
-      decoration: BoxDecoration(
-        color: markerColor,
-        borderRadius: BorderRadius.circular(100),
-        border: Border.all(
-          color: borderColor,
-          width: 2,
-        ),
-      ),
-      child: Center(
-        child: Text(
-          '$id',
-          style: const TextStyle(
-            fontWeight: FontWeight.bold,
-            color: Colors.white,
-            fontSize: 15,
+    return MouseRegion(
+      cursor: SystemMouseCursors.click,
+      child: GestureDetector(
+        onTap: () {
+          if (controller.selectedPoint['id'] == id) {
+            controller.selectedPoint.clear();
+          } else {
+            final Map<String, dynamic> pointMap = {...dataPoint};
+            pointMap['rutaID'] = ruta['id'];
+            controller.selectedPoint.value = pointMap;
+            controller.newCenter(miRuta: ruta);
+          }
+        },
+        child: Obx(
+          () => Container(
+            decoration: BoxDecoration(
+              color: markerColor,
+              borderRadius: BorderRadius.circular(100),
+              border: Border.all(
+                color: (controller.selectedPoint['id'] == id && controller.rutaActual['id'] == ruta['id']) ? const Color(0xff766ED1) : borderColor,
+                width: (controller.selectedPoint['id'] == id && controller.rutaActual['id'] == ruta['id']) ? 4 : 2,
+              ),
+            ),
+            child: Center(
+              child: Text(
+                '$id',
+                style: const TextStyle(
+                  fontWeight: FontWeight.bold,
+                  color: Colors.white,
+                  fontSize: 15,
+                ),
+              ),
+            ),
           ),
         ),
       ),

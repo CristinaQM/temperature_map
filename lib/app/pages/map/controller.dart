@@ -1,10 +1,13 @@
 import 'package:firebase_database/firebase_database.dart';
+import 'package:flutter_map/flutter_map.dart';
 import 'package:get/get.dart';
 import 'package:temperature_map/core/app_constants.dart';
 
 class MapPageController extends GetxController {
   //Data
   Map<String, dynamic> route = {};
+
+  MapController mapController = MapController();
 
   //Location Points
   final pointList = <dynamic>[].obs;
@@ -62,6 +65,17 @@ class MapPageController extends GetxController {
     } catch (e) {
       _loading.value = false;
       _hasError.value = true;
+    }
+  }
+
+  void newCenter(int pointID) {
+    for (var point in pointList) {
+      if (point['id'] == pointID) {
+        mapController.move(
+          point['latlng'],
+          18,
+        );
+      }
     }
   }
 

@@ -38,11 +38,11 @@ class _MapPagePolylineState extends State<MapPagePolyline> {
         .toList();
 
     return FlutterMap(
+      mapController: controller.mapController,
       options: MapOptions(
         initialCenter: tappedPoints.first['latlng'],
         initialZoom: 22,
         maxZoom: 22,
-        minZoom: 18,
       ),
       children: [
         TileLayer(

@@ -202,6 +202,7 @@ class DataPointTile extends StatelessWidget {
             controller.selectedPointID = 0;
           } else {
             controller.selectedPointID = point['id'];
+            controller.newCenter(point['id']);
           }
         },
         child: Obx(
