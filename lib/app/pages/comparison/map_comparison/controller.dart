@@ -1,4 +1,5 @@
 import 'package:firebase_database/firebase_database.dart';
+import 'package:flutter_map/flutter_map.dart';
 import 'package:get/get.dart';
 import 'package:temperature_map/core/app_constants.dart';
 
@@ -15,7 +16,33 @@ class MapComparisonController extends GetxController {
 
   late String myParam;
 
+  //Map
   Map<String, dynamic>? rutaActual;
+
+  MapController mapController = MapController();
+
+  void newCenter() {
+    final currentPointID = rutaActual!['id'];
+    final currentPointIdx = rutas.indexOf(
+      rutas.firstWhere(
+        (ruta) => ruta['id'] == currentPointID,
+      ),
+    );
+
+    int listLength = rutas.length;
+    int newPointIdx = currentPointIdx + 1;
+
+    if (newPointIdx > listLength - 1) {
+      newPointIdx = 0;
+    }
+
+    rutaActual = rutas[newPointIdx];
+
+    mapController.move(
+      rutaActual!['dataList'].first['latlng'],
+      18,
+    );
+  }
 
   //Database
   final database = FirebaseDatabase.instance;

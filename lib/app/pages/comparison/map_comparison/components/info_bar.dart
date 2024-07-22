@@ -53,6 +53,22 @@ class MapComparisonBar extends StatelessWidget {
               ),
             ],
           ),
+          const Divider(),
+          Expanded(
+            child: ListView.builder(
+              itemCount: controller.rutas.length,
+              itemBuilder: (context, idx) {
+                final ruta = controller.rutas[idx];
+
+                return Container(
+                  padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 8),
+                  child: Text(
+                    'Ruta ${ruta['id']}',
+                  ),
+                );
+              },
+            ),
+          ),
           const SizedBox(height: 10),
           ElevatedButton(
             onPressed: () {

@@ -18,35 +18,11 @@ class MapComparisonPolyline extends StatefulWidget {
 
 class _MapComparisonPolylineState extends State<MapComparisonPolyline> {
   final controller = Get.find<MapComparisonController>();
-  MapController mapController = MapController();
 
   @override
   void initState() {
     controller.rutaActual = controller.rutas.first;
     super.initState();
-  }
-
-  void newCenter() {
-    final currentPointID = controller.rutaActual!['id'];
-    final currentPointIdx = controller.rutas.indexOf(
-      controller.rutas.firstWhere(
-        (ruta) => ruta['id'] == currentPointID,
-      ),
-    );
-
-    int listLength = controller.rutas.length;
-    int newPointIdx = currentPointIdx + 1;
-
-    if (newPointIdx > listLength - 1) {
-      newPointIdx = 0;
-    }
-
-    controller.rutaActual = controller.rutas[newPointIdx];
-
-    mapController.move(
-      controller.rutaActual!['dataList'].first['latlng'],
-      18,
-    );
   }
 
   @override
@@ -77,7 +53,7 @@ class _MapComparisonPolylineState extends State<MapComparisonPolyline> {
     ).toList();
 
     return FlutterMap(
-      mapController: mapController,
+      mapController: controller.mapController,
       options: MapOptions(
         initialCenter: rutasList.first['dataList'].first['latlng'],
         initialZoom: 18,
@@ -109,6 +85,36 @@ class _MapComparisonPolylineState extends State<MapComparisonPolyline> {
         ),
         ...markersLayers,
         Positioned(
+          top: 30,
+          right: 30,
+          child: Container(
+            padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
+            decoration: BoxDecoration(
+              color: Colors.white.withOpacity(0.75),
+              borderRadius: BorderRadius.circular(10),
+            ),
+            child: Text.rich(
+              TextSpan(
+                text: 'Centro en Ruta ${controller.rutaActual!['id']}\n',
+                style: const TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 18,
+                ),
+                children: [
+                  TextSpan(
+                    text: '${controller.rutaActual!['dataList'].first['timestamp']}\n${controller.rutaActual!['dataList'].last['timestamp']}',
+                    style: const TextStyle(
+                      fontWeight: FontWeight.normal,
+                      fontSize: 16,
+                    ),
+                  )
+                ],
+              ),
+              textAlign: TextAlign.right,
+            ),
+          ),
+        ),
+        Positioned(
           bottom: 20,
           right: 20,
           child: ElevatedButton(
@@ -123,7 +129,8 @@ class _MapComparisonPolylineState extends State<MapComparisonPolyline> {
               ),
             ),
             onPressed: () {
-              newCenter();
+              controller.newCenter();
+              setState(() {});
             },
             child: Container(
               padding: const EdgeInsets.symmetric(vertical: 10),
