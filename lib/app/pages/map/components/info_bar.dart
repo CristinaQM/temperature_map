@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
+import 'package:percent_indicator/circular_percent_indicator.dart';
 import 'package:temperature_map/app/pages/map/controller.dart';
 import 'package:temperature_map/app/pages/rutas_dialog/view.dart';
 import 'package:temperature_map/app/widgets/info_bar_global_widgets.dart';
@@ -18,6 +19,14 @@ class MapViewBar extends StatelessWidget {
   Widget build(BuildContext context) {
     final controller = Get.find<MapPageController>();
     final route = controller.route;
+
+    double tempPromedio = 0;
+    int myLenght = controller.pointList.length;
+    for (var mypoint in controller.pointList) {
+      tempPromedio += mypoint['temperatura'];
+    }
+
+    tempPromedio = tempPromedio / myLenght;
 
     return Container(
       width: 300,
@@ -59,6 +68,8 @@ class MapViewBar extends StatelessWidget {
             ],
           ),
           const Divider(),
+          MyPercentWidget(tempPromedio: tempPromedio),
+          const Divider(),
           const SizedBox(height: 10),
           Expanded(
             child: ListView.builder(
@@ -94,6 +105,78 @@ class MapViewBar extends StatelessWidget {
             child: const Text('Dashboard'),
           ),
         ],
+      ),
+    );
+  }
+}
+
+class MyPercentWidget extends StatefulWidget {
+  const MyPercentWidget({
+    super.key,
+    required this.tempPromedio,
+  });
+
+  final double tempPromedio;
+
+  @override
+  State<MyPercentWidget> createState() => _MyPercentWidgetState();
+}
+
+class _MyPercentWidgetState extends State<MyPercentWidget> {
+  bool isExpanded = true;
+
+  @override
+  Widget build(BuildContext context) {
+    return MouseRegion(
+      cursor: SystemMouseCursors.click,
+      child: GestureDetector(
+        onTap: () {
+          isExpanded = !isExpanded;
+
+          setState(() {});
+        },
+        child: AnimatedContainer(
+          height: (isExpanded) ? 150 : 20,
+          duration: const Duration(milliseconds: 250),
+          child: (isExpanded)
+              ? SingleChildScrollView(
+                  child: Column(
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          Icon(MdiIcons.chevronDown),
+                        ],
+                      ),
+                      CircularPercentIndicator(
+                        radius: 60,
+                        animation: true,
+                        lineWidth: 10,
+                        percent: widget.tempPromedio / 100,
+                        center: Text(
+                          "${widget.tempPromedio}",
+                          style: const TextStyle(
+                            fontSize: 24,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        progressColor: (widget.tempPromedio >= altaTemperatura)
+                            ? altoColor
+                            : (widget.tempPromedio > maxTempAmbiente)
+                                ? medioColor
+                                : bajoColor,
+                        circularStrokeCap: CircularStrokeCap.round,
+                      ),
+                    ],
+                  ),
+                )
+              : Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    Icon(MdiIcons.chevronUp),
+                  ],
+                ),
+        ),
       ),
     );
   }
@@ -195,52 +278,40 @@ class MyPointInfo extends StatefulWidget {
 }
 
 class _MyPointInfoState extends State<MyPointInfo> {
-  bool loading = true;
-  @override
-  void initState() {
-    super.initState();
-
-    Timer(const Duration(milliseconds: 400), () {
-      if (!mounted) return;
-      loading = false;
-      setState(() {});
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
-    return (loading)
-        ? const SizedBox.shrink()
-        : Container(
-            padding: const EdgeInsets.symmetric(vertical: 10),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Divider(
-                  color: Colors.black.withOpacity(0.5),
-                ),
-                PointParamTag(
-                  label: '${widget.point['timestamp']}',
-                  icon: MdiIcons.calendarClock,
-                  color: const Color(0xffF02B53),
-                  width: 10,
-                ),
-                const SizedBox(height: 8),
-                PointParamTag(
-                  label: '(${widget.point['latitude']}, ${widget.point['longitude']})',
-                  icon: MdiIcons.mapMarker,
-                  color: const Color(0xffF9DB81),
-                  width: 10,
-                ),
-                const SizedBox(height: 8),
-                PointParamTag(
-                  label: '${widget.point['altitude']}',
-                  icon: MdiIcons.imageFilterHdr,
-                  color: const Color(0xff7179DB),
-                  width: 10,
-                ),
-              ],
+    return Container(
+      padding: const EdgeInsets.symmetric(vertical: 10),
+      child: SingleChildScrollView(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Divider(
+              color: Colors.black.withOpacity(0.5),
             ),
-          );
+            PointParamTag(
+              label: '${widget.point['timestamp']}',
+              icon: MdiIcons.calendarClock,
+              color: const Color(0xffF02B53),
+              width: 10,
+            ),
+            const SizedBox(height: 8),
+            PointParamTag(
+              label: '(${widget.point['latitude']}, ${widget.point['longitude']})',
+              icon: MdiIcons.mapMarker,
+              color: const Color(0xffF9DB81),
+              width: 10,
+            ),
+            const SizedBox(height: 8),
+            PointParamTag(
+              label: '${widget.point['altitude']}',
+              icon: MdiIcons.imageFilterHdr,
+              color: const Color(0xff7179DB),
+              width: 10,
+            ),
+          ],
+        ),
+      ),
+    );
   }
 }
