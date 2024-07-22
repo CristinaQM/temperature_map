@@ -21,27 +21,35 @@ class MapComparisonController extends GetxController {
 
   MapController mapController = MapController();
 
-  void newCenter() {
-    final currentPointID = rutaActual['id'];
-    final currentPointIdx = rutas.indexOf(
-      rutas.firstWhere(
-        (ruta) => ruta['id'] == currentPointID,
-      ),
-    );
+  void newCenter({Map<String, dynamic>? miRuta}) {
+    if (miRuta == null) {
+      final currentPointID = rutaActual['id'];
+      final currentPointIdx = rutas.indexOf(
+        rutas.firstWhere(
+          (ruta) => ruta['id'] == currentPointID,
+        ),
+      );
 
-    int listLength = rutas.length;
-    int newPointIdx = currentPointIdx + 1;
+      int listLength = rutas.length;
+      int newPointIdx = currentPointIdx + 1;
 
-    if (newPointIdx > listLength - 1) {
-      newPointIdx = 0;
+      if (newPointIdx > listLength - 1) {
+        newPointIdx = 0;
+      }
+
+      rutaActual.value = rutas[newPointIdx];
+
+      mapController.move(
+        rutaActual['dataList'].first['latlng'],
+        18,
+      );
+    } else {
+      rutaActual.value = miRuta;
+      mapController.move(
+        miRuta['dataList'].first['latlng'],
+        18,
+      );
     }
-
-    rutaActual.value = rutas[newPointIdx];
-
-    mapController.move(
-      rutaActual['dataList'].first['latlng'],
-      18,
-    );
   }
 
   //Database

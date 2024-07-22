@@ -104,8 +104,29 @@ class _MapComparisonPolylineState extends State<MapComparisonPolyline> {
                       fontSize: 18,
                     ),
                     children: [
+                      const TextSpan(
+                        text: 'Inicio: ',
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 16,
+                        ),
+                      ),
                       TextSpan(
-                        text: '${rutaActual['dataList'].first['timestamp']}\n${rutaActual['dataList'].last['timestamp']}',
+                        text: '${rutaActual['dataList'].first['timestamp']}\n',
+                        style: const TextStyle(
+                          fontWeight: FontWeight.normal,
+                          fontSize: 16,
+                        ),
+                      ),
+                      const TextSpan(
+                        text: 'Fin: ',
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 16,
+                        ),
+                      ),
+                      TextSpan(
+                        text: '${rutaActual['dataList'].last['timestamp']}',
                         style: const TextStyle(
                           fontWeight: FontWeight.normal,
                           fontSize: 16,
