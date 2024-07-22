@@ -4,6 +4,8 @@ import 'package:get/get.dart';
 import 'package:temperature_map/core/app_constants.dart';
 
 class MapComparisonController extends GetxController {
+  late String myParam;
+
   //Obs
   final _loading = true.obs;
   final _rutas = <Map<String, dynamic>>[].obs;
@@ -14,7 +16,7 @@ class MapComparisonController extends GetxController {
   final _hasError = false.obs;
   bool get hasError => _hasError.value;
 
-  late String myParam;
+  RxMap<String, dynamic> selectedPoint = <String, dynamic>{}.obs;
 
   //Map
   RxMap<String, dynamic> rutaActual = <String, dynamic>{}.obs;

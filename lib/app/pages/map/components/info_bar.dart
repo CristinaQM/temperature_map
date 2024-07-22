@@ -239,7 +239,7 @@ class DataPointTile extends StatelessWidget {
                     ),
                     const SizedBox(width: 40),
                     PointParamTag(
-                      label: '${point['humedad']}',
+                      label: '${point['humedad']}%',
                       icon: MdiIcons.waterPercent,
                       color: const Color(0xFF3180FF),
                     ),

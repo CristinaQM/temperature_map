@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:temperature_map/app/pages/comparison/map_comparison/controller.dart';
+import 'package:temperature_map/app/widgets/info_bar_global_widgets.dart';
 import 'package:temperature_map/core/app_constants.dart';
 import 'package:temperature_map/routes/pages.dart';
 
@@ -107,16 +108,16 @@ class _RutaExpansionTileState extends State<RutaExpansionTile> {
   bool isExpanded = false;
   @override
   Widget build(BuildContext context) {
-    return MouseRegion(
-      cursor: SystemMouseCursors.click,
-      child: GestureDetector(
-        onTap: () {
-          isExpanded = !isExpanded;
-          setState(() {});
-        },
-        child: Column(
-          children: [
-            Obx(
+    return Column(
+      children: [
+        MouseRegion(
+          cursor: SystemMouseCursors.click,
+          child: GestureDetector(
+            onTap: () {
+              isExpanded = !isExpanded;
+              setState(() {});
+            },
+            child: Obx(
               () => Container(
                 margin: const EdgeInsets.only(bottom: 10),
                 decoration: BoxDecoration(
@@ -140,20 +141,107 @@ class _RutaExpansionTileState extends State<RutaExpansionTile> {
                 ),
               ),
             ),
-            AnimatedContainer(
-              height: (isExpanded) ? 150 : 0,
-              duration: const Duration(milliseconds: 500),
-              child: (isExpanded)
-                  ? SingleChildScrollView(
-                      child: Column(
-                        children: [
-                          Text('Hello World!'),
-                        ],
-                      ),
+          ),
+        ),
+        AnimatedContainer(
+          height: (isExpanded) ? 325 : 0,
+          width: 200,
+          duration: const Duration(milliseconds: 500),
+          child: (isExpanded)
+              ? ListView.builder(
+                  itemCount: widget.ruta['dataList'].length,
+                  itemBuilder: (ctx, idx) {
+                    final point = widget.ruta['dataList'][idx];
+                    final temp = point['temperatura'];
+
+                    final color = (temp >= altaTemperatura)
+                        ? altoColor
+                        : (temp > maxTempAmbiente)
+                            ? medioColor
+                            : bajoColor;
+
+                    return _PointDataTile(
+                      point: point,
+                      color: color,
+                      ruta: widget.ruta,
+                    );
+                  },
+                )
+              : const SizedBox.shrink(),
+        ),
+      ],
+    );
+  }
+}
+
+class _PointDataTile extends StatelessWidget {
+  final dynamic ruta;
+  final dynamic point;
+  final Color color;
+  const _PointDataTile({
+    required this.point,
+    required this.color,
+    required this.ruta,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final controller = Get.find<MapComparisonController>();
+    return MouseRegion(
+      cursor: SystemMouseCursors.click,
+      child: GestureDetector(
+        onTap: () {
+          if (controller.selectedPoint['id'] == point['id']) {
+            controller.selectedPoint.clear();
+          } else {
+            final Map<String, dynamic> pointMap = {...point};
+            pointMap['rutaID'] = ruta['id'];
+            controller.selectedPoint.value = pointMap;
+            controller.newCenter(miRuta: ruta);
+          }
+        },
+        child: Obx(
+          () => Container(
+            margin: const EdgeInsets.only(bottom: 10),
+            padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 5),
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(10),
+              color: (controller.selectedPoint['id'] == point['id'] && controller.rutaActual['id'] == ruta['id'])
+                  ? const Color(
+                      0xFFBAB6E8,
                     )
-                  : const SizedBox.shrink(),
+                  : const Color(
+                      0xffD8E7F8,
+                    ),
             ),
-          ],
+            child: Row(
+              children: [
+                CircleAvatar(
+                  backgroundColor: color,
+                  radius: 13,
+                  child: Text(
+                    '${point['id']}',
+                    style: const TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 14,
+                    ),
+                  ),
+                ),
+                const SizedBox(width: 20),
+                PointParamTag(
+                  label: '${point['temperatura']}°C',
+                  icon: MdiIcons.thermometer,
+                  color: const Color(0xFFFF9F31),
+                ),
+                const SizedBox(width: 20),
+                PointParamTag(
+                  label: '${point['humedad']}%',
+                  icon: MdiIcons.waterPercent,
+                  color: const Color(0xFF3180FF),
+                ),
+              ],
+            ),
+          ),
         ),
       ),
     );
