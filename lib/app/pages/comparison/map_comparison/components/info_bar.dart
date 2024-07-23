@@ -191,7 +191,7 @@ class _PointDataTile extends StatelessWidget {
       cursor: SystemMouseCursors.click,
       child: GestureDetector(
         onTap: () {
-          if (controller.selectedPoint['id'] == point['id']) {
+          if (controller.selectedPoint['id'] == point['id'] && controller.rutaActual['id'] == ruta['id']) {
             controller.selectedPoint.clear();
           } else {
             final Map<String, dynamic> pointMap = {...point};

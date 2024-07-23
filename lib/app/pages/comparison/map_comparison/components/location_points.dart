@@ -219,7 +219,7 @@ class _DataPointWidget extends StatelessWidget {
       cursor: SystemMouseCursors.click,
       child: GestureDetector(
         onTap: () {
-          if (controller.selectedPoint['id'] == id) {
+          if (controller.selectedPoint['id'] == id && controller.rutaActual['id'] == ruta['id']) {
             controller.selectedPoint.clear();
           } else {
             final Map<String, dynamic> pointMap = {...dataPoint};
