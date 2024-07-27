@@ -44,6 +44,11 @@ class RutasController extends GetxController {
         //Points List
         final List<dynamic> list = ruta.value;
         list.removeWhere((item) => item == null);
+        list.removeWhere((item) => item['altitude'] == null);
+        list.removeWhere((item) => item['latitude'] == null);
+        list.removeWhere((item) => item['longitude'] == null);
+        list.removeWhere((item) => item['humedad'] == null);
+        list.removeWhere((item) => item['temperatura'] == null);
         list.removeWhere((item) => item['timestamp'] == null);
         for (var i = 0; i < list.length; i++) {
           list[i].putIfAbsent('id', () => i);

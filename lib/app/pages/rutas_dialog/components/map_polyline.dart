@@ -99,15 +99,6 @@ class _PolylineMarkerState extends State<_PolylineMarker> {
           },
         ),
         MarkerLayer(markers: markers),
-        PolylineLayer(
-          polylines: [
-            Polyline(
-              points: tappedPoints,
-              color: Colors.red,
-              strokeWidth: 5,
-            ),
-          ],
-        ),
       ],
     );
   }

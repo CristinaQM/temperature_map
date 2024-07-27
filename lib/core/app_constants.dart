@@ -9,7 +9,7 @@ const String mapBoxStyleOutdoors = 'mapbox/outdoors-v12';
 const String mapBoxStyleLight = 'mapbox/light-v11';
 const String mapBoxStyleDark = 'mapbox/dark-v11';
 
-const String urlSrc = 'sensorDataNuevoMariaIsabel';
+const String urlSrc = 'sensorDataRe';
 
 const double altaTemperatura = 31;
 const double maxTempAmbiente = 27;
