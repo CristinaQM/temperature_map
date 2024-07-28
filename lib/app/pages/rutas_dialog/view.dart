@@ -17,10 +17,13 @@ class RutasDialog extends GetView<RutasController> {
           height: 550,
           child: Obx(
             () => (controller.loading)
-                ? const Center(
-                    child: SizedBox.square(
-                      dimension: 48,
-                      child: CircularProgressIndicator(),
+                ? const SizedBox(
+                    width: 400,
+                    child: Center(
+                      child: SizedBox.square(
+                        dimension: 48,
+                        child: CircularProgressIndicator(),
+                      ),
                     ),
                   )
                 : Column(
@@ -33,6 +36,8 @@ class RutasDialog extends GetView<RutasController> {
                           fontSize: 28,
                         ),
                       ),
+                      const Divider(),
+                      DateFieldPicker(controller: controller),
                       const Divider(),
                       Expanded(
                         child: SingleChildScrollView(
@@ -80,6 +85,37 @@ class RutasDialog extends GetView<RutasController> {
           ),
         ),
       ),
+    );
+  }
+}
+
+class DateFieldPicker extends StatelessWidget {
+  const DateFieldPicker({
+    super.key,
+    required this.controller,
+  });
+
+  final RutasController controller;
+
+  @override
+  Widget build(BuildContext context) {
+    return TextField(
+      controller: controller.textController,
+      decoration: const InputDecoration(
+        labelText: 'Fecha Inicio',
+        filled: true,
+        prefixIcon: Icon(Icons.calendar_today),
+        enabledBorder: OutlineInputBorder(borderSide: BorderSide.none),
+        focusedBorder: OutlineInputBorder(
+          borderSide: BorderSide(
+            color: Color(0xFF7179DB),
+          ),
+        ),
+      ),
+      readOnly: true,
+      onTap: () {
+        controller.selectDate(context);
+      },
     );
   }
 }

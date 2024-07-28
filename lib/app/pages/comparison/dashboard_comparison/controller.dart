@@ -46,6 +46,12 @@ class DashboardComparisonController extends GetxController {
         final data = snapshot.value;
         pointsList.addAll(data as List<dynamic>);
         pointsList.removeWhere((item) => item == null);
+        pointsList.removeWhere((item) => item['altitude'] == null);
+        pointsList.removeWhere((item) => item['latitude'] == null);
+        pointsList.removeWhere((item) => item['longitude'] == null);
+        pointsList.removeWhere((item) => item['humedad'] == null);
+        pointsList.removeWhere((item) => item['temperatura'] == null);
+        pointsList.removeWhere((item) => item['timestamp'] == null);
 
         for (var i = 0; i < pointsList.length; i++) {
           pointsList[i].putIfAbsent('id', () => i + 1);

@@ -101,7 +101,7 @@ class _MapComparisonPolylineState extends State<MapComparisonPolyline> {
                 final rutaActual = controller.rutaActual;
                 return Text.rich(
                   TextSpan(
-                    text: 'Centro en Ruta ${rutaActual['id']}\n',
+                    text: 'Ruta seleccionada: ${rutaActual['id']}\n',
                     style: const TextStyle(
                       fontWeight: FontWeight.bold,
                       fontSize: 18,

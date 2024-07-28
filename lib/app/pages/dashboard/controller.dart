@@ -61,6 +61,12 @@ class DashboardPageController extends GetxController {
 
           pointList.addAll(snapshot as List<dynamic>); //agregamos toda la data (todos los json de los location points)
           pointList.removeWhere((item) => item == null); //borramos los datos nulos
+          pointList.removeWhere((item) => item['altitude'] == null);
+          pointList.removeWhere((item) => item['latitude'] == null);
+          pointList.removeWhere((item) => item['longitude'] == null);
+          pointList.removeWhere((item) => item['humedad'] == null);
+          pointList.removeWhere((item) => item['temperatura'] == null);
+          pointList.removeWhere((item) => item['timestamp'] == null);
 
           //Este for está hecho para agregarle un id a cada location point
           //para tener un identificador en caso de necesitarlo

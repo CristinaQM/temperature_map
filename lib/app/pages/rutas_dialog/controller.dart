@@ -1,4 +1,5 @@
 import 'package:firebase_database/firebase_database.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:temperature_map/core/app_constants.dart';
 
@@ -33,12 +34,9 @@ class RutasController extends GetxController {
       final data = snapshot.value as Map;
       final map = data[urlSrc];
 
-      int counter = 1;
-
       for (var ruta in map.entries) {
         final Map<String, dynamic> routeMap = {};
 
-        routeMap['id'] = counter;
         routeMap['dataKey'] = ruta.key;
 
         //Points List
@@ -57,16 +55,24 @@ class RutasController extends GetxController {
         }
         routeMap['dataList'] = list;
 
-        if (Get.currentRoute != '/home' && parameter != null) {
-          final datakey = parameter.substring(0, 10);
-          if (datakey != routeMap['dataKey']) {
-            _rutas.add(routeMap);
-          }
-        } else {
-          _rutas.add(routeMap);
-        }
+        _rutas.add(routeMap);
+      }
 
-        counter++;
+      _rutas.sort((a, b) {
+        final dta = a['dataList'].first['timestamp'];
+        final dtb = b['dataList'].first['timestamp'];
+        return (dta).compareTo(dtb);
+      });
+
+      for (var i = 0; i < _rutas.length; i++) {
+        final ruta = _rutas[i];
+
+        ruta['id'] = i + 1;
+      }
+
+      if (Get.currentRoute != '/home' && parameter != null) {
+        final datakey = parameter.substring(0, 10);
+        _rutas.removeWhere((ruta) => ruta['dataKey'] == datakey);
       }
     }
 
@@ -128,6 +134,21 @@ class RutasController extends GetxController {
       }
     } else {
       goToMap(route: route);
+    }
+  }
+
+  TextEditingController textController = TextEditingController();
+
+  Future<void> selectDate(BuildContext context) async {
+    DateTime? _picked = await showDatePicker(
+      context: context,
+      initialDate: DateTime.now(),
+      firstDate: DateTime(2000),
+      lastDate: DateTime(2100),
+    );
+
+    if (_picked != null) {
+      textController.text = _picked.toString().split(' ').first;
     }
   }
 }

@@ -54,6 +54,12 @@ class MapPageController extends GetxController {
 
           pointList.addAll(snapshot as List<dynamic>);
           pointList.removeWhere((item) => item == null);
+          pointList.removeWhere((item) => item['altitude'] == null);
+          pointList.removeWhere((item) => item['latitude'] == null);
+          pointList.removeWhere((item) => item['longitude'] == null);
+          pointList.removeWhere((item) => item['humedad'] == null);
+          pointList.removeWhere((item) => item['temperatura'] == null);
+          pointList.removeWhere((item) => item['timestamp'] == null);
 
           for (var i = 0; i < pointList.length; i++) {
             pointList[i].putIfAbsent('id', () => i + 1);
