@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:temperature_map/app/pages/rutas_dialog/components/point_data_column.dart';
 
 import 'components/map_polyline.dart';
@@ -37,7 +38,23 @@ class RutasDialog extends GetView<RutasController> {
                         ),
                       ),
                       const Divider(),
-                      DateFieldPicker(controller: controller),
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Row(
+                          children: [
+                            Expanded(
+                              child: DateFieldPicker(
+                                controller: controller,
+                              ),
+                            ),
+                            const SizedBox(width: 10),
+                            IconButton(
+                              onPressed: () {},
+                              icon: Icon(MdiIcons.magnify),
+                            ),
+                          ],
+                        ),
+                      ),
                       const Divider(),
                       Expanded(
                         child: SingleChildScrollView(
@@ -99,17 +116,24 @@ class DateFieldPicker extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return TextField(
+    return TextFormField(
       controller: controller.textController,
-      decoration: const InputDecoration(
+      decoration: InputDecoration(
+        constraints: const BoxConstraints(maxHeight: 50),
         labelText: 'Fecha Inicio',
         filled: true,
-        prefixIcon: Icon(Icons.calendar_today),
-        enabledBorder: OutlineInputBorder(borderSide: BorderSide.none),
-        focusedBorder: OutlineInputBorder(
+        prefixIcon: const Icon(Icons.calendar_today),
+        enabledBorder: const OutlineInputBorder(borderSide: BorderSide.none),
+        focusedBorder: const OutlineInputBorder(
           borderSide: BorderSide(
             color: Color(0xFF7179DB),
           ),
+        ),
+        suffix: IconButton(
+          onPressed: () {
+            controller.textController.clear();
+          },
+          icon: Icon(MdiIcons.closeCircle),
         ),
       ),
       readOnly: true,

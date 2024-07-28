@@ -140,15 +140,21 @@ class RutasController extends GetxController {
   TextEditingController textController = TextEditingController();
 
   Future<void> selectDate(BuildContext context) async {
-    DateTime? _picked = await showDatePicker(
+    DateTime? picked = await showDatePicker(
       context: context,
       initialDate: DateTime.now(),
       firstDate: DateTime(2000),
-      lastDate: DateTime(2100),
+      lastDate: DateTime.now(),
+      errorFormatText: 'Formato Inválido',
+      helpText: 'Fecha',
+      confirmText: 'Confirmar',
+      cancelText: 'Cancelar',
+      fieldHintText: 'Fecha',
+      fieldLabelText: 'Fecha (DD/MM/AAAA)',
     );
 
-    if (_picked != null) {
-      textController.text = _picked.toString().split(' ').first;
+    if (picked != null) {
+      textController.text = picked.toString().split(' ').first;
     }
   }
 }
