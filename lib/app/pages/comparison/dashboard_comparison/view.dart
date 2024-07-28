@@ -1,8 +1,7 @@
 import 'package:excel/excel.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:temperature_map/app/data/models/datapoint.dart';
-import 'package:temperature_map/app/pages/comparison/dashboard_comparison/componentes/temprutas.dart';
+import 'package:temperature_map/app/pages/comparison/dashboard_comparison/componentes/bargprahtemp.dart';
 import 'package:temperature_map/app/widgets/empty_error_views.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:temperature_map/app/pages/comparison/dashboard_comparison/controller.dart';
@@ -148,47 +147,45 @@ class TempHumeGraph extends StatelessWidget {
   Widget build(BuildContext context) {
     final List<Map<String, dynamic>> rutasList = controller.rutas;
     final List<Map<String, dynamic>> rutas = [];
-    final List<dynamic> templist = [];
+    
     String rutid = "rutaid";
     String temp = "temp";
+
     for (var ruta in rutasList) {
       //print(ruta);
-      rutas.add({rutid: ruta["id"],temp: templist});
+      final List<dynamic> templist = [];
+      
       for (var dataPoint in ruta['dataList']) {
         templist.add(dataPoint["temperatura"]);
-        print(dataPoint);
-        print(dataPoint["temperatura"]);
       }
-      // for (int i = 0 ; i < dataPoint["temperatura"].len; i++){
-      print(ruta);
+      if(templist.length>=4){
+        List valore = [];
+        for( var i = 0; i<= 4; i++){  
+          valore.add(templist[i]);
+        }
+        var suma = valore.reduce((a, b) => a + b);
+        rutas.add({rutid: ruta["id"],temp: suma.toStringAsFixed(1)});
+      }
+      else {
+        List valore = [];
+        for( var i = 0; i<= templist.length; i++){  
+          valore.add(templist[i]);
+        }
+        var suma = valore.reduce((a, b) => a + b);
+        rutas.add({rutid: ruta["id"],temp: suma.toStringAsFixed(1)});
+
+      }
+      // List valore = [];
+      // for( var i = 0; i<= 4; i++){  
+      //   valore.add(templist[i]);
       // }
-      //rutas.add({rutid: ruta["id"],temp: templist});
+      // print(valore);
+      // print(templist);
+      // var suma = templist.reduce((a, b) => a + b);
+      // rutas.add({rutid: ruta["id"],temp: suma.toStringAsFixed(1)});
+      // print(ruta);
     }
-    print(rutas);
-    return BarChartSample2(rutastemp: rutas,);
+    //print(rutas);
+    return BarChartSample3Temp(namegraph: "Temperatura Promedio",tappedPoints: rutas,);
   }
 }
-// class _DashboardtemphumState extends State<Dashboardtemphum> {
-//   final controller = Get.find<DashboardPageController>();
-//   @override
-//   Widget build(BuildContext context) {
-//     final List<double> tempPoint = [];
-
-//     for (var dataPoint in controller.pointList) {
-//       final point = dataPoint['temperatura'];
-//       tempPoint.add(point);
-//     }
-
-//     final List<double> tappedPoint = [];
-
-//     for (var dataPoint in controller.pointList) {
-//       final point = dataPoint['humedad'];
-//       tappedPoint.add(point);
-//     }
-
-//     return LineChartSample1(
-//       humepoint: tappedPoint,
-//       temppoint: tempPoint,
-//     );
-//   }
-// }
