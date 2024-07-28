@@ -121,23 +121,20 @@ class DashboardComparisonPage extends GetView<DashboardComparisonController> {
 
 void generateCSV() {
   final excel = Excel.createExcel();
-
   Sheet sheet = excel['Sheet1'];
   CellStyle cellStyle = CellStyle(fontFamily: getFontFamily(FontFamily.Al_Nile));
   cellStyle.underline = Underline.Single;
-  sheet.appendRow(
-      [const TextCellValue('humedad'), const TextCellValue('temperatura'), const TextCellValue('latitude'), const TextCellValue('longitude'), const TextCellValue('altitude')]);
+  sheet.appendRow([const TextCellValue('humedad'),const TextCellValue('temperatura'),const TextCellValue('latitude'),const TextCellValue('longitude'),const TextCellValue('altitude')]);
 
   final controller = Get.find<DashboardComparisonController>();
-  for (var dataPoint in controller.rutas) {
-    //final point = dataPoint['humedad'];
-    //final temp = dataPoint['temperatura'];
-    //final lat = dataPoint['latitude'];
-    //final long = dataPoint['longitude'];
-    //final alt = dataPoint['altitude'];
-    //sheet.appendRow([IntCellValue(point),DoubleCellValue(temp), DoubleCellValue(lat), DoubleCellValue(long), DoubleCellValue(alt)]);
+  for (var ruta in controller.rutas) {
+    sheet.appendRow([const TextCellValue('humedad'),const TextCellValue('temperatura'),const TextCellValue('latitude'),const TextCellValue('longitude'),const TextCellValue('altitude')]);
+    for (var dataPoint in ruta['dataList']){
+      print(dataPoint);
+      sheet.appendRow([IntCellValue(dataPoint['humedad']),DoubleCellValue(dataPoint['temperatura']), DoubleCellValue(dataPoint['latitude']), DoubleCellValue(dataPoint['longitude']), DoubleCellValue(dataPoint['altitude'])]);
+    }
   }
-  excel.save(fileName: 'dataProyectIotTelematic.xlsx');
+  excel.save(fileName: 'dataProyectIotTelematicRutas.xlsx');
 }
 
 class TempHumeGraph extends StatelessWidget {
@@ -151,48 +148,40 @@ class TempHumeGraph extends StatelessWidget {
 
     String rutid = "rutaid";
     String temp = "temp";
-
     for (var ruta in rutasList) {
-      //print(ruta);
       final List<dynamic> templist = [];
-
+      
       for (var dataPoint in ruta['dataList']) {
         templist.add(dataPoint["temperatura"]);
-        print(dataPoint);
-        print(dataPoint["temperatura"]);
       }
-      // for (int i = 0 ; i < dataPoint["temperatura"].len; i++){
-      print(ruta);
+      if(templist.length>=4){
+        List valore = [];
+        for( var i = 0; i<= 4; i++){  
+          valore.add(templist[i]);
+        }
+        var suma = valore.reduce((a, b) => a + b);
+        rutas.add({rutid: ruta["id"],temp: suma.toStringAsFixed(1)});
+      }
+      else {
+        List valore = [];
+        for( var i = 0; i<= templist.length; i++){  
+          valore.add(templist[i]);
+        }
+        var suma = valore.reduce((a, b) => a + b);
+        rutas.add({rutid: ruta["id"],temp: suma.toStringAsFixed(1)});
+
+      }
+      // List valore = [];
+      // for( var i = 0; i<= 4; i++){  
+      //   valore.add(templist[i]);
       // }
-      //rutas.add({rutid: ruta["id"],temp: templist});
+      // print(valore);
+      // print(templist);
+      // var suma = templist.reduce((a, b) => a + b);
+      // rutas.add({rutid: ruta["id"],temp: suma.toStringAsFixed(1)});
+      // print(ruta);
     }
-    print(rutas);
-    return BarChartSample2(
-      rutastemp: rutas,
-    );
+    //print(rutas);
+    return BarChartSample3Temp(namegraph: "Temperatura Promedio",tappedPoints: rutas,);
   }
 }
-// class _DashboardtemphumState extends State<Dashboardtemphum> {
-//   final controller = Get.find<DashboardPageController>();
-//   @override
-//   Widget build(BuildContext context) {
-//     final List<double> tempPoint = [];
-
-//     for (var dataPoint in controller.pointList) {
-//       final point = dataPoint['temperatura'];
-//       tempPoint.add(point);
-//     }
-
-//     final List<double> tappedPoint = [];
-
-//     for (var dataPoint in controller.pointList) {
-//       final point = dataPoint['humedad'];
-//       tappedPoint.add(point);
-//     }
-
-//     return LineChartSample1(
-//       humepoint: tappedPoint,
-//       temppoint: tempPoint,
-//     );
-//   }
-// }
