@@ -2,7 +2,7 @@ import 'package:excel/excel.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:temperature_map/app/data/models/datapoint.dart';
-// import 'package:temperature_map/app/pages/comparison/dashboard_comparison/componentes/temprutas.dart';
+import 'package:temperature_map/app/pages/comparison/dashboard_comparison/componentes/temprutas.dart';
 import 'package:temperature_map/app/widgets/empty_error_views.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:temperature_map/app/pages/comparison/dashboard_comparison/controller.dart';
@@ -148,12 +148,14 @@ class TempHumeGraph extends StatelessWidget {
   Widget build(BuildContext context) {
     final List<Map<String, dynamic>> rutasList = controller.rutas;
     final List<Map<String, dynamic>> rutas = [];
-    final List<dynamic> templist = [];
+
     String rutid = "rutaid";
     String temp = "temp";
+
     for (var ruta in rutasList) {
       //print(ruta);
-      rutas.add({rutid: ruta["id"], temp: templist});
+      final List<dynamic> templist = [];
+
       for (var dataPoint in ruta['dataList']) {
         templist.add(dataPoint["temperatura"]);
         print(dataPoint);
@@ -165,8 +167,9 @@ class TempHumeGraph extends StatelessWidget {
       //rutas.add({rutid: ruta["id"],temp: templist});
     }
     print(rutas);
-    // return BarChartSample2(rutastemp: rutas,);
-    return SizedBox.shrink();
+    return BarChartSample2(
+      rutastemp: rutas,
+    );
   }
 }
 // class _DashboardtemphumState extends State<Dashboardtemphum> {
