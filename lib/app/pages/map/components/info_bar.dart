@@ -152,7 +152,7 @@ class _MyPercentWidgetState extends State<MyPercentWidget> {
                         lineWidth: 10,
                         percent: widget.tempPromedio / 100,
                         center: Text(
-                          "${widget.tempPromedio}",
+                          widget.tempPromedio.toStringAsFixed(2),
                           style: const TextStyle(
                             fontSize: 24,
                             fontWeight: FontWeight.bold,
@@ -247,7 +247,7 @@ class DataPointTile extends StatelessWidget {
                   ],
                 ),
                 AnimatedContainer(
-                  height: (controller.selectedPointID == point['id']) ? 130 : 0,
+                  height: (controller.selectedPointID == point['id']) ? 165 : 0,
                   duration: const Duration(milliseconds: 500),
                   curve: Curves.fastOutSlowIn,
                   child: (controller.selectedPointID == point['id'])
@@ -296,16 +296,26 @@ class _MyPointInfoState extends State<MyPointInfo> {
             ),
             const SizedBox(height: 8),
             PointParamTag(
-              label: '(${widget.point['latitude']}, ${widget.point['longitude']})',
-              icon: MdiIcons.mapMarker,
+              boldLabel: 'Alt: ',
+              label: '${widget.point['altitude']}',
+              icon: MdiIcons.imageFilterHdr,
+              color: const Color(0xff7179DB),
+              width: 10,
+            ),
+            const SizedBox(height: 8),
+            PointParamTag(
+              boldLabel: 'Lat: ',
+              label: '${widget.point['latitude']}',
+              icon: MdiIcons.latitude,
               color: const Color(0xffF9DB81),
               width: 10,
             ),
             const SizedBox(height: 8),
             PointParamTag(
-              label: '${widget.point['altitude']}',
-              icon: MdiIcons.imageFilterHdr,
-              color: const Color(0xff7179DB),
+              boldLabel: 'Long: ',
+              label: '${widget.point['longitude']}',
+              icon: MdiIcons.longitude,
+              color: const Color(0xffF9DB81),
               width: 10,
             ),
           ],

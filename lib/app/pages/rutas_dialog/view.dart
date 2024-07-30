@@ -49,7 +49,9 @@ class RutasDialog extends GetView<RutasController> {
                             ),
                             const SizedBox(width: 10),
                             IconButton(
-                              onPressed: () {},
+                              onPressed: () {
+                                controller.rutas;
+                              },
                               icon: Icon(MdiIcons.magnify),
                             ),
                           ],
@@ -59,17 +61,42 @@ class RutasDialog extends GetView<RutasController> {
                       Expanded(
                         child: SingleChildScrollView(
                           child: Column(
-                            children: controller.rutas.map(
-                              (r) {
-                                return RouteWidget(
-                                  maxWidth: constraints.maxWidth,
-                                  route: r,
-                                );
-                              },
-                            ).toList(),
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: (controller.rutas.isEmpty)
+                                ? [
+                                    const SizedBox(height: 40),
+                                    Icon(
+                                      MdiIcons.mapMarkerRemove,
+                                      size: 150,
+                                      color: const Color(0xFF7179DB),
+                                    ),
+                                    const SizedBox(height: 40),
+                                    Container(
+                                      width: 480,
+                                      padding: const EdgeInsets.symmetric(
+                                        vertical: 15,
+                                        horizontal: 10,
+                                      ),
+                                      child: const Text(
+                                        'No se encontraron rutas realizadas después de la fecha seleccionada. Por favor, elija una fecha diferente.',
+                                        textAlign: TextAlign.center,
+                                        style: TextStyle(fontSize: 18),
+                                      ),
+                                    ),
+                                  ]
+                                : controller.rutas.map(
+                                    (r) {
+                                      return RouteWidget(
+                                        key: UniqueKey(),
+                                        maxWidth: constraints.maxWidth,
+                                        route: r,
+                                      );
+                                    },
+                                  ).toList(),
                           ),
                         ),
                       ),
+                      //Botones de selección si es multi selección
                       if (controller.multiSelect)
                         Container(
                           margin: const EdgeInsets.only(top: 10),
@@ -132,6 +159,7 @@ class DateFieldPicker extends StatelessWidget {
         suffix: IconButton(
           onPressed: () {
             controller.textController.clear();
+            controller.rutas;
           },
           icon: Icon(MdiIcons.closeCircle),
         ),

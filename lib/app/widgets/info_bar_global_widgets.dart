@@ -5,12 +5,14 @@ class PointParamTag extends StatelessWidget {
   final IconData icon;
   final Color color;
   final double? width;
+  final String? boldLabel;
   const PointParamTag({
     super.key,
     required this.label,
     required this.icon,
     required this.color,
     this.width,
+    this.boldLabel,
   });
 
   @override
@@ -23,7 +25,21 @@ class PointParamTag extends StatelessWidget {
           color: color,
         ),
         SizedBox(width: width ?? 0),
-        Text(label),
+        if (boldLabel != null)
+          Text.rich(
+            TextSpan(
+              text: boldLabel,
+              style: const TextStyle(fontWeight: FontWeight.bold),
+              children: [
+                TextSpan(
+                  text: label,
+                  style: const TextStyle(fontWeight: FontWeight.normal),
+                ),
+              ],
+            ),
+          )
+        else
+          Text(label),
       ],
     );
   }

@@ -9,13 +9,60 @@ class RutasController extends GetxController {
   final _rutas = <Map<String, dynamic>>[].obs;
 
   bool get loading => _loading.value;
-  List<Map<String, dynamic>> get rutas => [..._rutas];
+  List<Map<String, dynamic>> get rutas {
+    _loading.value = true;
 
+    if (textController.text.isNotEmpty) {
+      //Lista de rutas filtradas
+      List<Map<String, dynamic>> filterRoutes = [];
+
+      //Fecha seleccionada
+      String datePickedStr = textController.text;
+      DateTime datePicked = DateTime.parse(datePickedStr);
+
+      for (var ruta in _rutas) {
+        final routeInitDate = ruta['dataList'].first['timestamp'];
+        if (datePicked.isBefore(routeInitDate)) {
+          filterRoutes.add(ruta);
+        }
+      }
+      _loading.value = false;
+      return filterRoutes;
+    } else {
+      _loading.value = false;
+      return [..._rutas];
+    }
+  }
+
+  //Multiselect
   bool multiSelect = false;
   RxList<Map<String, dynamic>> selectKeyList = <Map<String, dynamic>>[].obs;
 
   //Database
   final database = FirebaseDatabase.instance;
+
+  //Filtro por fechas
+  TextEditingController textController = TextEditingController();
+
+  ///Abre un cuadro de diálogo con un calendario para elegir una fecha
+  Future<void> selectDate(BuildContext context) async {
+    DateTime? picked = await showDatePicker(
+      context: context,
+      initialDate: DateTime.now(),
+      firstDate: DateTime(2000),
+      lastDate: DateTime.now(),
+      errorFormatText: 'Formato Inválido',
+      helpText: 'Fecha',
+      confirmText: 'Confirmar',
+      cancelText: 'Cancelar',
+      fieldHintText: 'Fecha',
+      fieldLabelText: 'Fecha (DD/MM/AAAA)',
+    );
+
+    if (picked != null) {
+      textController.text = picked.toString().split(' ').first;
+    }
+  }
 
   ///Obtener las rutas desde la base de datos en Firebase
   void fetchRecords() async {
@@ -134,27 +181,6 @@ class RutasController extends GetxController {
       }
     } else {
       goToMap(route: route);
-    }
-  }
-
-  TextEditingController textController = TextEditingController();
-
-  Future<void> selectDate(BuildContext context) async {
-    DateTime? picked = await showDatePicker(
-      context: context,
-      initialDate: DateTime.now(),
-      firstDate: DateTime(2000),
-      lastDate: DateTime.now(),
-      errorFormatText: 'Formato Inválido',
-      helpText: 'Fecha',
-      confirmText: 'Confirmar',
-      cancelText: 'Cancelar',
-      fieldHintText: 'Fecha',
-      fieldLabelText: 'Fecha (DD/MM/AAAA)',
-    );
-
-    if (picked != null) {
-      textController.text = picked.toString().split(' ').first;
     }
   }
 }
