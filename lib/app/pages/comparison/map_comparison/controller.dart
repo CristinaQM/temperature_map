@@ -23,7 +23,7 @@ class MapComparisonController extends GetxController {
 
   MapController mapController = MapController();
 
-  void newCenter({Map<String, dynamic>? miRuta}) {
+  void newCenter({Map<String, dynamic>? miRuta, Map<String, dynamic>? miPoint}) {
     if (miRuta == null) {
       final currentPointID = rutaActual['id'];
       final currentPointIdx = rutas.indexOf(
@@ -47,10 +47,15 @@ class MapComparisonController extends GetxController {
       );
     } else {
       rutaActual.value = miRuta;
-      mapController.move(
-        miRuta['dataList'].first['latlng'],
-        18,
-      );
+      if (miPoint != null) {
+        mapController.move(miPoint['latlng'], 20);
+      } else {
+        selectedPoint.clear();
+        mapController.move(
+          miRuta['dataList'].first['latlng'],
+          18,
+        );
+      }
     }
   }
 
@@ -117,4 +122,15 @@ class MapComparisonController extends GetxController {
 
     fetchRecords();
   }
+
+  // void newCenter(int pointID) {
+  //   for (var point in pointList) {
+  //     if (point['id'] == pointID) {
+  //       mapController.move(
+  //         point['latlng'],
+  //         20,
+  //       );
+  //     }
+  //   }
+  // }
 }

@@ -100,9 +100,11 @@ class RutasController extends GetxController {
           final dateTime = DateTime.parse(list[i]['timestamp']);
           list[i]['timestamp'] = dateTime;
         }
-        routeMap['dataList'] = list;
 
-        _rutas.add(routeMap);
+        if (list.isNotEmpty) {
+          routeMap['dataList'] = list;
+          _rutas.add(routeMap);
+        }
       }
 
       _rutas.sort((a, b) {

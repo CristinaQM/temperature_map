@@ -133,47 +133,59 @@ class _MyPercentWidgetState extends State<MyPercentWidget> {
 
           setState(() {});
         },
-        child: AnimatedContainer(
-          height: (isExpanded) ? 150 : 20,
-          duration: const Duration(milliseconds: 250),
-          child: (isExpanded)
-              ? SingleChildScrollView(
-                  child: Column(
-                    children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.end,
+        child: Column(
+          children: [
+            Row(
+              children: [
+                const Expanded(
+                  child: SizedBox(
+                    child: Text(
+                      'Temperatura Promedio',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
+                ),
+                Icon((isExpanded) ? MdiIcons.chevronUp : MdiIcons.chevronDown),
+              ],
+            ),
+            AnimatedContainer(
+              height: (isExpanded) ? 140 : 0,
+              duration: const Duration(milliseconds: 250),
+              child: (isExpanded)
+                  ? SingleChildScrollView(
+                      child: Column(
                         children: [
-                          Icon(MdiIcons.chevronDown),
+                          Padding(
+                            padding: const EdgeInsets.only(top: 10),
+                            child: CircularPercentIndicator(
+                              radius: 60,
+                              animation: true,
+                              lineWidth: 10,
+                              percent: widget.tempPromedio / 100,
+                              center: Text(
+                                '${widget.tempPromedio.toStringAsFixed(2)} °C',
+                                style: const TextStyle(
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                              progressColor: (widget.tempPromedio >= altaTemperatura)
+                                  ? altoColor
+                                  : (widget.tempPromedio > maxTempAmbiente)
+                                      ? medioColor
+                                      : bajoColor,
+                              circularStrokeCap: CircularStrokeCap.round,
+                            ),
+                          ),
                         ],
                       ),
-                      CircularPercentIndicator(
-                        radius: 60,
-                        animation: true,
-                        lineWidth: 10,
-                        percent: widget.tempPromedio / 100,
-                        center: Text(
-                          widget.tempPromedio.toStringAsFixed(2),
-                          style: const TextStyle(
-                            fontSize: 24,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                        progressColor: (widget.tempPromedio >= altaTemperatura)
-                            ? altoColor
-                            : (widget.tempPromedio > maxTempAmbiente)
-                                ? medioColor
-                                : bajoColor,
-                        circularStrokeCap: CircularStrokeCap.round,
-                      ),
-                    ],
-                  ),
-                )
-              : Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
-                    Icon(MdiIcons.chevronUp),
-                  ],
-                ),
+                    )
+                  : const SizedBox.shrink(),
+            ),
+          ],
         ),
       ),
     );

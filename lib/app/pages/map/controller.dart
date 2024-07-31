@@ -79,7 +79,7 @@ class MapPageController extends GetxController {
       if (point['id'] == pointID) {
         mapController.move(
           point['latlng'],
-          18,
+          20,
         );
       }
     }
