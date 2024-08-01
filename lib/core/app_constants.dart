@@ -25,10 +25,26 @@ const Color bajoStrokeColor = Color.fromARGB(255, 31, 148, 88);
 const List<Color> myColorsList = [
   Color(0xFF7179DB),
   Color(0xFF6FD6CD),
-  Color(0xFFADE29B),
+  Color(0xFF80E488),
   Color(0xFFE880A9),
   Color(0xFFF6907A),
   Color(0xFFF9DB81),
+  Color(0xFFB2A7E5),
+  Color(0xFF58A19A),
+  Color(0xFFA4EAB0),
+  Color(0xFFF0A6BF),
+  Color(0xFFC76A57),
+  Color(0xFFD9B655),
 ];
+
+Color getColorbyIndex(int index) {
+  late Color myColor;
+  for (var i = 0; i < myColorsList.length; i++) {
+    if (i == index) {
+      myColor = myColorsList[i];
+    }
+  }
+  return myColor;
+}
 
 const myPurple = Color(0xFF766ED1);

@@ -100,7 +100,7 @@ class MyLineChart extends StatelessWidget {
     for (var i = 0; i < controller.rutas.length; i++) {
       final lineChartBarData = LineChartBarData(
         isCurved: true,
-        color: myColorsList[i],
+        color: getColorbyIndex(i),
         barWidth: 8,
         isStrokeCapRound: true,
         dotData: const FlDotData(show: false),
@@ -189,33 +189,32 @@ class MyTemperatureLineChart extends StatefulWidget {
 class MyTemperatureLineChartState extends State<MyTemperatureLineChart> {
   @override
   Widget build(BuildContext context) {
-    return Stack(
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            const Text(
-              'Comparativa de Temperaturas por Ruta',
-              style: TextStyle(
-                color: myPurple,
-                fontSize: 32,
-                fontWeight: FontWeight.bold,
-                letterSpacing: 2,
-              ),
-              textAlign: TextAlign.center,
+        const Text(
+          'Comparativa de Temperaturas por Ruta',
+          style: TextStyle(
+            color: myPurple,
+            fontSize: 32,
+            fontWeight: FontWeight.bold,
+            letterSpacing: 2,
+          ),
+          textAlign: TextAlign.center,
+        ),
+        const SizedBox(
+          height: 37,
+        ),
+        Expanded(
+          child: Padding(
+            padding: const EdgeInsets.only(right: 16, left: 6),
+            child: MyLineChart(
+              maxWidth: widget.maxWidth,
             ),
-            const SizedBox(
-              height: 37,
-            ),
-            Expanded(
-              child: Padding(
-                padding: const EdgeInsets.only(right: 16, left: 6),
-                child: MyLineChart(
-                  maxWidth: widget.maxWidth,
-                ),
-              ),
-            ),
-          ],
+          ),
+        ),
+        const SizedBox(
+          height: 20,
         ),
       ],
     );
