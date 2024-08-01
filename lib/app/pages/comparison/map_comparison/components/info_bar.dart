@@ -197,7 +197,7 @@ class _PointDataTile extends StatelessWidget {
             final Map<String, dynamic> pointMap = {...point};
             pointMap['rutaID'] = ruta['id'];
             controller.selectedPoint.value = pointMap;
-            controller.newCenter(miRuta: ruta);
+            controller.newCenter(miRuta: ruta, miPoint: pointMap, move: true);
           }
         },
         child: Obx(

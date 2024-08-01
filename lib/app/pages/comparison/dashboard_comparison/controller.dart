@@ -1,3 +1,4 @@
+import 'package:excel/excel.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:get/get.dart';
 import 'package:temperature_map/core/app_constants.dart';
@@ -77,5 +78,30 @@ class DashboardComparisonController extends GetxController {
     super.onReady();
 
     fetchRecords();
+  }
+
+  void generateCSV() {
+    final excel = Excel.createExcel();
+    Sheet sheet = excel['Sheet1'];
+    CellStyle cellStyle = CellStyle(fontFamily: getFontFamily(FontFamily.Al_Nile));
+    cellStyle.underline = Underline.Single;
+    sheet.appendRow(
+        [const TextCellValue('humedad'), const TextCellValue('temperatura'), const TextCellValue('latitude'), const TextCellValue('longitude'), const TextCellValue('altitude')]);
+
+    final controller = Get.find<DashboardComparisonController>();
+    for (var ruta in controller.rutas) {
+      sheet.appendRow(
+          [const TextCellValue('humedad'), const TextCellValue('temperatura'), const TextCellValue('latitude'), const TextCellValue('longitude'), const TextCellValue('altitude')]);
+      for (var dataPoint in ruta['dataList']) {
+        sheet.appendRow([
+          IntCellValue(dataPoint['humedad']),
+          DoubleCellValue(dataPoint['temperatura']),
+          DoubleCellValue(dataPoint['latitude']),
+          DoubleCellValue(dataPoint['longitude']),
+          DoubleCellValue(dataPoint['altitude'])
+        ]);
+      }
+    }
+    excel.save(fileName: 'dataProyectIotTelematicRutas.xlsx');
   }
 }

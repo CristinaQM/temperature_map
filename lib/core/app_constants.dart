@@ -21,3 +21,14 @@ const Color bajoColor = Color(0xFF41F388);
 const Color altoStrokeColor = Color.fromARGB(255, 179, 52, 42);
 const Color medioStrokeColor = Color.fromARGB(255, 216, 154, 31);
 const Color bajoStrokeColor = Color.fromARGB(255, 31, 148, 88);
+
+const List<Color> myColorsList = [
+  Color(0xFF7179DB),
+  Color(0xFF6FD6CD),
+  Color(0xFFADE29B),
+  Color(0xFFE880A9),
+  Color(0xFFF6907A),
+  Color(0xFFF9DB81),
+];
+
+const myPurple = Color(0xFF766ED1);

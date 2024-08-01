@@ -225,7 +225,7 @@ class _DataPointWidget extends StatelessWidget {
             final Map<String, dynamic> pointMap = {...dataPoint};
             pointMap['rutaID'] = ruta['id'];
             controller.selectedPoint.value = pointMap;
-            controller.newCenter(miRuta: ruta);
+            controller.newCenter(miRuta: ruta, miPoint: pointMap);
           }
         },
         child: Obx(
