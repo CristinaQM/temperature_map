@@ -18,19 +18,19 @@ const Color altoColor = Color(0xFFFC5B4F);
 const Color medioColor = Color(0xFFFFD24A);
 const Color bajoColor = Color(0xFF41F388);
 
-const Color altoStrokeColor = Color.fromARGB(255, 179, 52, 42);
-const Color medioStrokeColor = Color.fromARGB(255, 216, 154, 31);
-const Color bajoStrokeColor = Color.fromARGB(255, 31, 148, 88);
+const Color altoStrokeColor = Color(0xFFB3342A);
+const Color medioStrokeColor = Color(0xFFD89A1F);
+const Color bajoStrokeColor = Color(0xFF1F9458);
 
 const List<Color> myColorsList = [
   Color(0xFF7179DB),
   Color(0xFF6FD6CD),
-  Color(0xFF80E488),
-  Color(0xFFE880A9),
-  Color(0xFFF6907A),
   Color(0xFFF9DB81),
-  Color(0xFFB2A7E5),
-  Color(0xFF58A19A),
+  Color(0xFFF6907A),
+  Color(0xFFF7A2E3),
+  Color(0xFF80E488),
+  Color(0xFFD2CCED),
+  Color(0xFF83ECE2),
   Color(0xFFA4EAB0),
   Color(0xFFF0A6BF),
   Color(0xFFC76A57),
@@ -39,11 +39,14 @@ const List<Color> myColorsList = [
 
 Color getColorbyIndex(int index) {
   late Color myColor;
+  int myIndex = index % myColorsList.length;
+
   for (var i = 0; i < myColorsList.length; i++) {
-    if (i == index) {
+    if (i == myIndex) {
       myColor = myColorsList[i];
     }
   }
+
   return myColor;
 }
 

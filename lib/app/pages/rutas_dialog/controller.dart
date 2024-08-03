@@ -2,6 +2,7 @@ import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:temperature_map/core/app_constants.dart';
+import 'package:temperature_map/routes/pages.dart';
 
 class RutasController extends GetxController {
   //Obs
@@ -69,7 +70,7 @@ class RutasController extends GetxController {
     _loading.value = true;
 
     final parameter = Get.parameters['dataKey'];
-    if (Get.currentRoute != '/home' && parameter != null) {
+    if (Get.currentRoute != Routes.home && parameter != null) {
       multiSelect = true;
     }
 
@@ -82,36 +83,40 @@ class RutasController extends GetxController {
       final map = data[urlSrc];
 
       for (var ruta in map.entries) {
-        final Map<String, dynamic> routeMap = {};
+        if (ruta.value is List && ruta.value.length > 1) {
+          final Map<String, dynamic> routeMap = {};
 
-        routeMap['dataKey'] = ruta.key;
+          routeMap['dataKey'] = ruta.key;
 
-        //Points List
-        final List<dynamic> list = ruta.value;
-        list.removeWhere((item) => item == null);
-        list.removeWhere((item) => item['altitude'] == null);
-        list.removeWhere((item) => item['latitude'] == null);
-        list.removeWhere((item) => item['longitude'] == null);
-        list.removeWhere((item) => item['humedad'] == null);
-        list.removeWhere((item) => item['temperatura'] == null);
-        list.removeWhere((item) => item['timestamp'] == null);
-        for (var i = 0; i < list.length; i++) {
-          list[i].putIfAbsent('id', () => i);
-          final dateTime = DateTime.parse(list[i]['timestamp']);
-          list[i]['timestamp'] = dateTime;
-        }
+          //Points List
+          final List<dynamic> list = ruta.value;
+          list.removeWhere((item) => item == null);
+          list.removeWhere((item) => item['altitude'] == null);
+          list.removeWhere((item) => item['latitude'] == null);
+          list.removeWhere((item) => item['longitude'] == null);
+          list.removeWhere((item) => item['humedad'] == null);
+          list.removeWhere((item) => item['temperatura'] == null);
+          list.removeWhere((item) => item['timestamp'] == null);
+          for (var i = 0; i < list.length; i++) {
+            list[i].putIfAbsent('id', () => i);
+            final dateTime = DateTime.parse(list[i]['timestamp']);
+            list[i]['timestamp'] = dateTime;
+          }
 
-        if (list.isNotEmpty) {
-          routeMap['dataList'] = list;
-          _rutas.add(routeMap);
+          if (list.isNotEmpty) {
+            routeMap['dataList'] = list;
+            _rutas.add(routeMap);
+          }
         }
       }
 
-      _rutas.sort((a, b) {
-        final dta = a['dataList'].first['timestamp'];
-        final dtb = b['dataList'].first['timestamp'];
-        return (dta).compareTo(dtb);
-      });
+      _rutas.sort(
+        (a, b) {
+          final dta = a['dataList'].first['timestamp'];
+          final dtb = b['dataList'].first['timestamp'];
+          return (dta).compareTo(dtb);
+        },
+      );
 
       for (var i = 0; i < _rutas.length; i++) {
         final ruta = _rutas[i];
@@ -119,7 +124,7 @@ class RutasController extends GetxController {
         ruta['id'] = i + 1;
       }
 
-      if (Get.currentRoute != '/home' && parameter != null) {
+      if (Get.currentRoute != Routes.home && parameter != null) {
         final datakey = parameter.substring(0, 10);
         _rutas.removeWhere((ruta) => ruta['dataKey'] == datakey);
       }
@@ -139,7 +144,7 @@ class RutasController extends GetxController {
     //URL Parameter
     final parameter = Get.parameters['dataKey'];
 
-    if (Get.currentRoute != '/home' && parameter != null) {
+    if (Get.currentRoute != Routes.home && parameter != null) {
       //Nueva URL con todos los mapas seleccionados
       String newParam = '${parameter}_';
       final myLength = selectKeyList.length;
@@ -168,7 +173,7 @@ class RutasController extends GetxController {
     //URL Parameter
     final parameter = Get.parameters['dataKey'];
 
-    if (Get.currentRoute != '/home' && parameter != null) {
+    if (Get.currentRoute != Routes.home && parameter != null) {
       final dataKey = route['dataKey'];
 
       if (selectKeyList

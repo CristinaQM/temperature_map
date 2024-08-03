@@ -183,7 +183,7 @@ class RouteLineCard extends StatelessWidget {
               ),
               children: [
                 TextSpan(
-                  text: '${maxTemp['temperatura']}',
+                  text: '${maxTemp['temperatura']}°C',
                   style: const TextStyle(
                     fontWeight: FontWeight.normal,
                   ),
@@ -200,7 +200,7 @@ class RouteLineCard extends StatelessWidget {
               ),
               children: [
                 TextSpan(
-                  text: '${minTemp['temperatura']}',
+                  text: '${minTemp['temperatura']}°C',
                   style: const TextStyle(
                     fontWeight: FontWeight.normal,
                   ),
