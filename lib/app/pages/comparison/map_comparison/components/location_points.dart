@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:temperature_map/app/pages/comparison/map_comparison/controller.dart';
+import 'package:temperature_map/app/widgets/temp_color_info.dart';
 
 import 'package:temperature_map/core/app_constants.dart';
 
@@ -146,6 +147,11 @@ class _MapComparisonPolylineState extends State<MapComparisonPolyline> {
             ),
           ),
         ),
+        const Positioned(
+          top: 130,
+          right: 30,
+          child: TempColorInfoBox(),
+        ),
         Positioned(
           bottom: 20,
           right: 20,
@@ -208,17 +214,11 @@ class _DataPointWidget extends StatelessWidget {
     final id = dataPoint['id'];
     final temp = dataPoint['temperatura'];
 
-    final markerColor = (temp >= altaTemperatura)
-        ? altoColor
-        : (temp > maxTempAmbiente)
-            ? medioColor
-            : bajoColor;
-
     return MouseRegion(
       cursor: SystemMouseCursors.click,
       child: Tooltip(
         waitDuration: const Duration(milliseconds: 500),
-        message: '$temp °C',
+        message: '$temp°C',
         decoration: BoxDecoration(
           color: myPurple.withOpacity(0.8),
           borderRadius: BorderRadius.circular(5),
@@ -240,8 +240,8 @@ class _DataPointWidget extends StatelessWidget {
                 color: getStrongColorbyIndex(index),
                 borderRadius: BorderRadius.circular(100),
                 border: Border.all(
-                  color: (controller.selectedPoint['id'] == id && controller.rutaActual['id'] == ruta['id']) ? const Color(0xff766ED1) : markerColor,
-                  width: (controller.selectedPoint['id'] == id && controller.rutaActual['id'] == ruta['id']) ? 4 : 4,
+                  color: (controller.selectedPoint['id'] == id && controller.rutaActual['id'] == ruta['id']) ? const Color(0xff766ED1) : Colors.white,
+                  width: (controller.selectedPoint['id'] == id && controller.rutaActual['id'] == ruta['id']) ? 4 : 2,
                 ),
               ),
               child: Center(

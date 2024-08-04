@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
+import 'package:temperature_map/app/pages/comparison/dashboard_comparison/componentes/humidity_linechart.dart';
 import 'package:temperature_map/app/pages/comparison/dashboard_comparison/componentes/temperature_linechart.dart';
 import 'package:temperature_map/app/widgets/empty_error_views.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
@@ -75,7 +76,7 @@ class DashboardComparisonPage extends GetView<DashboardComparisonController> {
                         ],
                       ),
                       const Text(
-                        'Comparativa de Temperaturas por Ruta',
+                        'Comparativa de Temperatura (°C) por Ruta',
                         style: TextStyle(
                           color: myPurple,
                           fontSize: 32,
@@ -136,6 +137,81 @@ class DashboardComparisonPage extends GetView<DashboardComparisonController> {
                                 (ruta) => RouteLineCard(
                                   index: ruta.key,
                                   ruta: ruta.value,
+                                  lineInfoType: LineInfoType.temperature,
+                                ),
+                              )
+                              .toList(),
+                        ),
+                      ),
+                      const SizedBox(height: 30),
+                      Divider(
+                        color: myPurple.withOpacity(0.5),
+                        thickness: 5,
+                      ),
+                      const SizedBox(height: 30),
+                      const Text(
+                        'Comparativa de Humedad (%) por Ruta',
+                        style: TextStyle(
+                          color: myPurple,
+                          fontSize: 32,
+                          fontWeight: FontWeight.bold,
+                          letterSpacing: 2,
+                        ),
+                        textAlign: TextAlign.center,
+                      ),
+                      const SizedBox(height: 30),
+                      Container(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 25,
+                          vertical: 20,
+                        ),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(10),
+                          color: Colors.white,
+                          boxShadow: [
+                            BoxShadow(
+                              color: myPurple.withOpacity(0.5),
+                              offset: const Offset(1.0, 0.0),
+                              blurRadius: 6.0,
+                            ),
+                          ],
+                        ),
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            SizedBox(
+                              height: 500,
+                              width: 1400,
+                              child: MyHumidityLineChart(
+                                maxWidth: constraints.maxWidth,
+                              ),
+                            ),
+                            const SizedBox(height: 10),
+                            const Text(
+                              'Puntos Censados',
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 14,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      const SizedBox(height: 25),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 8),
+                        child: Wrap(
+                          spacing: 10,
+                          runSpacing: 10,
+                          alignment: WrapAlignment.center,
+                          children: controller.rutas
+                              .asMap()
+                              .entries
+                              .map<Widget>(
+                                (ruta) => RouteLineCard(
+                                  index: ruta.key,
+                                  ruta: ruta.value,
+                                  lineInfoType: LineInfoType.humidity,
                                 ),
                               )
                               .toList(),
@@ -287,28 +363,54 @@ class _RouteTempCircle extends StatelessWidget {
   }
 }
 
+enum LineInfoType {
+  temperature,
+  humidity,
+}
+
 class RouteLineCard extends StatelessWidget {
   final int index;
   final Map<String, dynamic> ruta;
+  final LineInfoType lineInfoType;
   const RouteLineCard({
     super.key,
     required this.index,
     required this.ruta,
+    required this.lineInfoType,
   });
 
   @override
   Widget build(BuildContext context) {
     final List<dynamic> dataList = [...ruta['dataList']];
-    dataList.sort(
-      (a, b) {
-        final ta = a['temperatura'];
-        final tb = b['temperatura'];
+    final isTemp = lineInfoType == LineInfoType.temperature;
 
-        return ta.compareTo(tb);
-      },
-    );
-    final maxTemp = dataList.last;
-    final minTemp = dataList.first;
+    if (isTemp) {
+      dataList.sort(
+        (a, b) {
+          final ta = a['temperatura'];
+          final tb = b['temperatura'];
+
+          return ta.compareTo(tb);
+        },
+      );
+    } else {
+      dataList.sort(
+        (a, b) {
+          final ta = a['humedad'];
+          final tb = b['humedad'];
+
+          return ta.compareTo(tb);
+        },
+      );
+    }
+
+    final dataLabel = (isTemp) ? 'T.' : 'H.';
+
+    final maxValue = dataList.last;
+    final minValue = dataList.first;
+
+    final maxLabel = (isTemp) ? '${maxValue['temperatura']}°C' : '${maxValue['humedad']}%';
+    final minLabel = (isTemp) ? '${minValue['temperatura']}°C' : '${minValue['humedad']}%';
 
     return Container(
       width: 150,
@@ -353,13 +455,13 @@ class RouteLineCard extends StatelessWidget {
           ),
           Text.rich(
             TextSpan(
-              text: 'T. Max: ',
+              text: '$dataLabel Max: ',
               style: const TextStyle(
                 fontWeight: FontWeight.bold,
               ),
               children: [
                 TextSpan(
-                  text: '${maxTemp['temperatura']}°C',
+                  text: maxLabel,
                   style: const TextStyle(
                     fontWeight: FontWeight.normal,
                   ),
@@ -370,13 +472,13 @@ class RouteLineCard extends StatelessWidget {
           const SizedBox(height: 5),
           Text.rich(
             TextSpan(
-              text: 'T. Min: ',
+              text: '$dataLabel Min: ',
               style: const TextStyle(
                 fontWeight: FontWeight.bold,
               ),
               children: [
                 TextSpan(
-                  text: '${minTemp['temperatura']}°C',
+                  text: minLabel,
                   style: const TextStyle(
                     fontWeight: FontWeight.normal,
                   ),

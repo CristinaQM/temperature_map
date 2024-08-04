@@ -151,10 +151,10 @@ class _RutaExpansionTileState extends State<RutaExpansionTile> {
                             color: (controller.rutaActual['id'] == widget.ruta['id']) ? Colors.white : Colors.black,
                           ),
                         ),
-                        const SizedBox(width: 10),
+                        const SizedBox(width: 20),
                         Container(
-                          width: 20,
-                          height: 20,
+                          width: 18,
+                          height: 18,
                           decoration: BoxDecoration(
                             color: getStrongColorbyIndex(
                               widget.index,

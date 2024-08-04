@@ -3,6 +3,7 @@ import 'package:flutter_map/flutter_map.dart';
 import 'package:get/get.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:temperature_map/app/pages/map/controller.dart';
+import 'package:temperature_map/app/widgets/temp_color_info.dart';
 import 'package:temperature_map/core/app_constants.dart';
 
 class MapPagePolyline extends StatefulWidget {
@@ -37,35 +38,44 @@ class _MapPagePolylineState extends State<MapPagePolyline> {
         )
         .toList();
 
-    return FlutterMap(
-      mapController: controller.mapController,
-      options: MapOptions(
-        initialCenter: tappedPoints.first['latlng'],
-        initialZoom: 22,
-        maxZoom: 22,
-      ),
+    return Stack(
       children: [
-        TileLayer(
-          urlTemplate: urlTemplate,
-          fallbackUrl: urlTemplate,
-          additionalOptions: const {
-            'id': mapBoxStyleOutdoors,
-          },
-        ),
-        PolylineLayer(
-          polylines: [
-            Polyline(
-              points: tappedPoints
-                  .map<LatLng>(
-                    (e) => e['latlng'],
-                  )
-                  .toList(),
-              color: Colors.black,
-              strokeWidth: 10,
+        FlutterMap(
+          mapController: controller.mapController,
+          options: MapOptions(
+            initialCenter: tappedPoints.first['latlng'],
+            initialZoom: 18,
+            maxZoom: 22,
+          ),
+          children: [
+            TileLayer(
+              urlTemplate: urlTemplate,
+              fallbackUrl: urlTemplate,
+              additionalOptions: const {
+                'id': mapBoxStyleOutdoors,
+              },
             ),
+            PolylineLayer(
+              polylines: [
+                Polyline(
+                  points: tappedPoints
+                      .map<LatLng>(
+                        (e) => e['latlng'],
+                      )
+                      .toList(),
+                  color: Colors.black,
+                  strokeWidth: 10,
+                ),
+              ],
+            ),
+            MarkerLayer(markers: markers),
           ],
         ),
-        MarkerLayer(markers: markers),
+        const Positioned(
+          top: 30,
+          right: 30,
+          child: TempColorInfoBox(),
+        ),
       ],
     );
   }
@@ -99,30 +109,38 @@ class _DataPointWidget extends StatelessWidget {
     return Obx(
       () => MouseRegion(
         cursor: SystemMouseCursors.click,
-        child: GestureDetector(
-          onTap: () {
-            if (controller.selectedPointID == dataPoint['id']) {
-              controller.selectedPointID = 0;
-            } else {
-              controller.selectedPointID = dataPoint['id'];
-            }
-          },
-          child: Container(
-            decoration: BoxDecoration(
-              color: markerColor,
-              borderRadius: BorderRadius.circular(100),
-              border: Border.all(
-                color: (controller.selectedPointID == id) ? const Color(0xff766ED1) : borderColor,
-                width: (controller.selectedPointID == id) ? 4 : 2,
+        child: Tooltip(
+          waitDuration: const Duration(milliseconds: 500),
+          message: '$temp°C',
+          decoration: BoxDecoration(
+            color: myPurple.withOpacity(0.8),
+            borderRadius: BorderRadius.circular(5),
+          ),
+          child: GestureDetector(
+            onTap: () {
+              if (controller.selectedPointID == dataPoint['id']) {
+                controller.selectedPointID = 0;
+              } else {
+                controller.selectedPointID = dataPoint['id'];
+              }
+            },
+            child: Container(
+              decoration: BoxDecoration(
+                color: markerColor,
+                borderRadius: BorderRadius.circular(100),
+                border: Border.all(
+                  color: (controller.selectedPointID == id) ? const Color(0xff766ED1) : borderColor,
+                  width: (controller.selectedPointID == id) ? 4 : 2,
+                ),
               ),
-            ),
-            child: Center(
-              child: Text(
-                '$id',
-                style: const TextStyle(
-                  fontWeight: FontWeight.bold,
-                  color: Colors.white,
-                  fontSize: 15,
+              child: Center(
+                child: Text(
+                  '$id',
+                  style: const TextStyle(
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white,
+                    fontSize: 15,
+                  ),
                 ),
               ),
             ),
