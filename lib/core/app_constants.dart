@@ -11,8 +11,8 @@ const String mapBoxStyleDark = 'mapbox/dark-v11';
 
 const String urlSrc = 'sensorDataRe';
 
-const double altaTemperatura = 31;
-const double maxTempAmbiente = 27.9;
+const double altaTemperatura = 30;
+const double maxTempAmbiente = 26.9;
 
 const Color altoColor = Color(0xFFFC5B4F);
 const Color medioColor = Color(0xFFFFD24A);
@@ -22,8 +22,8 @@ const Color altoStrokeColor = Color(0xFFB3342A);
 const Color medioStrokeColor = Color(0xFFD89A1F);
 const Color bajoStrokeColor = Color(0xFF1F9458);
 
-const List<Color> myColorsList = [
-  Color(0xFF7179DB),
+const List<Color> myColorsListSoft = [
+  Color(0xFFACB3FF),
   Color(0xFF6FD6CD),
   Color(0xFFF9DB81),
   Color(0xFFF6907A),
@@ -37,13 +37,37 @@ const List<Color> myColorsList = [
   Color(0xFFD9B655),
 ];
 
-Color getColorbyIndex(int index) {
-  late Color myColor;
-  int myIndex = index % myColorsList.length;
+const List<Color> myColorsListStrong = [
+  Color(0xFF6C55B8),
+  Color(0xFF26C9AF),
+  Color(0xFFFC9B30),
+  Color(0xFFE22E85),
+  Color(0xFFD733DD),
+  Color(0xFFA233DD),
+  Color(0xFF465ADD),
+  Color(0xFF3BAEE2),
+];
 
-  for (var i = 0; i < myColorsList.length; i++) {
+Color getSoftColorbyIndex(int index) {
+  late Color myColor;
+  int myIndex = index % myColorsListSoft.length;
+
+  for (var i = 0; i < myColorsListSoft.length; i++) {
     if (i == myIndex) {
-      myColor = myColorsList[i];
+      myColor = myColorsListSoft[i];
+    }
+  }
+
+  return myColor;
+}
+
+Color getStrongColorbyIndex(int index) {
+  late Color myColor;
+  int myIndex = index % myColorsListStrong.length;
+
+  for (var i = 0; i < myColorsListStrong.length; i++) {
+    if (i == myIndex) {
+      myColor = myColorsListStrong[i];
     }
   }
 

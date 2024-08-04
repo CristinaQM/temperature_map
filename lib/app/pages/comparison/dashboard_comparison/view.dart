@@ -75,24 +75,6 @@ class DashboardComparisonPage extends GetView<DashboardComparisonController> {
                         ],
                       ),
                       const Text(
-                        'Temperatura Promedio por Ruta',
-                        style: TextStyle(
-                          color: myPurple,
-                          fontSize: 32,
-                          fontWeight: FontWeight.bold,
-                          letterSpacing: 2,
-                        ),
-                        textAlign: TextAlign.center,
-                      ),
-                      const SizedBox(height: 30),
-                      RoutesTempAvg(controller: controller),
-                      const SizedBox(height: 30),
-                      Divider(
-                        color: myPurple.withOpacity(0.5),
-                        thickness: 5,
-                      ),
-                      const SizedBox(height: 30),
-                      const Text(
                         'Comparativa de Temperaturas por Ruta',
                         style: TextStyle(
                           color: myPurple,
@@ -159,6 +141,25 @@ class DashboardComparisonPage extends GetView<DashboardComparisonController> {
                               .toList(),
                         ),
                       ),
+                      const SizedBox(height: 30),
+                      Divider(
+                        color: myPurple.withOpacity(0.5),
+                        thickness: 5,
+                      ),
+                      const SizedBox(height: 30),
+                      const Text(
+                        'Temperatura Promedio por Ruta',
+                        style: TextStyle(
+                          color: myPurple,
+                          fontSize: 32,
+                          fontWeight: FontWeight.bold,
+                          letterSpacing: 2,
+                        ),
+                        textAlign: TextAlign.center,
+                      ),
+                      const SizedBox(height: 30),
+                      RoutesTempAvg(controller: controller),
+                      const SizedBox(height: 30),
                     ],
                   ),
                 ),
@@ -251,7 +252,7 @@ class _RouteTempCircle extends StatelessWidget {
                   ),
                   const SizedBox(width: 10),
                   CircleAvatar(
-                    backgroundColor: getColorbyIndex(index),
+                    backgroundColor: getSoftColorbyIndex(index),
                     radius: 12,
                   ),
                 ],
@@ -337,7 +338,7 @@ class RouteLineCard extends StatelessWidget {
                 height: 20,
                 width: 20,
                 decoration: BoxDecoration(
-                  color: getColorbyIndex(index),
+                  color: getSoftColorbyIndex(index),
                   borderRadius: BorderRadius.circular(50),
                   border: Border.all(
                     color: Colors.white,

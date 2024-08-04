@@ -36,8 +36,10 @@ class _MapComparisonPolylineState extends State<MapComparisonPolyline> {
       }
     }
 
-    final List<Widget> markersLayers = rutasList.map<Widget>(
-      (ruta) {
+    final List<Widget> markersLayers = rutasList.asMap().entries.map<Widget>(
+      (entry) {
+        final int index = entry.key;
+        final ruta = entry.value;
         final List<dynamic> tappedPoints = ruta['dataList'];
         return MarkerLayer(
           markers: tappedPoints
@@ -47,6 +49,7 @@ class _MapComparisonPolylineState extends State<MapComparisonPolyline> {
                   child: _DataPointWidget(
                     dataPoint: dataPoint,
                     ruta: ruta,
+                    index: index,
                   ),
                 ),
               )
@@ -191,9 +194,11 @@ class _MapComparisonPolylineState extends State<MapComparisonPolyline> {
 class _DataPointWidget extends StatelessWidget {
   final dynamic ruta;
   final dynamic dataPoint;
+  final int index;
   const _DataPointWidget({
     required this.dataPoint,
     required this.ruta,
+    required this.index,
   });
 
   @override
@@ -209,42 +214,44 @@ class _DataPointWidget extends StatelessWidget {
             ? medioColor
             : bajoColor;
 
-    final borderColor = (temp >= altaTemperatura)
-        ? altoStrokeColor
-        : (temp > maxTempAmbiente)
-            ? medioStrokeColor
-            : bajoStrokeColor;
-
     return MouseRegion(
       cursor: SystemMouseCursors.click,
-      child: GestureDetector(
-        onTap: () {
-          if (controller.selectedPoint['id'] == id && controller.rutaActual['id'] == ruta['id']) {
-            controller.selectedPoint.clear();
-          } else {
-            final Map<String, dynamic> pointMap = {...dataPoint};
-            pointMap['rutaID'] = ruta['id'];
-            controller.selectedPoint.value = pointMap;
-            controller.newCenter(miRuta: ruta, miPoint: pointMap);
-          }
-        },
-        child: Obx(
-          () => Container(
-            decoration: BoxDecoration(
-              color: markerColor,
-              borderRadius: BorderRadius.circular(100),
-              border: Border.all(
-                color: (controller.selectedPoint['id'] == id && controller.rutaActual['id'] == ruta['id']) ? const Color(0xff766ED1) : borderColor,
-                width: (controller.selectedPoint['id'] == id && controller.rutaActual['id'] == ruta['id']) ? 4 : 2,
+      child: Tooltip(
+        waitDuration: const Duration(milliseconds: 500),
+        message: '$temp °C',
+        decoration: BoxDecoration(
+          color: myPurple.withOpacity(0.8),
+          borderRadius: BorderRadius.circular(5),
+        ),
+        child: GestureDetector(
+          onTap: () {
+            if (controller.selectedPoint['id'] == id && controller.rutaActual['id'] == ruta['id']) {
+              controller.selectedPoint.clear();
+            } else {
+              final Map<String, dynamic> pointMap = {...dataPoint};
+              pointMap['rutaID'] = ruta['id'];
+              controller.selectedPoint.value = pointMap;
+              controller.newCenter(miRuta: ruta, miPoint: pointMap);
+            }
+          },
+          child: Obx(
+            () => Container(
+              decoration: BoxDecoration(
+                color: getStrongColorbyIndex(index),
+                borderRadius: BorderRadius.circular(100),
+                border: Border.all(
+                  color: (controller.selectedPoint['id'] == id && controller.rutaActual['id'] == ruta['id']) ? const Color(0xff766ED1) : markerColor,
+                  width: (controller.selectedPoint['id'] == id && controller.rutaActual['id'] == ruta['id']) ? 4 : 4,
+                ),
               ),
-            ),
-            child: Center(
-              child: Text(
-                '$id',
-                style: const TextStyle(
-                  fontWeight: FontWeight.bold,
-                  color: Colors.white,
-                  fontSize: 15,
+              child: Center(
+                child: Text(
+                  '$id',
+                  style: const TextStyle(
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white,
+                    fontSize: 15,
+                  ),
                 ),
               ),
             ),

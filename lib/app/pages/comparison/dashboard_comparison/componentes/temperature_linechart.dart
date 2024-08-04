@@ -90,7 +90,7 @@ class MyLineChart extends StatelessWidget {
   LineTouchData get lineTouchData => LineTouchData(
         handleBuiltInTouches: true,
         touchTooltipData: LineTouchTooltipData(
-          getTooltipColor: (touchedSpot) => myPurple.withOpacity(0.70),
+          getTooltipColor: (touchedSpot) => myPurple.withOpacity(0.8),
         ),
       );
 
@@ -101,7 +101,7 @@ class MyLineChart extends StatelessWidget {
       final lineChartBarData = LineChartBarData(
         isCurved: true,
         curveSmoothness: 0,
-        color: getColorbyIndex(i),
+        color: getSoftColorbyIndex(i),
         barWidth: 4,
         dotData: const FlDotData(show: false),
         belowBarData: BarAreaData(show: false),

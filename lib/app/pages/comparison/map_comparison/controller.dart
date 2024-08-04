@@ -105,6 +105,8 @@ class MapComparisonController extends GetxController {
       }
     }
 
+    _rutas.sort((a, b) => (a['id']).compareTo(b['id']));
+
     _loading.value = false;
   }
 

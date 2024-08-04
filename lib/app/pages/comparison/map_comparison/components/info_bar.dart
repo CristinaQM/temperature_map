@@ -62,7 +62,10 @@ class MapComparisonBar extends StatelessWidget {
               itemBuilder: (context, idx) {
                 final ruta = controller.rutas[idx];
 
-                return RutaExpansionTile(ruta: ruta);
+                return RutaExpansionTile(
+                  ruta: ruta,
+                  index: idx,
+                );
               },
             ),
           ),
@@ -95,9 +98,11 @@ class RutaExpansionTile extends StatefulWidget {
   const RutaExpansionTile({
     super.key,
     required this.ruta,
+    required this.index,
   });
 
   final Map<String, dynamic> ruta;
+  final int index;
 
   @override
   State<RutaExpansionTile> createState() => _RutaExpansionTileState();
@@ -106,6 +111,14 @@ class RutaExpansionTile extends StatefulWidget {
 class _RutaExpansionTileState extends State<RutaExpansionTile> {
   final controller = Get.find<MapComparisonController>();
   bool isExpanded = false;
+  @override
+  void initState() {
+    super.initState();
+    if (controller.rutaActual['id'] == widget.ruta['id']) {
+      isExpanded = true;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -128,13 +141,34 @@ class _RutaExpansionTileState extends State<RutaExpansionTile> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text(
-                      'Ruta ${widget.ruta['id']}',
-                      style: TextStyle(
-                        fontWeight: FontWeight.w400,
-                        fontSize: 16,
-                        color: (controller.rutaActual['id'] == widget.ruta['id']) ? Colors.white : Colors.black,
-                      ),
+                    Row(
+                      children: [
+                        Text(
+                          'Ruta ${widget.ruta['id']}',
+                          style: TextStyle(
+                            fontWeight: FontWeight.w400,
+                            fontSize: 16,
+                            color: (controller.rutaActual['id'] == widget.ruta['id']) ? Colors.white : Colors.black,
+                          ),
+                        ),
+                        const SizedBox(width: 10),
+                        Container(
+                          width: 20,
+                          height: 20,
+                          decoration: BoxDecoration(
+                            color: getStrongColorbyIndex(
+                              widget.index,
+                            ),
+                            borderRadius: BorderRadius.circular(20),
+                            border: (controller.rutaActual['id'] == widget.ruta['id'])
+                                ? Border.all(
+                                    color: Colors.white,
+                                    width: 2,
+                                  )
+                                : null,
+                          ),
+                        ),
+                      ],
                     ),
                     Icon((isExpanded) ? MdiIcons.chevronUp : MdiIcons.chevronDown),
                   ],
@@ -203,7 +237,7 @@ class _PointDataTile extends StatelessWidget {
         child: Obx(
           () => Container(
             margin: const EdgeInsets.only(bottom: 10),
-            padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 5),
+            padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 8),
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(10),
               color: (controller.selectedPoint['id'] == point['id'] && controller.rutaActual['id'] == ruta['id'])
@@ -214,34 +248,108 @@ class _PointDataTile extends StatelessWidget {
                       0xffD8E7F8,
                     ),
             ),
-            child: Row(
+            child: Column(
               children: [
-                CircleAvatar(
-                  backgroundColor: color,
-                  radius: 13,
-                  child: Text(
-                    '${point['id']}',
-                    style: const TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 14,
+                Row(
+                  children: [
+                    CircleAvatar(
+                      backgroundColor: color,
+                      radius: 13,
+                      child: Text(
+                        '${point['id']}',
+                        style: const TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 14,
+                        ),
+                      ),
                     ),
-                  ),
+                    const SizedBox(width: 20),
+                    PointParamTag(
+                      label: '${point['temperatura']}°C',
+                      icon: MdiIcons.thermometer,
+                      color: const Color(0xFFFF9F31),
+                    ),
+                    const SizedBox(width: 20),
+                    PointParamTag(
+                      label: '${point['humedad']}%',
+                      icon: MdiIcons.waterPercent,
+                      color: const Color(0xFF3180FF),
+                    ),
+                  ],
                 ),
-                const SizedBox(width: 20),
-                PointParamTag(
-                  label: '${point['temperatura']}°C',
-                  icon: MdiIcons.thermometer,
-                  color: const Color(0xFFFF9F31),
-                ),
-                const SizedBox(width: 20),
-                PointParamTag(
-                  label: '${point['humedad']}%',
-                  icon: MdiIcons.waterPercent,
-                  color: const Color(0xFF3180FF),
+                AnimatedContainer(
+                  height: (controller.selectedPoint['id'] == point['id']) ? 165 : 0,
+                  duration: const Duration(milliseconds: 500),
+                  curve: Curves.fastOutSlowIn,
+                  child: (controller.selectedPoint['id'] == point['id'])
+                      ? MyPointInfo(
+                          point: point,
+                        )
+                      : const SizedBox.shrink(),
                 ),
               ],
             ),
           ),
+        ),
+      ),
+    );
+  }
+}
+
+class MyPointInfo extends StatefulWidget {
+  final dynamic point;
+  const MyPointInfo({
+    super.key,
+    required this.point,
+  });
+
+  @override
+  State<MyPointInfo> createState() => _MyPointInfoState();
+}
+
+class _MyPointInfoState extends State<MyPointInfo> {
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.symmetric(vertical: 10),
+      child: SingleChildScrollView(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Divider(
+              color: Colors.black.withOpacity(0.5),
+            ),
+            PointParamTag(
+              label: '${widget.point['timestamp']}',
+              icon: MdiIcons.calendarClock,
+              color: const Color(0xffF02B53),
+              width: 10,
+            ),
+            const SizedBox(height: 8),
+            PointParamTag(
+              boldLabel: 'Alt: ',
+              label: '${widget.point['altitude']}',
+              icon: MdiIcons.imageFilterHdr,
+              color: const Color(0xff7179DB),
+              width: 10,
+            ),
+            const SizedBox(height: 8),
+            PointParamTag(
+              boldLabel: 'Lat: ',
+              label: '${widget.point['latitude']}',
+              icon: MdiIcons.latitude,
+              color: const Color(0xffF9DB81),
+              width: 10,
+            ),
+            const SizedBox(height: 8),
+            PointParamTag(
+              boldLabel: 'Long: ',
+              label: '${widget.point['longitude']}',
+              icon: MdiIcons.longitude,
+              color: const Color(0xffF9DB81),
+              width: 10,
+            ),
+          ],
         ),
       ),
     );
