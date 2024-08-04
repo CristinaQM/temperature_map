@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:percent_indicator/circular_percent_indicator.dart';
 import 'package:temperature_map/app/pages/comparison/dashboard_comparison/componentes/temperature_linechart.dart';
 import 'package:temperature_map/app/widgets/empty_error_views.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
@@ -73,14 +74,73 @@ class DashboardComparisonPage extends GetView<DashboardComparisonController> {
                           ),
                         ],
                       ),
+                      const Text(
+                        'Temperatura Promedio por Ruta',
+                        style: TextStyle(
+                          color: myPurple,
+                          fontSize: 32,
+                          fontWeight: FontWeight.bold,
+                          letterSpacing: 2,
+                        ),
+                        textAlign: TextAlign.center,
+                      ),
+                      const SizedBox(height: 30),
+                      RoutesTempAvg(controller: controller),
+                      const SizedBox(height: 30),
+                      Divider(
+                        color: myPurple.withOpacity(0.5),
+                        thickness: 5,
+                      ),
+                      const SizedBox(height: 30),
+                      const Text(
+                        'Comparativa de Temperaturas por Ruta',
+                        style: TextStyle(
+                          color: myPurple,
+                          fontSize: 32,
+                          fontWeight: FontWeight.bold,
+                          letterSpacing: 2,
+                        ),
+                        textAlign: TextAlign.center,
+                      ),
+                      const SizedBox(height: 30),
                       Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 8),
-                        height: 500,
-                        width: double.infinity,
-                        child: MyTemperatureLineChart(
-                          maxWidth: constraints.maxWidth,
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 25,
+                          vertical: 20,
+                        ),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(10),
+                          color: Colors.white,
+                          boxShadow: [
+                            BoxShadow(
+                              color: myPurple.withOpacity(0.5),
+                              offset: const Offset(1.0, 0.0),
+                              blurRadius: 6.0,
+                            ),
+                          ],
+                        ),
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            SizedBox(
+                              height: 500,
+                              width: 1400,
+                              child: MyTemperatureLineChart(
+                                maxWidth: constraints.maxWidth,
+                              ),
+                            ),
+                            const SizedBox(height: 10),
+                            const Text(
+                              'Puntos Censados',
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 14,
+                              ),
+                            ),
+                          ],
                         ),
                       ),
+                      const SizedBox(height: 25),
                       Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 8),
                         child: Wrap(
@@ -107,6 +167,121 @@ class DashboardComparisonPage extends GetView<DashboardComparisonController> {
           );
         },
       ),
+    );
+  }
+}
+
+class RoutesTempAvg extends StatelessWidget {
+  const RoutesTempAvg({
+    super.key,
+    required this.controller,
+  });
+
+  final DashboardComparisonController controller;
+
+  @override
+  Widget build(BuildContext context) {
+    return Wrap(
+      spacing: 10,
+      runSpacing: 10,
+      alignment: WrapAlignment.center,
+      children: controller.rutas
+          .asMap()
+          .entries
+          .map<Widget>(
+            (ruta) => _RouteTempCircle(
+              ruta: ruta.value,
+              index: ruta.key,
+            ),
+          )
+          .toList(),
+    );
+  }
+}
+
+class _RouteTempCircle extends StatelessWidget {
+  final int index;
+  final Map<String, dynamic> ruta;
+  const _RouteTempCircle({
+    required this.ruta,
+    required this.index,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    double tempPromedio = 0;
+    final List<dynamic> myList = ruta['dataList'];
+    int myLength = myList.length;
+
+    for (var myPoint in myList) {
+      tempPromedio += myPoint['temperatura'];
+    }
+
+    tempPromedio = tempPromedio / myLength;
+
+    return Column(
+      children: [
+        Container(
+          width: 150,
+          margin: const EdgeInsets.only(right: 30),
+          padding: const EdgeInsets.all(8),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(10),
+            color: Colors.white,
+            boxShadow: [
+              BoxShadow(
+                color: myPurple.withOpacity(0.5),
+                offset: const Offset(1.0, 0.0),
+                blurRadius: 6.0,
+              ),
+            ],
+          ),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    'Ruta ${ruta['id']}',
+                    style: const TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 16,
+                    ),
+                  ),
+                  const SizedBox(width: 10),
+                  CircleAvatar(
+                    backgroundColor: getColorbyIndex(index),
+                    radius: 12,
+                  ),
+                ],
+              ),
+              Divider(
+                color: myPurple.withOpacity(0.5),
+              ),
+              CircularPercentIndicator(
+                radius: 60,
+                animation: true,
+                lineWidth: 10,
+                percent: tempPromedio / 100,
+                center: Text(
+                  '${tempPromedio.toStringAsFixed(2)} °C',
+                  style: const TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                progressColor: (tempPromedio >= altaTemperatura)
+                    ? altoColor
+                    : (tempPromedio > maxTempAmbiente)
+                        ? medioColor
+                        : bajoColor,
+                circularStrokeCap: CircularStrokeCap.round,
+              ),
+            ],
+          ),
+        ),
+      ],
     );
   }
 }

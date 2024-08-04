@@ -100,9 +100,9 @@ class MyLineChart extends StatelessWidget {
     for (var i = 0; i < controller.rutas.length; i++) {
       final lineChartBarData = LineChartBarData(
         isCurved: true,
+        curveSmoothness: 0,
         color: getColorbyIndex(i),
-        barWidth: 8,
-        isStrokeCapRound: true,
+        barWidth: 4,
         dotData: const FlDotData(show: false),
         belowBarData: BarAreaData(show: false),
         spots: myFlSpotList(controller.rutas[i]),
@@ -192,19 +192,7 @@ class MyTemperatureLineChartState extends State<MyTemperatureLineChart> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        const Text(
-          'Comparativa de Temperaturas por Ruta',
-          style: TextStyle(
-            color: myPurple,
-            fontSize: 32,
-            fontWeight: FontWeight.bold,
-            letterSpacing: 2,
-          ),
-          textAlign: TextAlign.center,
-        ),
-        const SizedBox(
-          height: 37,
-        ),
+        const SizedBox(height: 20),
         Expanded(
           child: Padding(
             padding: const EdgeInsets.only(right: 16, left: 6),

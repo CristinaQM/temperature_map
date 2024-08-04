@@ -19,12 +19,12 @@ class MapViewBar extends StatelessWidget {
     final route = controller.route;
 
     double tempPromedio = 0;
-    int myLenght = controller.pointList.length;
+    int myLength = controller.pointList.length;
     for (var mypoint in controller.pointList) {
       tempPromedio += mypoint['temperatura'];
     }
 
-    tempPromedio = tempPromedio / myLenght;
+    tempPromedio = tempPromedio / myLength;
 
     return Container(
       width: 300,

@@ -103,7 +103,7 @@ class RutasController extends GetxController {
             list[i]['timestamp'] = dateTime;
           }
 
-          if (list.isNotEmpty) {
+          if (list.isNotEmpty && list.length > 1) {
             routeMap['dataList'] = list;
             _rutas.add(routeMap);
           }

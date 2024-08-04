@@ -12,7 +12,7 @@ const String mapBoxStyleDark = 'mapbox/dark-v11';
 const String urlSrc = 'sensorDataRe';
 
 const double altaTemperatura = 31;
-const double maxTempAmbiente = 27;
+const double maxTempAmbiente = 27.9;
 
 const Color altoColor = Color(0xFFFC5B4F);
 const Color medioColor = Color(0xFFFFD24A);
