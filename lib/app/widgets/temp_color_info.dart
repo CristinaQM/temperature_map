@@ -43,7 +43,7 @@ class TempColorInfoBox extends StatelessWidget {
             color: medioColor,
           ),
           _TempLabel(
-            label: 'T. Alta ($altaTemperatura°C)',
+            label: 'T. Alta (> $altaTemperatura°C)',
             color: altoColor,
           ),
         ],

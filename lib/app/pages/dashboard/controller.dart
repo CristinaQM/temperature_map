@@ -1,3 +1,4 @@
+import 'package:excel/excel.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:get/get.dart';
 import 'package:temperature_map/core/app_constants.dart';
@@ -9,17 +10,7 @@ class DashboardPageController extends GetxController {
   //Lista de los puntos de ubicación
   final pointList = <dynamic>[].obs;
 
-  //Creación de la instancia de Firebase,
-  //por medio de esta accederemos a la data
   final database = FirebaseDatabase.instance;
-
-  //Url de la base de datos, guardada en variable
-  //por si se cambia en un futuro se cambia solo la variable
-  //Cambiado a constante
-
-  //Observables
-  //Son variables que, por medio del widget OBx, cambiarán la vista
-  //si es que la variable es modificada
 
   final _loading = true.obs; //variable de carga
   bool get loading => _loading.value; //getter
@@ -32,8 +23,6 @@ class DashboardPageController extends GetxController {
     _loading.value = true;
 
     try {
-      //El parameter se envía al seleccionar la ruta
-      //Consta de la dataKey de la ruta seguida del id
       final parameter = Get.parameters['dataKey']!;
 
       //Parameters
@@ -45,15 +34,8 @@ class DashboardPageController extends GetxController {
       route['id'] = id;
       route['dataKey'] = dataKey;
 
-      //Firebase Data
-      //Creamos una referencia con el path de la base de datos
-      //más la key del objeto deseado, para llamar la información de solo
-      //ese objeto
       final reference = FirebaseDatabase.instance.ref('$urlSrc/$dataKey');
 
-      //Le agregamos un Listener, en caso de que haya una modificación
-      //en la base de datos se realizará el evento descrito aquí
-      //(aún no terminado de probar)
       reference.onValue.listen(
         (DatabaseEvent event) async {
           final snapshot = event.snapshot.value; //obtenemos la data del firebase y la guardamos
@@ -68,10 +50,8 @@ class DashboardPageController extends GetxController {
           pointList.removeWhere((item) => item['temperatura'] == null);
           pointList.removeWhere((item) => item['timestamp'] == null);
 
-          //Este for está hecho para agregarle un id a cada location point
-          //para tener un identificador en caso de necesitarlo
           for (var i = 0; i < pointList.length; i++) {
-            pointList[i].putIfAbsent('id', () => i);
+            pointList[i].putIfAbsent('id', () => i + 1);
           }
 
           _loading.value = false;
@@ -87,5 +67,41 @@ class DashboardPageController extends GetxController {
   void onInit() async {
     await fetchRoute();
     super.onInit();
+  }
+
+  void generateCSV() {
+    final excel = Excel.createExcel();
+
+    Sheet sheet = excel['Sheet1'];
+    CellStyle cellStyle = CellStyle(fontFamily: getFontFamily(FontFamily.Al_Nile));
+    cellStyle.underline = Underline.Single;
+    sheet.appendRow(
+      [
+        const TextCellValue('Humedad'),
+        const TextCellValue('Temperatura'),
+        const TextCellValue('Latitude'),
+        const TextCellValue('Longitude'),
+        const TextCellValue('Altitude'),
+      ],
+    );
+
+    final controller = Get.find<DashboardPageController>();
+    for (var dataPoint in controller.pointList) {
+      final point = dataPoint['humedad'];
+      final temp = dataPoint['temperatura'];
+      final lat = dataPoint['latitude'];
+      final long = dataPoint['longitude'];
+      final alt = dataPoint['altitude'];
+      sheet.appendRow(
+        [
+          IntCellValue(point),
+          DoubleCellValue(temp),
+          DoubleCellValue(lat),
+          DoubleCellValue(long),
+          DoubleCellValue(alt),
+        ],
+      );
+    }
+    excel.save(fileName: 'dataProyectIotTelematic.xlsx');
   }
 }

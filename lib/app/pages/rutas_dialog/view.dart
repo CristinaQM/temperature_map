@@ -50,7 +50,9 @@ class RutasDialog extends GetView<RutasController> {
                             const SizedBox(width: 10),
                             IconButton(
                               onPressed: () {
-                                controller.rutas;
+                                if (controller.textController.text.isNotEmpty) {
+                                  controller.rutas;
+                                }
                               },
                               icon: Icon(MdiIcons.magnify),
                             ),
