@@ -136,10 +136,10 @@ class _DataPointWidget extends StatelessWidget {
               child: Center(
                 child: Text(
                   '$id',
-                  style: const TextStyle(
+                  style: TextStyle(
                     fontWeight: FontWeight.bold,
                     color: Colors.white,
-                    fontSize: 15,
+                    fontSize: (id.toString().length < 3) ? 15 : 12,
                   ),
                 ),
               ),

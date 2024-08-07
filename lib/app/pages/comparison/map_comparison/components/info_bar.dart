@@ -257,9 +257,9 @@ class _PointDataTile extends StatelessWidget {
                       radius: 13,
                       child: Text(
                         '${point['id']}',
-                        style: const TextStyle(
+                        style: TextStyle(
                           fontWeight: FontWeight.bold,
-                          fontSize: 14,
+                          fontSize: (point['id'].toString().length < 3) ? 14 : 12,
                         ),
                       ),
                     ),
