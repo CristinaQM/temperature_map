@@ -15,9 +15,9 @@ class MyLineChart extends StatelessWidget {
         lineTouchData: lineTouchData,
         gridData: const FlGridData(show: true),
         titlesData: FlTitlesData(
-          bottomTitles: AxisTitles(
-            sideTitles: bottomTitles(maxWidth),
-          ),
+          // bottomTitles: AxisTitles(
+          //   sideTitles: bottomTitles(maxWidth),
+          // ),
           rightTitles: const AxisTitles(
             sideTitles: SideTitles(showTitles: false),
           ),

@@ -78,9 +78,9 @@ class _LineChart extends StatelessWidget {
       );
 
   FlTitlesData get titlesData => FlTitlesData(
-        bottomTitles: AxisTitles(
-          sideTitles: bottomTitles,
-        ),
+        // bottomTitles: const AxisTitles(
+        //   sideTitles: SideTitles(showTitles: false),
+        // ),
         rightTitles: const AxisTitles(
           sideTitles: SideTitles(showTitles: false),
         ),
@@ -135,12 +135,12 @@ class _LineChart extends StatelessWidget {
     );
   }
 
-  SideTitles get bottomTitles => SideTitles(
-        showTitles: true,
-        reservedSize: 32,
-        interval: 1,
-        getTitlesWidget: bottomTitleWidgets,
-      );
+  // SideTitles get bottomTitles => SideTitles(
+  //       showTitles: true,
+  //       reservedSize: 32,
+  //       interval: 1,
+  //       getTitlesWidget: bottomTitleWidgets,
+  //     );
 
   FlGridData get gridData => const FlGridData(show: true);
 

@@ -78,9 +78,9 @@ class _LineChart extends StatelessWidget {
       );
 
   FlTitlesData get titlesData1 => FlTitlesData(
-        bottomTitles: AxisTitles(
-          sideTitles: bottomTitles,
-        ),
+        // bottomTitles: AxisTitles(
+        //   sideTitles: bottomTitles,
+        // ),
         rightTitles: const AxisTitles(
           sideTitles: SideTitles(showTitles: false),
         ),
