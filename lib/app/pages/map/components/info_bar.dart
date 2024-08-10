@@ -8,11 +8,17 @@ import 'package:temperature_map/app/widgets/info_bar_global_widgets.dart';
 import 'package:temperature_map/core/app_constants.dart';
 import 'package:temperature_map/routes/pages.dart';
 
-class MapViewBar extends StatelessWidget {
+class MapViewBar extends StatefulWidget {
   const MapViewBar({
     super.key,
   });
 
+  @override
+  State<MapViewBar> createState() => _MapViewBarState();
+}
+
+class _MapViewBarState extends State<MapViewBar> {
+  bool hide = false;
   @override
   Widget build(BuildContext context) {
     final controller = Get.find<MapPageController>();
@@ -44,6 +50,7 @@ class MapViewBar extends StatelessWidget {
         ],
       ),
       child: Column(
+        mainAxisSize: MainAxisSize.min,
         children: [
           Row(
             children: [
@@ -63,45 +70,61 @@ class MapViewBar extends StatelessWidget {
                   ),
                 ),
               ),
+              IconButton(
+                onPressed: () {
+                  hide = !hide;
+                  setState(() {});
+                },
+                icon: Icon((hide) ? MdiIcons.menuDown : MdiIcons.menuUp),
+              ),
             ],
           ),
-          const Divider(),
-          MyPercentWidget(tempPromedio: tempPromedio),
-          const Divider(),
-          const SizedBox(height: 10),
-          Expanded(
-            child: ListView.builder(
-              itemCount: controller.pointList.length,
-              itemBuilder: (context, idx) {
-                final point = controller.pointList[idx];
-                final temp = point['temperatura'];
+          if (hide)
+            const SizedBox.shrink()
+          else
+            Expanded(
+              child: Column(
+                children: [
+                  const Divider(),
+                  MyPercentWidget(tempPromedio: tempPromedio),
+                  const Divider(),
+                  const SizedBox(height: 10),
+                  Expanded(
+                    child: ListView.builder(
+                      itemCount: controller.pointList.length,
+                      itemBuilder: (context, idx) {
+                        final point = controller.pointList[idx];
+                        final temp = point['temperatura'];
 
-                final color = (temp >= altaTemperatura)
-                    ? altoColor
-                    : (temp > maxTempAmbiente)
-                        ? medioColor
-                        : bajoColor;
+                        final color = (temp >= altaTemperatura)
+                            ? altoColor
+                            : (temp > maxTempAmbiente)
+                                ? medioColor
+                                : bajoColor;
 
-                return DataPointTile(point: point, color: color);
-              },
+                        return DataPointTile(point: point, color: color);
+                      },
+                    ),
+                  ),
+                  const SizedBox(height: 10),
+                  ElevatedButton(
+                    onPressed: () {
+                      Get.dialog(const RutasDialog());
+                    },
+                    child: const Text('Comparar Rutas'),
+                  ),
+                  const SizedBox(height: 10),
+                  ElevatedButton(
+                    onPressed: () {
+                      Get.toNamed(
+                        '/dashboard/${route['dataKey']}${route['id']}',
+                      );
+                    },
+                    child: const Text('Dashboard'),
+                  ),
+                ],
+              ),
             ),
-          ),
-          const SizedBox(height: 10),
-          ElevatedButton(
-            onPressed: () {
-              Get.dialog(const RutasDialog());
-            },
-            child: const Text('Comparar Rutas'),
-          ),
-          const SizedBox(height: 10),
-          ElevatedButton(
-            onPressed: () {
-              Get.toNamed(
-                '/dashboard/${route['dataKey']}${route['id']}',
-              );
-            },
-            child: const Text('Dashboard'),
-          ),
         ],
       ),
     );

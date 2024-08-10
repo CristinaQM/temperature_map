@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:temperature_map/app/widgets/my_menubar.dart';
 import 'package:animated_text_kit/animated_text_kit.dart';
+import 'package:temperature_map/core/app_constants.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -20,7 +21,7 @@ class HomePage extends StatelessWidget {
                     height: 1000,
                     decoration: const BoxDecoration(
                       image: DecorationImage(
-                        image: AssetImage('images/img6.jpg'),
+                        image: AssetImage('images/geotemp_grass.jpeg'),
                         fit: BoxFit.fill,
                       ),
                     ),
@@ -32,7 +33,7 @@ class HomePage extends StatelessWidget {
                         children: [
                           SizedBox(height: 200),
                           Text(
-                            'GeoTempSense',
+                            'GeoTemp',
                             style: TextStyle(
                               color: Colors.white,
                               fontWeight: FontWeight.bold,
@@ -41,14 +42,12 @@ class HomePage extends StatelessWidget {
                           ),
                           SizedBox(height: 50),
                           SizedBox(
-                            width: 900,
-                            child: Expanded(
-                              child: Text(
-                                'Tu Compañero Tecnológico que Monitorea la Temperatura y Rastrea la Ubicación GPS con Precisión, para que Siempre Estés Informado y Seguro en Cualquier Lugar del Mundo',
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 30,
-                                ),
+                            width: 700,
+                            child: Text(
+                              'Tu Compañero Tecnológico que Monitorea la Temperatura y Rastrea la Ubicación GPS con Precisión, para que Siempre Estés Informado y Seguro en Cualquier Lugar del Mundo',
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 30,
                               ),
                             ),
                           ),
@@ -93,19 +92,20 @@ class ResponsiveContainer extends StatelessWidget {
                             return Column(
                               children: [
                                 Padding(
-                                  padding: const EdgeInsets.only(left: 15.0, right: 35.0),
-                                  child: Container(
-                                    height: 700,
-                                    width: double.infinity,
-                                    decoration: const BoxDecoration(
-                                      image: DecorationImage(
-                                        image: AssetImage('images/img5.jpg'),
-                                        fit: BoxFit.cover,
+                                    padding: const EdgeInsets.only(left: 15.0, right: 35.0),
+                                    child: Container(
+                                      height: 700,
+                                      width: double.infinity,
+                                      decoration: const BoxDecoration(
+                                        image: DecorationImage(
+                                          image: AssetImage('images/img5.jpg'),
+                                          fit: BoxFit.cover,
+                                        ),
                                       ),
-                                    ),
-                                  )
+                                    )),
+                                const SizedBox(
+                                  height: 40,
                                 ),
-                                const SizedBox(height: 40,),
                                 Padding(
                                   padding: const EdgeInsets.only(top: 65.0),
                                   child: SizedBox(
@@ -118,27 +118,23 @@ class ResponsiveContainer extends StatelessWidget {
                                               const Text(
                                                 "Problemática",
                                                 style: TextStyle(
-                                                    fontSize: 50,
-                                                    fontWeight:
-                                                        FontWeight.w900),
+                                                  fontSize: 50,
+                                                  fontWeight: FontWeight.w900,
+                                                  color: myPurple,
+                                                ),
                                               ),
                                               Padding(
-                                                padding:
-                                                    const EdgeInsets.symmetric(
-                                                        horizontal: 60.0,
-                                                        vertical: 25.0),
+                                                padding: const EdgeInsets.symmetric(horizontal: 60.0, vertical: 25.0),
                                                 child: DefaultTextStyle(
                                                     style: const TextStyle(
-                                                      fontWeight:
-                                                          FontWeight.bold,
+                                                      fontWeight: FontWeight.bold,
                                                       fontSize: 25.0,
                                                     ),
                                                     child: AnimatedTextKit(
                                                       animatedTexts: [
                                                         TyperAnimatedText(
                                                             "Las grandes ciudades tienen poca vegetación ocasionando un aumento de las temperaturas según el clima y el entorno que los rodea. Conocer las diferencias de temperaturas de una ciudad ayuda a conocer en qué lugar se debería forestar para ayudar a tener un ambiente saludable.",
-                                                            textAlign: TextAlign
-                                                                .justify)
+                                                            textAlign: TextAlign.justify)
                                                       ],
                                                       totalRepeatCount: 1,
                                                     )),
@@ -148,7 +144,9 @@ class ResponsiveContainer extends StatelessWidget {
                                         )),
                                   ),
                                 ),
-                                const SizedBox(height: 30,), 
+                                const SizedBox(
+                                  height: 30,
+                                ),
                               ],
                             );
                           } else {
@@ -166,27 +164,23 @@ class ResponsiveContainer extends StatelessWidget {
                                               const Text(
                                                 "Problemática",
                                                 style: TextStyle(
-                                                    fontSize: 50,
-                                                    fontWeight:
-                                                        FontWeight.w900),
+                                                  fontSize: 50,
+                                                  fontWeight: FontWeight.w900,
+                                                  color: myPurple,
+                                                ),
                                               ),
                                               Padding(
-                                                padding:
-                                                    const EdgeInsets.symmetric(
-                                                        horizontal: 60.0,
-                                                        vertical: 25.0),
+                                                padding: const EdgeInsets.symmetric(horizontal: 60.0, vertical: 25.0),
                                                 child: DefaultTextStyle(
                                                     style: const TextStyle(
-                                                      fontWeight:
-                                                          FontWeight.bold,
+                                                      fontWeight: FontWeight.bold,
                                                       fontSize: 25.0,
                                                     ),
                                                     child: AnimatedTextKit(
                                                       animatedTexts: [
                                                         TyperAnimatedText(
                                                             "Las grandes ciudades tienen poca vegetación ocasionando un aumento de las temperaturas según el clima y el entorno que los rodea. Conocer las diferencias de temperaturas de una ciudad ayuda a conocer en qué lugar se debería forestar para ayudar a tener un ambiente saludable.",
-                                                            textAlign: TextAlign
-                                                                .justify)
+                                                            textAlign: TextAlign.justify)
                                                       ],
                                                       totalRepeatCount: 1,
                                                     )),
@@ -197,8 +191,7 @@ class ResponsiveContainer extends StatelessWidget {
                                   ),
                                 ),
                                 Padding(
-                                    padding: const EdgeInsets.only(
-                                        left: 15.0, right: 35.0),
+                                    padding: const EdgeInsets.only(left: 15.0, right: 35.0),
                                     child: Container(
                                       height: 700,
                                       width: 100,
@@ -247,13 +240,13 @@ class ResponsiveContainer extends StatelessWidget {
                                           const Text(
                                             "Problemática",
                                             style: TextStyle(
-                                                fontSize: 60,
-                                                fontWeight: FontWeight.w900),
+                                              fontSize: 60,
+                                              fontWeight: FontWeight.w900,
+                                              color: myPurple,
+                                            ),
                                           ),
                                           Padding(
-                                            padding: const EdgeInsets.symmetric(
-                                                horizontal: 60.0,
-                                                vertical: 25.0),
+                                            padding: const EdgeInsets.symmetric(horizontal: 60.0, vertical: 25.0),
                                             child: DefaultTextStyle(
                                                 style: const TextStyle(
                                                   fontWeight: FontWeight.bold,
@@ -263,8 +256,7 @@ class ResponsiveContainer extends StatelessWidget {
                                                   animatedTexts: [
                                                     TyperAnimatedText(
                                                         "Las grandes ciudades tienen poca vegetación ocasionando un aumento de las temperaturas según el clima y el entorno que los rodea. Conocer las diferencias de temperaturas de una ciudad ayuda a conocer en qué lugar se debería forestar para ayudar a tener un ambiente saludable.",
-                                                        textAlign:
-                                                            TextAlign.justify)
+                                                        textAlign: TextAlign.justify)
                                                   ],
                                                   totalRepeatCount: 1,
                                                 )),
@@ -276,8 +268,7 @@ class ResponsiveContainer extends StatelessWidget {
                             )),
                             Expanded(
                                 child: Padding(
-                              padding: const EdgeInsets.only(
-                                  left: 15.0, right: 35.0),
+                              padding: const EdgeInsets.only(left: 15.0, right: 35.0),
                               child: Container(
                                 height: 700,
                                 width: 100,
@@ -318,8 +309,7 @@ class ResponsiveContainer extends StatelessWidget {
                             return Column(
                               children: [
                                 Padding(
-                                  padding: const EdgeInsets.only(
-                                      left: 35.0, right: 15.0),
+                                  padding: const EdgeInsets.only(left: 35.0, right: 15.0),
                                   child: Container(
                                     height: 700,
                                     width: double.infinity,
@@ -343,27 +333,23 @@ class ResponsiveContainer extends StatelessWidget {
                                               const Text(
                                                 "Propuesta",
                                                 style: TextStyle(
-                                                    fontSize: 50,
-                                                    fontWeight:
-                                                        FontWeight.w900),
+                                                  fontSize: 50,
+                                                  fontWeight: FontWeight.w900,
+                                                  color: myPurple,
+                                                ),
                                               ),
                                               Padding(
-                                                padding:
-                                                    const EdgeInsets.symmetric(
-                                                        horizontal: 60.0,
-                                                        vertical: 25.0),
+                                                padding: const EdgeInsets.symmetric(horizontal: 60.0, vertical: 25.0),
                                                 child: DefaultTextStyle(
                                                     style: const TextStyle(
-                                                      fontWeight:
-                                                          FontWeight.bold,
+                                                      fontWeight: FontWeight.bold,
                                                       fontSize: 25.0,
                                                     ),
                                                     child: AnimatedTextKit(
                                                       animatedTexts: [
                                                         TyperAnimatedText(
                                                             "El proyecto se centrará en la creación de un sistema de monitoreo ambiental que utilice dispositivos IoTpara recopilar datos en tiempo real sobre la temperatura y la humedad en una ubicación específica dentro de Guayaquil. El sistema constará de tres componentes principales: Dispositivo de Monitoreo IoT, Plataforma en la Nube, Portal Web de Visualización de Datos.",
-                                                            textAlign: TextAlign
-                                                                .justify)
+                                                            textAlign: TextAlign.justify)
                                                       ],
                                                       totalRepeatCount: 1,
                                                     )),
@@ -380,14 +366,13 @@ class ResponsiveContainer extends StatelessWidget {
                               children: [
                                 Expanded(
                                     child: Padding(
-                                  padding: const EdgeInsets.only(
-                                      left: 35.0, right: 15.0),
+                                  padding: const EdgeInsets.only(left: 35.0, right: 15.0),
                                   child: Container(
                                     height: 700,
                                     width: 100,
                                     decoration: const BoxDecoration(
                                       image: DecorationImage(
-                                        image: AssetImage('images/img5.jpg'),
+                                        image: AssetImage('images/geotemp.jpg'),
                                         fit: BoxFit.cover,
                                       ),
                                     ),
@@ -406,27 +391,23 @@ class ResponsiveContainer extends StatelessWidget {
                                               const Text(
                                                 "Propuesta",
                                                 style: TextStyle(
-                                                    fontSize: 60,
-                                                    fontWeight:
-                                                        FontWeight.w900),
+                                                  fontSize: 60,
+                                                  fontWeight: FontWeight.w900,
+                                                  color: myPurple,
+                                                ),
                                               ),
                                               Padding(
-                                                padding:
-                                                    const EdgeInsets.symmetric(
-                                                        horizontal: 60.0,
-                                                        vertical: 25.0),
+                                                padding: const EdgeInsets.symmetric(horizontal: 60.0, vertical: 25.0),
                                                 child: DefaultTextStyle(
                                                     style: const TextStyle(
-                                                      fontWeight:
-                                                          FontWeight.bold,
+                                                      fontWeight: FontWeight.bold,
                                                       fontSize: 25.0,
                                                     ),
                                                     child: AnimatedTextKit(
                                                       animatedTexts: [
                                                         TyperAnimatedText(
                                                             "El proyecto se centrará en la creación de un sistema de monitoreo ambiental que utilice dispositivos IoTpara recopilar datos en tiempo real sobre la temperatura y la humedad en una ubicación específica dentro de Guayaquil. El sistema constará de tres componentes principales: Dispositivo de Monitoreo IoT, Plataforma en la Nube, Portal Web de Visualización de Datos.",
-                                                            textAlign: TextAlign
-                                                                .justify)
+                                                            textAlign: TextAlign.justify)
                                                       ],
                                                       totalRepeatCount: 1,
                                                     )),
@@ -464,14 +445,13 @@ class ResponsiveContainer extends StatelessWidget {
                             return Column(
                               children: [
                                 Padding(
-                                  padding: const EdgeInsets.only(
-                                      left: 35.0, right: 15.0),
+                                  padding: const EdgeInsets.only(left: 35.0, right: 15.0),
                                   child: Container(
                                     height: 700,
                                     width: double.infinity,
                                     decoration: const BoxDecoration(
                                       image: DecorationImage(
-                                        image: AssetImage('images/img5.jpg'),
+                                        image: AssetImage('images/geotemp.jpg'),
                                         fit: BoxFit.cover,
                                       ),
                                     ),
@@ -489,28 +469,23 @@ class ResponsiveContainer extends StatelessWidget {
                                                 const Text(
                                                   "Propuesta",
                                                   style: TextStyle(
-                                                      fontSize: 60,
-                                                      fontWeight:
-                                                          FontWeight.w900),
+                                                    fontSize: 60,
+                                                    fontWeight: FontWeight.w900,
+                                                    color: myPurple,
+                                                  ),
                                                 ),
                                                 Padding(
-                                                  padding: const EdgeInsets
-                                                      .symmetric(
-                                                      horizontal: 60.0,
-                                                      vertical: 25.0),
+                                                  padding: const EdgeInsets.symmetric(horizontal: 60.0, vertical: 25.0),
                                                   child: DefaultTextStyle(
                                                       style: const TextStyle(
-                                                        fontWeight:
-                                                            FontWeight.bold,
+                                                        fontWeight: FontWeight.bold,
                                                         fontSize: 25.0,
                                                       ),
                                                       child: AnimatedTextKit(
                                                         animatedTexts: [
                                                           TyperAnimatedText(
                                                               "El proyecto se centrará en la creación de un sistema de monitoreo ambiental que utilice dispositivos IoTpara recopilar datos en tiempo real sobre la temperatura y la humedad en una ubicación específica dentro de Guayaquil. El sistema constará de tres componentes principales: Dispositivo de Monitoreo IoT, Plataforma en la Nube, Portal Web de Visualización de Datos.",
-                                                              textAlign:
-                                                                  TextAlign
-                                                                      .justify)
+                                                              textAlign: TextAlign.justify)
                                                         ],
                                                         totalRepeatCount: 1,
                                                       )),
@@ -526,14 +501,13 @@ class ResponsiveContainer extends StatelessWidget {
                               children: [
                                 Expanded(
                                     child: Padding(
-                                  padding: const EdgeInsets.only(
-                                      left: 35.0, right: 15.0),
+                                  padding: const EdgeInsets.only(left: 35.0, right: 15.0),
                                   child: Container(
                                     height: 700,
                                     width: 100,
                                     decoration: const BoxDecoration(
                                       image: DecorationImage(
-                                        image: AssetImage('images/img5.jpg'),
+                                        image: AssetImage('images/geotemp.jpg'),
                                         fit: BoxFit.cover,
                                       ),
                                     ),
@@ -552,27 +526,23 @@ class ResponsiveContainer extends StatelessWidget {
                                               const Text(
                                                 "Propuesta",
                                                 style: TextStyle(
-                                                    fontSize: 60,
-                                                    fontWeight:
-                                                        FontWeight.w900),
+                                                  fontSize: 60,
+                                                  fontWeight: FontWeight.w900,
+                                                  color: myPurple,
+                                                ),
                                               ),
                                               Padding(
-                                                padding:
-                                                    const EdgeInsets.symmetric(
-                                                        horizontal: 60.0,
-                                                        vertical: 25.0),
+                                                padding: const EdgeInsets.symmetric(horizontal: 60.0, vertical: 25.0),
                                                 child: DefaultTextStyle(
                                                     style: const TextStyle(
-                                                      fontWeight:
-                                                          FontWeight.bold,
+                                                      fontWeight: FontWeight.bold,
                                                       fontSize: 25.0,
                                                     ),
                                                     child: AnimatedTextKit(
                                                       animatedTexts: [
                                                         TyperAnimatedText(
                                                             "El proyecto se centrará en la creación de un sistema de monitoreo ambiental que utilice dispositivos IoTpara recopilar datos en tiempo real sobre la temperatura y la humedad en una ubicación específica dentro de Guayaquil. El sistema constará de tres componentes principales: Dispositivo de Monitoreo IoT, Plataforma en la Nube, Portal Web de Visualización de Datos.",
-                                                            textAlign: TextAlign
-                                                                .justify)
+                                                            textAlign: TextAlign.justify)
                                                       ],
                                                       totalRepeatCount: 1,
                                                     )),

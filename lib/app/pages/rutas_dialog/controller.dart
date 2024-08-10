@@ -70,7 +70,7 @@ class RutasController extends GetxController {
     _loading.value = true;
 
     final parameter = Get.parameters['dataKey'];
-    if (Get.currentRoute != Routes.home && parameter != null) {
+    if (Get.currentRoute != Routes.home && parameter != null && parameter.length == 11) {
       multiSelect = true;
     }
 
@@ -124,7 +124,7 @@ class RutasController extends GetxController {
         ruta['id'] = i + 1;
       }
 
-      if (Get.currentRoute != Routes.home && parameter != null) {
+      if (Get.currentRoute != Routes.home && parameter != null && parameter.length == 11) {
         final datakey = parameter.substring(0, 10);
         _rutas.removeWhere((ruta) => ruta['dataKey'] == datakey);
       }
@@ -144,7 +144,7 @@ class RutasController extends GetxController {
     //URL Parameter
     final parameter = Get.parameters['dataKey'];
 
-    if (Get.currentRoute != Routes.home && parameter != null) {
+    if (Get.currentRoute != Routes.home && parameter != null && parameter.length == 11) {
       //Nueva URL con todos los mapas seleccionados
       String newParam = '${parameter}_';
       final myLength = selectKeyList.length;
@@ -173,7 +173,7 @@ class RutasController extends GetxController {
     //URL Parameter
     final parameter = Get.parameters['dataKey'];
 
-    if (Get.currentRoute != Routes.home && parameter != null) {
+    if (Get.currentRoute != Routes.home && parameter != null && parameter.length == 11) {
       final dataKey = route['dataKey'];
 
       if (selectKeyList

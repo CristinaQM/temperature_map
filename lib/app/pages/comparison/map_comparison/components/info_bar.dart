@@ -6,11 +6,17 @@ import 'package:temperature_map/app/widgets/info_bar_global_widgets.dart';
 import 'package:temperature_map/core/app_constants.dart';
 import 'package:temperature_map/routes/pages.dart';
 
-class MapComparisonBar extends StatelessWidget {
+class MapComparisonBar extends StatefulWidget {
   const MapComparisonBar({
     super.key,
   });
 
+  @override
+  State<MapComparisonBar> createState() => _MapComparisonBarState();
+}
+
+class _MapComparisonBarState extends State<MapComparisonBar> {
+  bool hide = false;
   @override
   Widget build(BuildContext context) {
     final controller = Get.find<MapComparisonController>();
@@ -34,6 +40,7 @@ class MapComparisonBar extends StatelessWidget {
         ],
       ),
       child: Column(
+        mainAxisSize: MainAxisSize.min,
         children: [
           Row(
             children: [
@@ -49,45 +56,61 @@ class MapComparisonBar extends StatelessWidget {
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
-                    fontSize: 28,
+                    fontSize: 24,
                   ),
                 ),
               ),
+              IconButton(
+                onPressed: () {
+                  hide = !hide;
+                  setState(() {});
+                },
+                icon: Icon((hide) ? MdiIcons.menuDown : MdiIcons.menuUp),
+              ),
             ],
           ),
-          const Divider(),
-          Expanded(
-            child: ListView.builder(
-              itemCount: controller.rutas.length,
-              itemBuilder: (context, idx) {
-                final ruta = controller.rutas[idx];
+          if (hide)
+            const SizedBox.shrink()
+          else
+            Expanded(
+              child: Column(
+                children: [
+                  const Divider(),
+                  Expanded(
+                    child: ListView.builder(
+                      itemCount: controller.rutas.length,
+                      itemBuilder: (context, idx) {
+                        final ruta = controller.rutas[idx];
 
-                return RutaExpansionTile(
-                  ruta: ruta,
-                  index: idx,
-                );
-              },
+                        return RutaExpansionTile(
+                          ruta: ruta,
+                          index: idx,
+                        );
+                      },
+                    ),
+                  ),
+                  const SizedBox(height: 10),
+                  ElevatedButton(
+                    onPressed: () {
+                      final myLength = rutasList.length;
+                      String newParam = '';
+                      for (var i = 0; i < myLength; i++) {
+                        final ruta = rutasList[i];
+                        newParam += '${ruta['dataKey']}${ruta['id']}';
+                        if (i < myLength - 1) {
+                          newParam += '_';
+                        }
+                      }
+
+                      Get.offAndToNamed(
+                        '/dashboard_comparison/$newParam',
+                      );
+                    },
+                    child: const Text('Dashboard'),
+                  ),
+                ],
+              ),
             ),
-          ),
-          const SizedBox(height: 10),
-          ElevatedButton(
-            onPressed: () {
-              final myLength = rutasList.length;
-              String newParam = '';
-              for (var i = 0; i < myLength; i++) {
-                final ruta = rutasList[i];
-                newParam += '${ruta['dataKey']}${ruta['id']}';
-                if (i < myLength - 1) {
-                  newParam += '_';
-                }
-              }
-
-              Get.offAndToNamed(
-                '/dashboard_comparison/$newParam',
-              );
-            },
-            child: const Text('Dashboard'),
-          ),
         ],
       ),
     );

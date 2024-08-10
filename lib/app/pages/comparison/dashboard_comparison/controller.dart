@@ -22,51 +22,56 @@ class DashboardComparisonController extends GetxController {
   void fetchRecords() async {
     _loading.value = true;
 
-    _rutas.clear();
+    try {
+      _rutas.clear();
 
-    final parameter = Get.parameters['dataKey'];
-    final paramList = parameter!.split('_').toList();
+      final parameter = Get.parameters['dataKey'];
+      final paramList = parameter!.split('_').toList();
 
-    for (var param in paramList) {
-      final Map<String, dynamic> routeMap = {};
-      final List<dynamic> pointsList = [];
+      for (var param in paramList) {
+        final Map<String, dynamic> routeMap = {};
+        final List<dynamic> pointsList = [];
 
-      //Parameters
-      String dataKey = param.substring(0, 10);
-      String strID = param.substring(10);
-      int id = int.parse(strID);
+        //Parameters
+        String dataKey = param.substring(0, 10);
+        String strID = param.substring(10);
+        int id = int.parse(strID);
 
-      //Firebase Data
-      final ref = FirebaseDatabase.instance.ref('$urlSrc/$dataKey');
-      final snapshot = await ref.get();
+        //Firebase Data
+        final ref = FirebaseDatabase.instance.ref('$urlSrc/$dataKey');
+        final snapshot = await ref.get();
 
-      if (snapshot.exists) {
-        routeMap['id'] = id;
-        routeMap['dataKey'] = dataKey;
+        if (snapshot.exists) {
+          routeMap['id'] = id;
+          routeMap['dataKey'] = dataKey;
 
-        final data = snapshot.value;
-        pointsList.addAll(data as List<dynamic>);
-        pointsList.removeWhere((item) => item == null);
-        pointsList.removeWhere((item) => item['altitude'] == null);
-        pointsList.removeWhere((item) => item['latitude'] == null);
-        pointsList.removeWhere((item) => item['longitude'] == null);
-        pointsList.removeWhere((item) => item['humedad'] == null);
-        pointsList.removeWhere((item) => item['temperatura'] == null);
-        pointsList.removeWhere((item) => item['timestamp'] == null);
+          final data = snapshot.value;
+          pointsList.addAll(data as List<dynamic>);
+          pointsList.removeWhere((item) => item == null);
+          pointsList.removeWhere((item) => item['altitude'] == null);
+          pointsList.removeWhere((item) => item['latitude'] == null);
+          pointsList.removeWhere((item) => item['longitude'] == null);
+          pointsList.removeWhere((item) => item['humedad'] == null);
+          pointsList.removeWhere((item) => item['temperatura'] == null);
+          pointsList.removeWhere((item) => item['timestamp'] == null);
 
-        for (var i = 0; i < pointsList.length; i++) {
-          pointsList[i].putIfAbsent('id', () => i + 1);
+          for (var i = 0; i < pointsList.length; i++) {
+            pointsList[i].putIfAbsent('id', () => i + 1);
+          }
+
+          routeMap['dataList'] = pointsList;
+
+          _rutas.add(routeMap);
         }
-
-        routeMap['dataList'] = pointsList;
-
-        _rutas.add(routeMap);
       }
+
+      _rutas.sort((a, b) => (a['id']).compareTo(b['id']));
+
+      _loading.value = false;
+    } catch (e) {
+      _loading.value = false;
+      _hasError.value = true;
     }
-
-    _rutas.sort((a, b) => (a['id']).compareTo(b['id']));
-
-    _loading.value = false;
   }
 
   @override
