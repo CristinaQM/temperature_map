@@ -93,12 +93,12 @@ class DashboardComparisonController extends GetxController {
     CellStyle cellStyle = CellStyle(fontFamily: getFontFamily(FontFamily.Al_Nile));
     cellStyle.underline = Underline.Single;
     sheet.appendRow(
-        [const TextCellValue('humedad'), const TextCellValue('temperatura'), const TextCellValue('latitude'), const TextCellValue('longitude'), const TextCellValue('altitude')]);
+        [TextCellValue('humedad'), TextCellValue('temperatura'), TextCellValue('latitude'), TextCellValue('longitude'), TextCellValue('altitude'),],);
 
     final controller = Get.find<DashboardComparisonController>();
     for (var ruta in controller.rutas) {
       sheet.appendRow(
-          [const TextCellValue('humedad'), const TextCellValue('temperatura'), const TextCellValue('latitude'), const TextCellValue('longitude'), const TextCellValue('altitude')]);
+          [TextCellValue('humedad'), TextCellValue('temperatura'), TextCellValue('latitude'), TextCellValue('longitude'), TextCellValue('altitude'),],);
       for (var dataPoint in ruta['dataList']) {
         sheet.appendRow([
           IntCellValue(dataPoint['humedad']),

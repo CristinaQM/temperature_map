@@ -77,11 +77,11 @@ class DashboardPageController extends GetxController {
     cellStyle.underline = Underline.Single;
     sheet.appendRow(
       [
-        const TextCellValue('Humedad'),
-        const TextCellValue('Temperatura'),
-        const TextCellValue('Latitude'),
-        const TextCellValue('Longitude'),
-        const TextCellValue('Altitude'),
+        TextCellValue('Humedad'),
+        TextCellValue('Temperatura'),
+        TextCellValue('Latitude'),
+        TextCellValue('Longitude'),
+        TextCellValue('Altitude'),
       ],
     );
 
