@@ -115,13 +115,17 @@ class ResponsiveContainer extends StatelessWidget {
                                         child: SingleChildScrollView(
                                           child: Column(
                                             children: [
-                                              const Text(
-                                                "Problemática",
-                                                style: TextStyle(
-                                                  fontSize: 50,
-                                                  fontWeight: FontWeight.w900,
-                                                  color: myPurple,
-                                                ),
+                                              Column(
+                                                children: [
+                                                  const Text(
+                                                    "Problemática",
+                                                    style: TextStyle(
+                                                      fontSize: 50,
+                                                      fontWeight: FontWeight.w900,
+                                                      color: myPurple,
+                                                    ),
+                                                  ),
+                                                ],
                                               ),
                                               Padding(
                                                 padding: const EdgeInsets.symmetric(horizontal: 60.0, vertical: 25.0),
@@ -315,7 +319,7 @@ class ResponsiveContainer extends StatelessWidget {
                                     width: double.infinity,
                                     decoration: const BoxDecoration(
                                       image: DecorationImage(
-                                        image: AssetImage('images/img5.jpg'),
+                                        image: AssetImage('images/geotemp.jpg'),
                                         fit: BoxFit.cover,
                                       ),
                                     ),
