@@ -11,6 +11,9 @@ class MapPageController extends GetxController {
 
   //Location Points
   final pointList = <dynamic>[].obs;
+  final mq135List = <dynamic>[].obs;
+  final pm25List = <dynamic>[].obs;
+  final pm10List = <dynamic>[].obs;
 
   final _selectedPointID = 0.obs;
 
@@ -51,6 +54,9 @@ class MapPageController extends GetxController {
         (DatabaseEvent event) async {
           final snapshot = event.snapshot.value;
           pointList.clear();
+          mq135List.clear();
+          pm25List.clear();
+          pm10List.clear();
 
           pointList.addAll(snapshot as List<dynamic>);
           pointList.removeWhere((item) => item == null);
@@ -63,6 +69,15 @@ class MapPageController extends GetxController {
 
           for (var i = 0; i < pointList.length; i++) {
             pointList[i].putIfAbsent('id', () => i + 1);
+            if (pointList[i]['MQ135'] != null) {
+              mq135List.add(pointList[i]);
+            }
+            if (pointList[i]['PM2_5'] != null) {
+              pm25List.add(pointList[i]);
+            }
+            if (pointList[i]['PM10'] != null) {
+              pm10List.add(pointList[i]);
+            }
           }
 
           _loading.value = false;
@@ -71,6 +86,29 @@ class MapPageController extends GetxController {
     } catch (e) {
       _loading.value = false;
       _hasError.value = true;
+    }
+  }
+
+  double calculateAverage(String parameter) {
+    double sum = 0;
+    int count = 0;
+
+    for (var point in pointList) {
+      if (point[parameter] != null) {
+        sum += point[parameter];
+        count++;
+      }
+    }
+
+    return count > 0 ? sum / count : 0;
+  }
+
+  double normalizeValue(double value, String key) {
+    switch (key) {
+      case 'MQ135':
+        return value > 1000 ? 100 : value / 10;
+      default:
+        return value;
     }
   }
 

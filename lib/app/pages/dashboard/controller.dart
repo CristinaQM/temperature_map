@@ -9,6 +9,9 @@ class DashboardPageController extends GetxController {
 
   //Lista de los puntos de ubicación
   final pointList = <dynamic>[].obs;
+  final mq135List = <dynamic>[].obs;
+  final pm25List = <dynamic>[].obs;
+  final pm10List = <dynamic>[].obs;
 
   final database = FirebaseDatabase.instance;
 
@@ -38,11 +41,18 @@ class DashboardPageController extends GetxController {
 
       reference.onValue.listen(
         (DatabaseEvent event) async {
-          final snapshot = event.snapshot.value; //obtenemos la data del firebase y la guardamos
-          pointList.clear(); //limpiamos la lista para evitar colocar elementos repetidos
+          final snapshot = event
+              .snapshot.value; //obtenemos la data del firebase y la guardamos
+          pointList
+              .clear(); //limpiamos la lista para evitar colocar elementos repetidos
+          mq135List.clear();
+          pm25List.clear();
+          pm10List.clear();
 
-          pointList.addAll(snapshot as List<dynamic>); //agregamos toda la data (todos los json de los location points)
-          pointList.removeWhere((item) => item == null); //borramos los datos nulos
+          pointList.addAll(snapshot as List<
+              dynamic>); //agregamos toda la data (todos los json de los location points)
+          pointList
+              .removeWhere((item) => item == null); //borramos los datos nulos
           pointList.removeWhere((item) => item['altitude'] == null);
           pointList.removeWhere((item) => item['latitude'] == null);
           pointList.removeWhere((item) => item['longitude'] == null);
@@ -52,6 +62,15 @@ class DashboardPageController extends GetxController {
 
           for (var i = 0; i < pointList.length; i++) {
             pointList[i].putIfAbsent('id', () => i + 1);
+            if (pointList[i]['MQ135'] != null) {
+              mq135List.add(pointList[i]);
+            }
+            if (pointList[i]['PM2_5'] != null) {
+              pm25List.add(pointList[i]);
+            }
+            if (pointList[i]['PM10'] != null) {
+              pm10List.add(pointList[i]);
+            }
           }
 
           _loading.value = false;
@@ -69,39 +88,76 @@ class DashboardPageController extends GetxController {
     super.onInit();
   }
 
+  double getMaxValue(String parameter) {
+    var list = parameter == 'MQ135'
+        ? mq135List
+        : parameter == 'PM2_5'
+            ? pm25List
+            : pm10List;
+
+    if (list.isEmpty) return 0;
+
+    double maxVal = 0;
+    for (var point in list) {
+      if (point[parameter] > maxVal) {
+        maxVal = point[parameter].toDouble();
+      }
+    }
+    return (maxVal / 5).ceil() * 5;
+  }
+
+  double getMinValue(String parameter) {
+    var list = parameter == 'MQ135'
+        ? mq135List
+        : parameter == 'PM2_5'
+            ? pm25List
+            : pm10List;
+
+    if (list.isEmpty) return 0;
+
+    double minVal = double.infinity;
+    for (var point in list) {
+      if (point[parameter] < minVal) {
+        minVal = point[parameter].toDouble();
+      }
+    }
+    return (minVal / 5).floor() * 5;
+  }
+
   void generateCSV() {
     final excel = Excel.createExcel();
-
     Sheet sheet = excel['Sheet1'];
-    CellStyle cellStyle = CellStyle(fontFamily: getFontFamily(FontFamily.Al_Nile));
-    cellStyle.underline = Underline.Single;
-    sheet.appendRow(
-      [
-        TextCellValue('Humedad'),
-        TextCellValue('Temperatura'),
-        TextCellValue('Latitude'),
-        TextCellValue('Longitude'),
-        TextCellValue('Altitude'),
-      ],
-    );
 
-    final controller = Get.find<DashboardPageController>();
-    for (var dataPoint in controller.pointList) {
-      final point = dataPoint['humedad'];
-      final temp = dataPoint['temperatura'];
-      final lat = dataPoint['latitude'];
-      final long = dataPoint['longitude'];
-      final alt = dataPoint['altitude'];
-      sheet.appendRow(
-        [
-          IntCellValue(point),
-          DoubleCellValue(temp),
-          DoubleCellValue(lat),
-          DoubleCellValue(long),
-          DoubleCellValue(alt),
-        ],
-      );
+    sheet.appendRow([
+      TextCellValue('Humedad'),
+      TextCellValue('Temperatura'),
+      TextCellValue('CO₂'),
+      TextCellValue('PM₂.₅'),
+      TextCellValue('PM₁₀'),
+      TextCellValue('Latitude'),
+      TextCellValue('Longitude'),
+      TextCellValue('Altitude'),
+    ]);
+
+    for (var dataPoint in pointList) {
+      sheet.appendRow([
+        IntCellValue(dataPoint['humedad']),
+        DoubleCellValue(dataPoint['temperatura']),
+        dataPoint['MQ135'] != null
+            ? DoubleCellValue(dataPoint['MQ135'])
+            : TextCellValue(''),
+        dataPoint['PM2_5'] != null
+            ? DoubleCellValue(dataPoint['PM2_5'])
+            : TextCellValue(''),
+        dataPoint['PM10'] != null
+            ? DoubleCellValue(dataPoint['PM10'])
+            : TextCellValue(''),
+        DoubleCellValue(dataPoint['latitude']),
+        DoubleCellValue(dataPoint['longitude']),
+        DoubleCellValue(dataPoint['altitude']),
+      ]);
     }
+
     excel.save(fileName: 'dataProyectIotTelematic.xlsx');
   }
 }

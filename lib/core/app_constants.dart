@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 
-const String mapBoxAccessToken = 'pk.eyJ1IjoiY2VxdWludGUiLCJhIjoiY2xuZ3hoZnMxMGllcjJrbzJkaWoxbXg3aCJ9.Fwsq4U7cEKHxiF0XAigDdg';
+const String mapBoxAccessToken =
+    'pk.eyJ1IjoiY2VxdWludGUiLCJhIjoiY2xuZ3hoZnMxMGllcjJrbzJkaWoxbXg3aCJ9.Fwsq4U7cEKHxiF0XAigDdg';
 
-const String urlTemplate = 'https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token=$mapBoxAccessToken';
+const String urlTemplate =
+    'https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token=$mapBoxAccessToken';
 
 const String mapBoxStyleStreets = 'mapbox/streets-v12';
 const String mapBoxStyleOutdoors = 'mapbox/outdoors-v12';
@@ -74,4 +76,7 @@ Color getStrongColorbyIndex(int index) {
   return myColor;
 }
 
-const myPurple = Color(0xFF766ED1);
+const Color myPurple = Color(0xFF766ED1);
+const Color myGreen = Color(0xFF4CAF50);
+const Color myBlue = Color(0xFF2196F3);
+const Color myRed = Color(0xFFF44336);

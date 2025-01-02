@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
+import 'package:temperature_map/app/pages/dashboard/components/co2_linegraph.dart';
 import 'package:temperature_map/app/pages/dashboard/components/hum_linegraph.dart';
+import 'package:temperature_map/app/pages/dashboard/components/pm10_linegraph.dart';
+import 'package:temperature_map/app/pages/dashboard/components/pm25_linegraph.dart';
 import 'package:temperature_map/app/pages/dashboard/components/temp_linegraph.dart';
 import 'package:temperature_map/app/widgets/empty_error_views.dart';
 import 'package:temperature_map/core/app_constants.dart';
@@ -35,7 +38,8 @@ class DashboardPage extends GetView<DashboardPageController> {
             );
           }
           return Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 15.0, vertical: 15.0),
+            padding:
+                const EdgeInsets.symmetric(horizontal: 15.0, vertical: 15.0),
             child: SingleChildScrollView(
               child: Column(
                 children: [
@@ -86,7 +90,8 @@ class DashboardPage extends GetView<DashboardPageController> {
                     height: 20,
                   ),
                   Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 20.0),
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 20.0, vertical: 20.0),
                     child: Container(
                       padding: const EdgeInsets.symmetric(
                         horizontal: 25,
@@ -127,7 +132,8 @@ class DashboardPage extends GetView<DashboardPageController> {
                     height: 20,
                   ),
                   Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 20.0),
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 20.0, vertical: 20.0),
                     child: Divider(
                       color: myPurple.withOpacity(0.5),
                       thickness: 5,
@@ -150,7 +156,8 @@ class DashboardPage extends GetView<DashboardPageController> {
                     height: 20,
                   ),
                   Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 20.0),
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 20.0, vertical: 20.0),
                     child: Container(
                       padding: const EdgeInsets.symmetric(
                         horizontal: 25,
@@ -187,6 +194,194 @@ class DashboardPage extends GetView<DashboardPageController> {
                       ),
                     ),
                   ),
+                  if (controller.mq135List.isNotEmpty) ...[
+                    const SizedBox(height: 20),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 20.0, vertical: 20.0),
+                      child: Divider(
+                        color: myPurple.withOpacity(0.5),
+                        thickness: 5,
+                      ),
+                    ),
+                    const SizedBox(height: 20),
+                    const Text(
+                      'CO₂ vs Recorrido',
+                      style: TextStyle(
+                        color: myPurple,
+                        fontSize: 32,
+                        fontWeight: FontWeight.bold,
+                        letterSpacing: 2,
+                      ),
+                      textAlign: TextAlign.center,
+                    ),
+                    const SizedBox(height: 20),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 20.0, vertical: 20.0),
+                      child: Container(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 25,
+                          vertical: 20,
+                        ),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(10),
+                          color: Colors.white,
+                          boxShadow: [
+                            BoxShadow(
+                              color: myPurple.withOpacity(0.5),
+                              offset: const Offset(1.0, 0.0),
+                              blurRadius: 6.0,
+                            ),
+                          ],
+                        ),
+                        child: const Column(
+                          children: [
+                            SizedBox(
+                              height: 500,
+                              width: 1400,
+                              child: CO2LineChart(),
+                            ),
+                            SizedBox(height: 20),
+                            Text(
+                              'Puntos Censados',
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 14,
+                              ),
+                            ),
+                            SizedBox(height: 25),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ],
+                  if (controller.pm25List.isNotEmpty) ...[
+                    const SizedBox(height: 20),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 20.0, vertical: 20.0),
+                      child: Divider(
+                        color: myPurple.withOpacity(0.5),
+                        thickness: 5,
+                      ),
+                    ),
+                    const SizedBox(height: 20),
+                    const Text(
+                      'PM₂.₅ vs Recorrido',
+                      style: TextStyle(
+                        color: myPurple,
+                        fontSize: 32,
+                        fontWeight: FontWeight.bold,
+                        letterSpacing: 2,
+                      ),
+                      textAlign: TextAlign.center,
+                    ),
+                    const SizedBox(height: 20),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 20.0, vertical: 20.0),
+                      child: Container(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 25,
+                          vertical: 20,
+                        ),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(10),
+                          color: Colors.white,
+                          boxShadow: [
+                            BoxShadow(
+                              color: myPurple.withOpacity(0.5),
+                              offset: const Offset(1.0, 0.0),
+                              blurRadius: 6.0,
+                            ),
+                          ],
+                        ),
+                        child: const Column(
+                          children: [
+                            SizedBox(
+                              height: 500,
+                              width: 1400,
+                              child: PM25LineChart(),
+                            ),
+                            SizedBox(height: 20),
+                            Text(
+                              'Puntos Censados',
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 14,
+                              ),
+                            ),
+                            SizedBox(height: 25),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ],
+
+                  // PM10 Section
+                  if (controller.pm10List.isNotEmpty) ...[
+                    const SizedBox(height: 20),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 20.0, vertical: 20.0),
+                      child: Divider(
+                        color: myPurple.withOpacity(0.5),
+                        thickness: 5,
+                      ),
+                    ),
+                    const SizedBox(height: 20),
+                    const Text(
+                      'PM₁₀ vs Recorrido',
+                      style: TextStyle(
+                        color: myPurple,
+                        fontSize: 32,
+                        fontWeight: FontWeight.bold,
+                        letterSpacing: 2,
+                      ),
+                      textAlign: TextAlign.center,
+                    ),
+                    const SizedBox(height: 20),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 20.0, vertical: 20.0),
+                      child: Container(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 25,
+                          vertical: 20,
+                        ),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(10),
+                          color: Colors.white,
+                          boxShadow: [
+                            BoxShadow(
+                              color: myPurple.withOpacity(0.5),
+                              offset: const Offset(1.0, 0.0),
+                              blurRadius: 6.0,
+                            ),
+                          ],
+                        ),
+                        child: const Column(
+                          children: [
+                            SizedBox(
+                              height: 500,
+                              width: 1400,
+                              child: PM10LineChart(),
+                            ),
+                            SizedBox(height: 20),
+                            Text(
+                              'Puntos Censados',
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 14,
+                              ),
+                            ),
+                            SizedBox(height: 25),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ],
                 ],
               ),
             ),

@@ -87,26 +87,80 @@ class DashboardComparisonController extends GetxController {
     fetchRecords();
   }
 
+  bool hasMQ135Data() {
+    for (var ruta in rutas) {
+      for (var point in ruta['dataList']) {
+        if (point['MQ135'] != null) return true;
+      }
+    }
+    return false;
+  }
+
+  bool hasPM25Data() {
+    for (var ruta in rutas) {
+      for (var point in ruta['dataList']) {
+        if (point['PM2_5'] != null) return true;
+      }
+    }
+    return false;
+  }
+
+  bool hasPM10Data() {
+    for (var ruta in rutas) {
+      for (var point in ruta['dataList']) {
+        if (point['PM10'] != null) return true;
+      }
+    }
+    return false;
+  }
+
   void generateCSV() {
     final excel = Excel.createExcel();
     Sheet sheet = excel['Sheet1'];
-    CellStyle cellStyle = CellStyle(fontFamily: getFontFamily(FontFamily.Al_Nile));
-    cellStyle.underline = Underline.Single;
-    sheet.appendRow(
-        [TextCellValue('humedad'), TextCellValue('temperatura'), TextCellValue('latitude'), TextCellValue('longitude'), TextCellValue('altitude'),],);
 
-    final controller = Get.find<DashboardComparisonController>();
-    for (var ruta in controller.rutas) {
-      sheet.appendRow(
-          [TextCellValue('humedad'), TextCellValue('temperatura'), TextCellValue('latitude'), TextCellValue('longitude'), TextCellValue('altitude'),],);
+    // Headers
+    List<String> headers = [
+      'humedad',
+      'temperatura',
+      'latitude',
+      'longitude',
+      'altitude'
+    ];
+
+    if (hasMQ135Data()) headers.add('MQ135');
+    if (hasPM25Data()) headers.add('PM2_5');
+    if (hasPM10Data()) headers.add('PM10');
+
+    sheet.appendRow(headers.map((h) => TextCellValue(h)).toList());
+
+    for (var ruta in rutas) {
+      sheet.appendRow(headers.map((h) => TextCellValue(h)).toList());
       for (var dataPoint in ruta['dataList']) {
-        sheet.appendRow([
+        List<CellValue> row = [
           IntCellValue(dataPoint['humedad']),
           DoubleCellValue(dataPoint['temperatura']),
           DoubleCellValue(dataPoint['latitude']),
           DoubleCellValue(dataPoint['longitude']),
           DoubleCellValue(dataPoint['altitude'])
-        ]);
+        ];
+
+        if (hasMQ135Data()) {
+          row.add(dataPoint['MQ135'] != null
+              ? DoubleCellValue(dataPoint['MQ135'])
+              : TextCellValue(''));
+        }
+        if (hasPM25Data()) {
+          row.add(dataPoint['PM2_5'] != null
+              ? DoubleCellValue(dataPoint['PM2_5'])
+              : TextCellValue(''));
+        }
+        if (hasPM10Data()) {
+          row.add(dataPoint['PM10'] != null
+              ? DoubleCellValue(dataPoint['PM10'])
+              : TextCellValue(''));
+        }
+
+        sheet.appendRow(row);
       }
     }
     excel.save(fileName: 'dataProyectIotTelematicRutas.xlsx');

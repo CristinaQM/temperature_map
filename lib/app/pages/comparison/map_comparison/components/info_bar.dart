@@ -157,7 +157,9 @@ class _RutaExpansionTileState extends State<RutaExpansionTile> {
               () => Container(
                 margin: const EdgeInsets.only(bottom: 10),
                 decoration: BoxDecoration(
-                  color: (controller.rutaActual['id'] == widget.ruta['id']) ? const Color(0xff766ED1) : const Color(0xFFD6EFEF),
+                  color: (controller.rutaActual['id'] == widget.ruta['id'])
+                      ? const Color(0xff766ED1)
+                      : const Color(0xFFD6EFEF),
                   borderRadius: BorderRadius.circular(10),
                 ),
                 padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 8),
@@ -171,7 +173,10 @@ class _RutaExpansionTileState extends State<RutaExpansionTile> {
                           style: TextStyle(
                             fontWeight: FontWeight.w400,
                             fontSize: 16,
-                            color: (controller.rutaActual['id'] == widget.ruta['id']) ? Colors.white : Colors.black,
+                            color: (controller.rutaActual['id'] ==
+                                    widget.ruta['id'])
+                                ? Colors.white
+                                : Colors.black,
                           ),
                         ),
                         const SizedBox(width: 20),
@@ -183,7 +188,8 @@ class _RutaExpansionTileState extends State<RutaExpansionTile> {
                               widget.index,
                             ),
                             borderRadius: BorderRadius.circular(20),
-                            border: (controller.rutaActual['id'] == widget.ruta['id'])
+                            border: (controller.rutaActual['id'] ==
+                                    widget.ruta['id'])
                                 ? Border.all(
                                     color: Colors.white,
                                     width: 2,
@@ -193,7 +199,9 @@ class _RutaExpansionTileState extends State<RutaExpansionTile> {
                         ),
                       ],
                     ),
-                    Icon((isExpanded) ? MdiIcons.chevronUp : MdiIcons.chevronDown),
+                    Icon((isExpanded)
+                        ? MdiIcons.chevronUp
+                        : MdiIcons.chevronDown),
                   ],
                 ),
               ),
@@ -248,7 +256,8 @@ class _PointDataTile extends StatelessWidget {
       cursor: SystemMouseCursors.click,
       child: GestureDetector(
         onTap: () {
-          if (controller.selectedPoint['id'] == point['id'] && controller.rutaActual['id'] == ruta['id']) {
+          if (controller.selectedPoint['id'] == point['id'] &&
+              controller.rutaActual['id'] == ruta['id']) {
             controller.selectedPoint.clear();
           } else {
             final Map<String, dynamic> pointMap = {...point};
@@ -263,7 +272,8 @@ class _PointDataTile extends StatelessWidget {
             padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 8),
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(10),
-              color: (controller.selectedPoint['id'] == point['id'] && controller.rutaActual['id'] == ruta['id'])
+              color: (controller.selectedPoint['id'] == point['id'] &&
+                      controller.rutaActual['id'] == ruta['id'])
                   ? const Color(
                       0xFFBAB6E8,
                     )
@@ -282,7 +292,8 @@ class _PointDataTile extends StatelessWidget {
                         '${point['id']}',
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
-                          fontSize: (point['id'].toString().length < 3) ? 14 : 12,
+                          fontSize:
+                              (point['id'].toString().length < 3) ? 14 : 12,
                         ),
                       ),
                     ),
@@ -300,8 +311,34 @@ class _PointDataTile extends StatelessWidget {
                     ),
                   ],
                 ),
+                const SizedBox(height: 10),
+                Row(
+                  children: [
+                    if (point['MQ135'] != null)
+                      PointParamTag(
+                        label: '${point['MQ135']}CO₂',
+                        icon: MdiIcons.molecule,
+                        color: Colors.green,
+                      ),
+                    const SizedBox(width: 20),
+                    if (point['PM2_5'] != null)
+                      PointParamTag(
+                        label: '${point['PM2_5']}PM₂.₅',
+                        icon: MdiIcons.airPurifier,
+                        color: Colors.orange,
+                      ),
+                  ],
+                ),
+                const SizedBox(height: 10),
+                if (point['PM10'] != null)
+                  PointParamTag(
+                    label: '${point['PM10']}PM₁₀',
+                    icon: Icons.air_outlined,
+                    color: Colors.red,
+                  ),
                 AnimatedContainer(
-                  height: (controller.selectedPoint['id'] == point['id']) ? 165 : 0,
+                  height:
+                      (controller.selectedPoint['id'] == point['id']) ? 165 : 0,
                   duration: const Duration(milliseconds: 500),
                   curve: Curves.fastOutSlowIn,
                   child: (controller.selectedPoint['id'] == point['id'])

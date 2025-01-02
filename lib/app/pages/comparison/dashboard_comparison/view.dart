@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
+import 'package:temperature_map/app/pages/comparison/dashboard_comparison/componentes/co2_linechart.dart';
 import 'package:temperature_map/app/pages/comparison/dashboard_comparison/componentes/humidity_linechart.dart';
 import 'package:temperature_map/app/pages/comparison/dashboard_comparison/componentes/temperature_linechart.dart';
+import 'package:temperature_map/app/pages/comparison/dashboard_comparison/componentes/pm10_linechart.dart';
+import 'package:temperature_map/app/pages/comparison/dashboard_comparison/componentes/pm25_linechart.dart';
 import 'package:temperature_map/app/widgets/empty_error_views.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:temperature_map/app/pages/comparison/dashboard_comparison/controller.dart';
@@ -38,7 +41,8 @@ class DashboardComparisonPage extends GetView<DashboardComparisonController> {
                 );
               }
               return Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 15.0, vertical: 15.0),
+                padding: const EdgeInsets.symmetric(
+                    horizontal: 15.0, vertical: 15.0),
                 child: SingleChildScrollView(
                   child: Column(
                     children: [
@@ -125,7 +129,8 @@ class DashboardComparisonPage extends GetView<DashboardComparisonController> {
                       ),
                       const SizedBox(height: 25),
                       Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 8),
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 25, vertical: 8),
                         child: Wrap(
                           spacing: 10,
                           runSpacing: 10,
@@ -199,7 +204,8 @@ class DashboardComparisonPage extends GetView<DashboardComparisonController> {
                       ),
                       const SizedBox(height: 25),
                       Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 8),
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 25, vertical: 8),
                         child: Wrap(
                           spacing: 10,
                           runSpacing: 10,
@@ -223,6 +229,236 @@ class DashboardComparisonPage extends GetView<DashboardComparisonController> {
                         thickness: 5,
                       ),
                       const SizedBox(height: 30),
+                      if (controller.hasMQ135Data()) ...[
+                        const Text(
+                          'Comparativa de CO₂ por Ruta',
+                          style: TextStyle(
+                            color: myPurple,
+                            fontSize: 32,
+                            fontWeight: FontWeight.bold,
+                            letterSpacing: 2,
+                          ),
+                          textAlign: TextAlign.center,
+                        ),
+                        const SizedBox(height: 30),
+                        Container(
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 25,
+                            vertical: 20,
+                          ),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(10),
+                            color: Colors.white,
+                            boxShadow: [
+                              BoxShadow(
+                                color: myPurple.withOpacity(0.5),
+                                offset: const Offset(1.0, 0.0),
+                                blurRadius: 6.0,
+                              ),
+                            ],
+                          ),
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              SizedBox(
+                                height: 500,
+                                width: 1400,
+                                child: MQ135LineChart(
+                                  maxWidth: constraints.maxWidth,
+                                ),
+                              ),
+                              const SizedBox(height: 10),
+                              const Text(
+                                'Puntos Censados',
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 14,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        const SizedBox(height: 25),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 25, vertical: 8),
+                          child: Wrap(
+                            spacing: 10,
+                            runSpacing: 10,
+                            alignment: WrapAlignment.center,
+                            children: controller.rutas
+                                .asMap()
+                                .entries
+                                .map<Widget>(
+                                  (ruta) => RouteLineCard(
+                                    index: ruta.key,
+                                    ruta: ruta.value,
+                                    lineInfoType: LineInfoType.humidity,
+                                  ),
+                                )
+                                .toList(),
+                          ),
+                        ),
+                      ],
+                      if (controller.hasPM25Data()) ...[
+                        const SizedBox(height: 30),
+                        Divider(
+                          color: myPurple.withOpacity(0.5),
+                          thickness: 5,
+                        ),
+                        const SizedBox(height: 30),
+                        const Text(
+                          'Comparativa de PM2.5 por Ruta',
+                          style: TextStyle(
+                            color: myPurple,
+                            fontSize: 32,
+                            fontWeight: FontWeight.bold,
+                            letterSpacing: 2,
+                          ),
+                          textAlign: TextAlign.center,
+                        ),
+                        const SizedBox(height: 30),
+                        Container(
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 25,
+                            vertical: 20,
+                          ),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(10),
+                            color: Colors.white,
+                            boxShadow: [
+                              BoxShadow(
+                                color: myPurple.withOpacity(0.5),
+                                offset: const Offset(1.0, 0.0),
+                                blurRadius: 6.0,
+                              ),
+                            ],
+                          ),
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              SizedBox(
+                                height: 500,
+                                width: 1400,
+                                child: PM25LineChart(
+                                    maxWidth: constraints.maxWidth),
+                              ),
+                              const SizedBox(height: 10),
+                              const Text(
+                                'Puntos Censados',
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 14,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        const SizedBox(height: 25),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 25, vertical: 8),
+                          child: Wrap(
+                            spacing: 10,
+                            runSpacing: 10,
+                            alignment: WrapAlignment.center,
+                            children: controller.rutas
+                                .asMap()
+                                .entries
+                                .map<Widget>(
+                                  (ruta) => RouteLineCard(
+                                    index: ruta.key,
+                                    ruta: ruta.value,
+                                    lineInfoType: LineInfoType.humidity,
+                                  ),
+                                )
+                                .toList(),
+                          ),
+                        ),
+                      ],
+                      if (controller.hasPM10Data()) ...[
+                        const SizedBox(height: 30),
+                        Divider(
+                          color: myPurple.withOpacity(0.5),
+                          thickness: 5,
+                        ),
+                        const SizedBox(height: 30),
+                        const Text(
+                          'Comparativa de PM10 por Ruta',
+                          style: TextStyle(
+                            color: myPurple,
+                            fontSize: 32,
+                            fontWeight: FontWeight.bold,
+                            letterSpacing: 2,
+                          ),
+                          textAlign: TextAlign.center,
+                        ),
+                        const SizedBox(height: 30),
+                        Container(
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 25,
+                            vertical: 20,
+                          ),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(10),
+                            color: Colors.white,
+                            boxShadow: [
+                              BoxShadow(
+                                color: myPurple.withOpacity(0.5),
+                                offset: const Offset(1.0, 0.0),
+                                blurRadius: 6.0,
+                              ),
+                            ],
+                          ),
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              SizedBox(
+                                height: 500,
+                                width: 1400,
+                                child: PM10LineChart(
+                                  maxWidth: constraints.maxWidth,
+                                ),
+                              ),
+                              const SizedBox(height: 10),
+                              const Text(
+                                'Puntos Censados',
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 14,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        const SizedBox(height: 25),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 25, vertical: 8),
+                          child: Wrap(
+                            spacing: 10,
+                            runSpacing: 10,
+                            alignment: WrapAlignment.center,
+                            children: controller.rutas
+                                .asMap()
+                                .entries
+                                .map<Widget>(
+                                  (ruta) => RouteLineCard(
+                                    index: ruta.key,
+                                    ruta: ruta.value,
+                                    lineInfoType: LineInfoType.humidity,
+                                  ),
+                                )
+                                .toList(),
+                          ),
+                        ),
+                        const SizedBox(height: 30),
+                        Divider(
+                          color: myPurple.withOpacity(0.5),
+                          thickness: 5,
+                        ),
+                        const SizedBox(height: 30),
+                      ],
                       const Text(
                         'Temperatura Promedio por Ruta',
                         style: TextStyle(
@@ -409,8 +645,10 @@ class RouteLineCard extends StatelessWidget {
     final maxValue = dataList.last;
     final minValue = dataList.first;
 
-    final maxLabel = (isTemp) ? '${maxValue['temperatura']}°C' : '${maxValue['humedad']}%';
-    final minLabel = (isTemp) ? '${minValue['temperatura']}°C' : '${minValue['humedad']}%';
+    final maxLabel =
+        (isTemp) ? '${maxValue['temperatura']}°C' : '${maxValue['humedad']}%';
+    final minLabel =
+        (isTemp) ? '${minValue['temperatura']}°C' : '${minValue['humedad']}%';
 
     return Container(
       width: 150,
